@@ -21,16 +21,10 @@
 # CLIc stands for "Command Line Interface chess" given that this is
 # written in Python, and I'm still a n00blet by hacker standards, there
 # is no computer opponent, instead you'll have to find a friend to play
-# with - sorry. Maybe if I ever get REALLY good at coding, I'll write
-# a chess engine so you can play against the computer. Don't hold your
-# breath though.
-#
-# Seriously though, it took 2 hours of coding to deal with pawn promotion
-# so please don't get your hopes up
-# 
+# with - sorry.
 #
 # I think it's fair to say that this is now a v0.2 jobby what with pawn
-# promotion and valid knight input included...
+# promotion and valid knight input included
 
 
 
@@ -40,7 +34,7 @@ chess_board = [["  8  ","(bR1)", "{bN1}", "(bB1)", "{bK }", "(bQ )", "{bB2}", "(
 			   ["  6  ","(   )", "{___}", "(   )", "{___}", "(   )", "{___}", "(   )", "{___}"],
 			   ["  5  ","{___}", "(   )", "{___}", "(   )", "{___}", "(   )", "{___}", "(   )"],
 			   ["  4  ","(   )", "{___}", "(   )", "{___}", "(   )", "{___}", "(   )", "{___}"],
-               ["  3  ","{___}", "(   )", "{___}", "(   )", "{___}", "(   )", "{___}", "(   )"],
+                           ["  3  ","{___}", "(   )", "{___}", "(   )", "{___}", "(   )", "{___}", "(   )"],
 			   ["  2  ","(wP1)", "{wP2}", "(wP3)", "{wP4}", "(wP5)", "{wP6}", "(wP7)", "{wP8}"],
 			   ["  1  ","{wR1}", "(wN1)", "{wB1}", "(wQ )", "{wK }", "(wB2)", "{wN2}", "(wR2)"],
 			   ["     ","  A  ", "  B  ", "  C  ", "  D  ", "  E  ", "  F  ", "  G  ", "  H  "]]
@@ -59,19 +53,15 @@ quit_game = False
 turn_counter = 10
 valid_move = True
 
-# Experimental crap start
+# Experimental coding ahead
 # Increment hours when playing around
 # Time spent == 2 hours
 # COMPLETE
-# Note to future me:
-# This section is magic, 2am, caffeine induced, sleep deprived code
-# unless you are really sure what you're changing... DON'T!
-
 
 pawn_moves = [["bP1",2,0], ["bP2",2,0], ["bP3",2,0], ["bP4",2,0], 
-			  ["bP5",2,0], ["bP6",2,0], ["bP7",2,0], ["bP8",2,0],
-			  ["wP1",2,0], ["wP2",2,0], ["wP3",2,0], ["wP4",2,0], 
-			  ["wP5",2,0], ["wP6",2,0], ["wP7",2,0], ["wP8",2,0]]
+              ["bP5",2,0], ["bP6",2,0], ["bP7",2,0], ["bP8",2,0],
+	      ["wP1",2,0], ["wP2",2,0], ["wP3",2,0], ["wP4",2,0], 
+	      ["wP5",2,0], ["wP6",2,0], ["wP7",2,0], ["wP8",2,0]]
 
 def pawn_promotion(piece_colour):
 	promotion = False
@@ -102,9 +92,9 @@ def pawn_promotion(piece_colour):
 				pawn_moves[each][0] = "(" + piece_colour + new_piece.upper() + " )"
 			pawn = str(pawn_moves[each][0])
 
-# End of experimental crap
+# End of experimental section 1
 
-# More experimental crap
+# More experimental coding
 # Started 17/07/13 @ 18:20
 # Time spent == 5 hours
 # Completed 18/07/13 @ 20:45
@@ -160,9 +150,9 @@ def redraw_valid(valid_move):
 		else:
 			chess_board[row][column] = "(   )"
 
-# End second set of experimental crap
+# End second set of experimental coding
 
-# Introducing the third set of experimental crap
+# Introducing the third set of experimental coding
 # Bishop and rook moves
 # Started 20/07/13 @ 16:40
 # Completed 20/07/13 @ 17:30
@@ -231,7 +221,7 @@ def rook_move_valid():
 	else:
 		return 0
 
-# End of experimental crap 3
+# End of experimental coding 3
 
 # New stuff - pawn movement (excepting promotion) and eventually...
 # en passant, maybe
@@ -243,7 +233,6 @@ def pawn_move_valid(piece_colour):
 	global x, each, super_x
 	super_x = 0
 	x = 0
-#	is_it_correct_p = pawn_move_valid()
 	for each in range(len(pawn_moves)):
 		if pawn_moves[each][0][0:4] == chess_board[row][column][1:4]:
 			if pawn_moves[each][0][0] == "w":
@@ -265,25 +254,11 @@ def pawn_move_valid(piece_colour):
 				pawn_moves[each][2] += 1
 			else:
 				pawn = "invalid"
-			#break
-		#debugging line
-		#print x
-		#print pawn_moves[each][0][0:4], chess_board[row][column][1:4]
-		#new_column = chess_moves_col[move2[0]]
-		#new_row = chess_moves_row[move2[1]]
-
+			
 	if pawn == "":
 		if x == 1:
-			#if chess_board[new_row][new_column][0] == "{":
-			#	pawn = "(" + piece_colour + pawn_moves[each][0] + ")"
-			#else:
-			#	pawn = "{" + piece_colour + pawn_moves[each][0] + "}"
 			valid_move = True
 		elif x == 2:
-		#	if chess_board[row][column][0] == "{":
-		#		pawn = "{" + piece_colour + pawn_moves[each][0] + "}"
-		#	else:
-		#		pawn = "(" + piece_colour + pawn_moves[each][0] + ")"
 			valid_move = True
 	else:
 		print "Pawns can't move like that =( "
