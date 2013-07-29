@@ -34,7 +34,7 @@ chess_board = [["  8  ","(bR1)", "{bN1}", "(bB1)", "{bK }", "(bQ )", "{bB2}", "(
 			   ["  6  ","(   )", "{___}", "(   )", "{___}", "(   )", "{___}", "(   )", "{___}"],
 			   ["  5  ","{___}", "(   )", "{___}", "(   )", "{___}", "(   )", "{___}", "(   )"],
 			   ["  4  ","(   )", "{___}", "(   )", "{___}", "(   )", "{___}", "(   )", "{___}"],
-                           ["  3  ","{___}", "(   )", "{___}", "(   )", "{___}", "(   )", "{___}", "(   )"],
+               ["  3  ","{___}", "(   )", "{___}", "(   )", "{___}", "(   )", "{___}", "(   )"],
 			   ["  2  ","(wP1)", "{wP2}", "(wP3)", "{wP4}", "(wP5)", "{wP6}", "(wP7)", "{wP8}"],
 			   ["  1  ","{wR1}", "(wN1)", "{wB1}", "(wQ )", "{wK }", "(wB2)", "{wN2}", "(wR2)"],
 			   ["     ","  A  ", "  B  ", "  C  ", "  D  ", "  E  ", "  F  ", "  G  ", "  H  "]]
@@ -42,28 +42,35 @@ chess_board = [["  8  ","(bR1)", "{bN1}", "(bB1)", "{bK }", "(bQ )", "{bB2}", "(
 				
 chess_dim = range(len(chess_board))
 
+# dictionary to equate column to a numerical value, as integers easier to
+# manipulate than strings
 chess_moves_col = {"a" or "A": 1, "b" or "B": 2, "c" or "C": 3, "d" or "D": 4,
 				   "e" or "E": 5, "f" or "F": 6, "g" or "G": 7, "h" or "H": 8}
 
+#dictionary to equate input to actual location on chessboard
 chess_moves_row = {"1": 7, "2": 6, "3": 5, "4": 4, "5": 3, "6": 2, "7": 1, "8": 0}
+
+# specific to white pawns - manipulation of numbers is easier working forwards
+# not backwars
 white_pawn_row = [0,1,2,3,4,5,6,7,8,9]
-# Some variables
+
+
+# Instantiate some variables
 pawn = ""
 quit_game = False
 turn_counter = 10
 valid_move = True
 
-# Experimental coding ahead
-# Increment hours when playing around
-# Time spent == 2 hours
-# COMPLETE
-
+# Special list for pawn moves, as rules for pawns are vastly different
+# to other pieces
 pawn_moves = [["bP1",2,0], ["bP2",2,0], ["bP3",2,0], ["bP4",2,0], 
               ["bP5",2,0], ["bP6",2,0], ["bP7",2,0], ["bP8",2,0],
-	      ["wP1",2,0], ["wP2",2,0], ["wP3",2,0], ["wP4",2,0], 
-	      ["wP5",2,0], ["wP6",2,0], ["wP7",2,0], ["wP8",2,0]]
+       	      ["wP1",2,0], ["wP2",2,0], ["wP3",2,0], ["wP4",2,0], 
+	          ["wP5",2,0], ["wP6",2,0], ["wP7",2,0], ["wP8",2,0]]
+
 
 def pawn_promotion(piece_colour):
+	"""Determine whether or not pawn has reached furthest rank from start point"""
 	promotion = False
 	# Check if piece moved is a pawn
 	for every in range(len(pawn_moves)):
@@ -76,8 +83,7 @@ def pawn_promotion(piece_colour):
 	for each in range(len(pawn_moves)):
 		if pawn_moves[each][1] == 7 or pawn_moves[each][1] == 0:
 			# pawn has reach furthest rank and is to be promoted
-			# TODO: Enable selection of promotion piece
-			# Fixed: 13/07/13 02.15
+			# Enable selection of promotion piece
 			pieces = ["Q", "B", "R", "N"] 
 			while promotion == False:
 				new_piece = str(raw_input("\nPlease select which piece pawn is to be promoted to: \n"))
@@ -86,26 +92,25 @@ def pawn_promotion(piece_colour):
 				else:
 					print "\nSorry, I don't think that's a real piece."
 					print "Just use the first letter of the piece you want"
+			# Check whether Pawn is promoted on a white square or black square
 			if chess_board[new_row][new_column][0] == "{":
 				pawn_moves[each][0] = "{" + piece_colour + new_piece.upper() + " }"
 			else:
 				pawn_moves[each][0] = "(" + piece_colour + new_piece.upper() + " )"
 			pawn = str(pawn_moves[each][0])
 
-# End of experimental section 1
 
-# More experimental coding
-# Started 17/07/13 @ 18:20
-# Time spent == 5 hours
-# Completed 18/07/13 @ 20:45
-# 
+ 
 # FIXME: Cannot move knight from g to h as this overspills last
 # column in list
 # FIXED: 20/07/13 @ 21:29
 
 def knight_move_valid():
+	"""Determine whether Knight can move in that manner"""
 	row_valid = False
 	column_valid = False
+	# Knight moves are (column+2 & row+1) or (column+1 & row+1)
+	# Run validation on each move individually, and combine
 	if chess_board[new_row-2] == chess_board[row] or chess_board[new_row+2] == chess_board[row]:
 		row_valid = True
 	elif chess_board[new_row-1] == chess_board[row] or chess_board[new_row+1] == chess_board[row]:
@@ -143,6 +148,7 @@ def knight_move(piece_colour):
 		return 0
 
 def redraw_valid(valid_move):
+	"""Checks that move is valid, then redraws piece on board"""
 	if valid_move is True:
 		chess_board[new_row][new_column] = chess_board[row][column]
 		if chess_board[row][column][0] == "{":
@@ -150,14 +156,9 @@ def redraw_valid(valid_move):
 		else:
 			chess_board[row][column] = "(   )"
 
-# End second set of experimental coding
-
-# Introducing the third set of experimental coding
 # Bishop and rook moves
 # Started 20/07/13 @ 16:40
 # Completed 20/07/13 @ 17:30
-# Hey, check me out; I wrote 2 parent functions and 2 child
-# functions in less than an hour!
 # Now CLIc accepts only valid knight, bishop and rook moves
 
 def bishop_move(piece_colour):
@@ -178,10 +179,12 @@ def bishop_move(piece_colour):
 		return 0
 
 def bishop_move_valid():
+	"""Bishops move row+n and column+n"""
 	move_valid = False
 	if chess_board[new_column][new_row][0] != chess_board[row][column][0]:
 		move_valid = False
 	else:
+		# n - n for x and y movement must be equal if move is valid
 		x = new_row - row
 		y = new_column - column
 		if x == y:
@@ -210,6 +213,7 @@ def rook_move(piece_colour):
 		return 0
 
 def rook_move_valid():
+	"""Rook move is (row+-n & column+-0) or (row+-0 & column+-n)"""
 	move_valid = False
 	x = new_column - column
 	y = new_row - row
@@ -221,10 +225,9 @@ def rook_move_valid():
 	else:
 		return 0
 
-# End of experimental coding 3
 
-# New stuff - pawn movement (excepting promotion) and eventually...
-# en passant, maybe
+# New stuff - pawn movement excepting promotion as separate function
+
 def pawn_move_valid(piece_colour):
 	"""Check pawn's move is valid"""
 	valid_move = False
@@ -234,18 +237,19 @@ def pawn_move_valid(piece_colour):
 	super_x = 0
 	x = 0
 	for each in range(len(pawn_moves)):
+		# iterate through pawn_moves to find the piece in question
 		if pawn_moves[each][0][0:4] == chess_board[row][column][1:4]:
 			if pawn_moves[each][0][0] == "w":
+				# white moves
 				x = int(move2[1]) - int(move1[1])
-				#x = pawn_moves[each][1] - new_column
 			elif pawn_moves[each][0][0] == "b":
+				# black moves
 				x = new_column - pawn_moves[each][1]
-				#x = pawn_moves[each][1] - chess_moves_row[str(y)]
 			else:
 				break
+			# assign iteration to a fixed variable to call later
 			super_x = each
-			#debugging line
-			print x, super_x
+
 			if ((x == 1 or x == 2) and pawn_moves[each][2] == 0):
 				pawn_moves[each][1] = y
 				pawn_moves[each][2] += 1
@@ -271,6 +275,7 @@ def pawn_move_valid(piece_colour):
 
 
 def redraw_valid_for_pawns(valid_move):
+	"""Special function for pawn movement""" 
 	global pawn, x, super_x
 	if valid_move is True:
 		if pawn == "":
@@ -289,6 +294,7 @@ def redraw_valid_for_pawns(valid_move):
 
 
 def print_board():
+	"""Prints chess board"""
 	counter1 = 0
 	for i in chess_dim:
 		print "".join(chess_board[counter1])
@@ -338,10 +344,9 @@ while quit_game == False:
 		if chess_board[row][column][1] != (turn[0]).lower():
 			print "That's not your piece! Try again!"
 			turn_counter -= 1
-	#check that piece can move in that manner
-	
-	
-	#check if pawn has reached furthest rank and hence been promoted
+
+	# check that piece can move in that manner, piece by piece
+	# if so, redraw board with piece at its new location
 		piece_colour = turn[0].lower()
 		if chess_board[row][column][2] == "P" and (new_row == 0 or new_row == 8):
 			if pawn_promotion(piece_colour) == 1:
@@ -371,8 +376,5 @@ while quit_game == False:
 				redraw_valid(valid_move)
 			else:
 				turn_counter -=1
-	#redraw board, replacing the two items in list that have been moved
-	#from and to
-	
 	#change player
 		turn_counter += 1
