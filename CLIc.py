@@ -319,11 +319,17 @@ while quit_game == False:
 		if move2 in ("q","Q"):
 			quit_game = True
 			break
+
+	try:
+	    chess_moves_col[move1[0]] in range(a-z)
+	except IndexError:
+	    print "Not a valid move"
 	#assign it a value to check against dictionary
 	column = chess_moves_col[move1[0]]
 	row = chess_moves_row[move1[1]]
 	
 	#check that move input is valid
+
 	if (column in range(1,9)) and (row in range(0,8)):
 		new_column = chess_moves_col[move2[0]]
 		new_row = chess_moves_row[move2[1]]
