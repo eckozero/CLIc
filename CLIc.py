@@ -319,68 +319,70 @@ while quit_game == False:
 		if move2 in ("q","Q"):
 			quit_game = True
 			break
-
-	try:
-	    chess_moves_col[move1[0]] in range(a-z)
-	except IndexError:
-	    print "Not a valid move"
+	while quit_game is False:
+		try:
+			chess_moves_col[move1[0]] in range(a-z)
+		except IndexError:
+			turn_counter -= 1			
+			print "Not a valid move"
+			break
 	#assign it a value to check against dictionary
-	column = chess_moves_col[move1[0]]
-	row = chess_moves_row[move1[1]]
+		column = chess_moves_col[move1[0]]
+		row = chess_moves_row[move1[1]]
 	
 	#check that move input is valid
 
-	if (column in range(1,9)) and (row in range(0,8)):
-		new_column = chess_moves_col[move2[0]]
-		new_row = chess_moves_row[move2[1]]
-	else:
-		print "\nThat's not a valid move! Try again \n"
-		turn_counter -=1
-		valid_move = False
-	if chess_board[row][column][1] == " ":
-		print "\nThat's not a valid move! Try again \n"
-		turn_counter -=1
-		valid_move = False
+		if (column in range(1,9)) and (row in range(0,8)):
+			new_column = chess_moves_col[move2[0]]
+			new_row = chess_moves_row[move2[1]]
+		else:
+			print "\nThat's not a valid move! Try again \n"
+			turn_counter -=1
+			valid_move = False
+		if chess_board[row][column][1] == " ":
+			print "\nThat's not a valid move! Try again \n"
+			turn_counter -=1
+			valid_move = False
 
 
 
 	#check that player has picked their own piece
-	if valid_move != False:
+		if valid_move != False:
 
-		if chess_board[row][column][1] != (turn[0]).lower():
-			print "That's not your piece! Try again!"
-			turn_counter -= 1
+			if chess_board[row][column][1] != (turn[0]).lower():
+				print "That's not your piece! Try again!"
+				turn_counter -= 1
 
 	# check that piece can move in that manner, piece by piece
 	# if so, redraw board with piece at its new location
-		piece_colour = turn[0].lower()
-		if chess_board[row][column][2] == "P" and (new_row == 0 or new_row == 8):
-			if pawn_promotion(piece_colour) == 1:
-				print "\nPawn promoted!\n"
-				chess_board[new_row][new_column] = pawn
-		elif chess_board[row][column][2] == "P":
-			if pawn_move_valid(piece_colour) == 1:
-				chess_board[new_row][new_column] = pawn
-				redraw_valid(valid_move)
-			else:
-				turn_counter -= 1
-		elif chess_board[row][column][2] == "N":
-			if knight_move(piece_colour) == 1:
-				chess_board[new_row][new_column] = knight
-				redraw_valid(valid_move)
-			else:
-				turn_counter -= 1
-		elif chess_board[row][column][2] == "B":
-			if bishop_move(piece_colour) == 1:
-				chess_board[new_row][new_column] = bishop
-				redraw_valid(valid_move)
-			else:
-				turn_counter -=1
-		elif chess_board[row][column][2] == "R":
-			if rook_move(piece_colour) == 1:
-				chess_board[new_row][new_column] = rook
-				redraw_valid(valid_move)
-			else:
-				turn_counter -=1
+			piece_colour = turn[0].lower()
+			if chess_board[row][column][2] == "P" and (new_row == 0 or new_row == 8):
+				if pawn_promotion(piece_colour) == 1:
+					print "\nPawn promoted!\n"
+					chess_board[new_row][new_column] = pawn
+			elif chess_board[row][column][2] == "P":
+				if pawn_move_valid(piece_colour) == 1:
+					chess_board[new_row][new_column] = pawn
+					redraw_valid(valid_move)
+				else:
+					turn_counter -= 1
+			elif chess_board[row][column][2] == "N":
+				if knight_move(piece_colour) == 1:
+					chess_board[new_row][new_column] = knight
+					redraw_valid(valid_move)
+				else:
+					turn_counter -= 1
+			elif chess_board[row][column][2] == "B":
+				if bishop_move(piece_colour) == 1:
+					chess_board[new_row][new_column] = bishop
+					redraw_valid(valid_move)
+				else:
+					turn_counter -=1
+			elif chess_board[row][column][2] == "R":
+				if rook_move(piece_colour) == 1:
+					chess_board[new_row][new_column] = rook
+					redraw_valid(valid_move)
+				else:
+					turn_counter -=1
 	#change player
 		turn_counter += 1
