@@ -303,6 +303,10 @@ def print_board():
 while quit_game == False:
 	# print board for the first time
 	print_board()
+	#assume input will be a valid move
+	real_move = True
+	#awful, awful code here
+	onwards = False
 	# check whose turn it is
 	if (turn_counter % 2 == 0):
 		turn = "White's"
@@ -319,13 +323,20 @@ while quit_game == False:
 		if move2 in ("q","Q"):
 			quit_game = True
 			break
-	while quit_game is False:
+	
+	
+	while real_move == True:
 		try:
-			chess_moves_col[move1[0]] in range(a-z)
-		except IndexError:
-			turn_counter -= 1			
+			chess_moves_col[move1[0]] != ""
+		except IndexError:		
 			print "Not a valid move"
+			real_move = False
 			break
+		else:
+			onwards = True
+		break
+			
+	if onwards == True:
 	#assign it a value to check against dictionary
 		column = chess_moves_col[move1[0]]
 		row = chess_moves_row[move1[1]]
@@ -344,18 +355,14 @@ while quit_game == False:
 			turn_counter -=1
 			valid_move = False
 
-
-
 	#check that player has picked their own piece
 		if valid_move != False:
-
 			if chess_board[row][column][1] != (turn[0]).lower():
 				print "That's not your piece! Try again!"
 				turn_counter -= 1
-
 	# check that piece can move in that manner, piece by piece
 	# if so, redraw board with piece at its new location
-			piece_colour = turn[0].lower()
+				piece_colour = turn[0].lower()
 			if chess_board[row][column][2] == "P" and (new_row == 0 or new_row == 8):
 				if pawn_promotion(piece_colour) == 1:
 					print "\nPawn promoted!\n"
