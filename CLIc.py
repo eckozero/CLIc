@@ -60,6 +60,7 @@ pawn = ""
 quit_game = False
 turn_counter = 10
 valid_move = True
+turn = "White's"
 
 # Special list for pawn moves, as rules for pawns are vastly different
 # to other pieces
@@ -80,7 +81,7 @@ class DrawBoard(object):
 			print "".join(chess_board[counter1])
 			counter1 +=1
 			
-	def redraw_valid(valid_move):
+	def redraw_valid(self, valid_move):
 		"""Checks that move is valid, then redraws piece on board"""
 		if valid_move is True:
 			chess_board[new_row][new_column] = chess_board[row][column]
@@ -91,7 +92,16 @@ class DrawBoard(object):
 
 
 
+class GameMechanics(object):
+	def __init__(self, turn_counter):
+		self.turn_counter = turn_counter
 
+	def turn_picker(self, turn_counter, turn):
+		self.turn = turn
+		if (turn_counter % 2 == 0):
+			turn = "White's"
+		else:
+			turn = "Black's"
 
 
 
@@ -313,6 +323,7 @@ def redraw_valid_for_pawns(valid_move):
 
 
 drawBoard = DrawBoard(valid_move)
+turn_spec = GameMechanics(turn_counter)
 
 while quit_game == False:
 	# print board for the first time
@@ -322,10 +333,7 @@ while quit_game == False:
 	#awful, awful code here
 	onwards = False
 	# check whose turn it is
-	if (turn_counter % 2 == 0):
-		turn = "White's"
-	else:
-		turn = "Black's"
+	turn_spec.turn_picker(turn_counter, turn)
 	#take a starting piece and where to move it to
 	#also checks that player does not wish to quit
 	move1 = raw_input(turn + " turn. Pick which piece to move: ")
