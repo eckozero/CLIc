@@ -104,36 +104,39 @@ class GameMechanics(object):
 			turn = "Black's"
 
 
-
-def pawn_promotion(piece_colour):
-	"""Determine whether or not pawn has reached furthest rank from start point"""
-	promotion = False
-	# Check if piece moved is a pawn
-	for every in range(len(pawn_moves)):
-		check_pawn = pawn_moves[every][0]
-		if chess_board[row][column] == check_pawn:
-			# replace number value from list with new location of pawn
-			pawn_moves[each][1] = chess_moves_row[chess_board[new_row][0][2]]
-	# iterate through pawn_moves list to find and replace the pawns 
-	# position on the chess board
-	for each in range(len(pawn_moves)):
-		if pawn_moves[each][1] == 7 or pawn_moves[each][1] == 0:
-			# pawn has reach furthest rank and is to be promoted
-			# Enable selection of promotion piece
-			pieces = ["Q", "B", "R", "N"] 
-			while promotion == False:
-				new_piece = str(raw_input("\nPlease select which piece pawn is to be promoted to: \n"))
-				if new_piece.upper() in pieces:
-					promotion = True
+class PawnMovement(object):
+	def __init__(self, piece):
+		self.piece = piece
+		
+	def pawn_promotion(self, piece_colour):
+		"""Determine whether or not pawn has reached furthest rank from start point"""
+		promotion = False
+		# Check if piece moved is a pawn
+		for every in range(len(pawn_moves)):
+			check_pawn = pawn_moves[every][0]
+			if chess_board[row][column] == check_pawn:
+				# replace number value from list with new location of pawn
+				pawn_moves[each][1] = chess_moves_row[chess_board[new_row][0][2]]
+		# iterate through pawn_moves list to find and replace the pawns 
+		# position on the chess board
+		for each in range(len(pawn_moves)):
+			if pawn_moves[each][1] == 7 or pawn_moves[each][1] == 0:
+				# pawn has reach furthest rank and is to be promoted
+				# Enable selection of promotion piece
+				pieces = ["Q", "B", "R", "N"] 
+				while promotion == False:
+					new_piece = str(raw_input("\nPlease select which piece pawn is to be promoted to: \n"))
+					if new_piece.upper() in pieces:
+						promotion = True
+					else:
+						print "\nSorry, I don't think that's a real piece."
+						print "Just use the first letter of the piece you want"
+				# Check whether Pawn is promoted on a white square or black square
+				if chess_board[new_row][new_column][0] == "{":
+					pawn_moves[each][0] = "{" + piece_colour + new_piece.upper() + " }"
 				else:
-					print "\nSorry, I don't think that's a real piece."
-					print "Just use the first letter of the piece you want"
-			# Check whether Pawn is promoted on a white square or black square
-			if chess_board[new_row][new_column][0] == "{":
-				pawn_moves[each][0] = "{" + piece_colour + new_piece.upper() + " }"
-			else:
-				pawn_moves[each][0] = "(" + piece_colour + new_piece.upper() + " )"
-			pawn = str(pawn_moves[each][0])
+					pawn_moves[each][0] = "(" + piece_colour + new_piece.upper() + " )"
+				pawn = str(pawn_moves[each][0])
 
 
  
@@ -324,6 +327,7 @@ def redraw_valid_for_pawns(valid_move):
 
 drawBoard = DrawBoard(valid_move)
 turn_spec = GameMechanics(turn_counter)
+pawn_move_checking = PawnMovement(piece_colour)
 
 while quit_game == False:
 	# print board for the first time
