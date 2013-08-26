@@ -139,6 +139,41 @@ class PawnMovement(object):
 				pawn = str(pawn_moves[each][0])
 
 
+
+def pawn_promotion(self, piece_colour):
+	"""Determine whether or not pawn has reached furthest rank from start point"""
+	promotion = False
+	# Check if piece moved is a pawn
+	for every in range(len(pawn_moves)):
+		check_pawn = pawn_moves[every][0]
+		if chess_board[row][column] == check_pawn:
+			# replace number value from list with new location of pawn
+			pawn_moves[each][1] = chess_moves_row[chess_board[new_row][0][2]]
+	# iterate through pawn_moves list to find and replace the pawns 
+	# position on the chess board
+	for each in range(len(pawn_moves)):
+		if pawn_moves[each][1] == 7 or pawn_moves[each][1] == 0:
+			# pawn has reach furthest rank and is to be promoted
+			# Enable selection of promotion piece
+			pieces = ["Q", "B", "R", "N"] 
+			while promotion == False:
+				new_piece = str(raw_input("\nPlease select which piece pawn is to be promoted to: \n"))
+				if new_piece.upper() in pieces:
+					promotion = True
+				else:
+					print "\nSorry, I don't think that's a real piece."
+					print "Just use the first letter of the piece you want"
+			# Check whether Pawn is promoted on a white square or black square
+			if chess_board[new_row][new_column][0] == "{":
+				pawn_moves[each][0] = "{" + piece_colour + new_piece.upper() + " }"
+			else:
+				pawn_moves[each][0] = "(" + piece_colour + new_piece.upper() + " )"
+			pawn = str(pawn_moves[each][0])
+
+
+
+
+
  
 # FIXME: Cannot move knight from g to h as this overspills last
 # column in list
@@ -327,7 +362,7 @@ def redraw_valid_for_pawns(valid_move):
 
 drawBoard = DrawBoard(valid_move)
 turn_spec = GameMechanics(turn_counter)
-pawn_move_checking = PawnMovement(piece_colour)
+
 
 while quit_game == False:
 	# print board for the first time
@@ -380,7 +415,7 @@ while quit_game == False:
 			print "\nThat's not a valid move! Try again \n"
 			turn_counter -=1
 			valid_move = False
-
+		piece_colour = turn[0].lower()
 	#check that player has picked their own piece
 		if valid_move != False:
 			if chess_board[row][column][1] != (turn[0]).lower():
@@ -388,7 +423,8 @@ while quit_game == False:
 				turn_counter -= 1
 	# check that piece can move in that manner, piece by piece
 	# if so, redraw board with piece at its new location
-				piece_colour = turn[0].lower()
+
+				pawn_move_checking = PawnMovement(piece_colour)
 			if chess_board[row][column][2] == "P" and (new_row == 0 or new_row == 8):
 				if pawn_promotion(piece_colour) == 1:
 					print "\nPawn promoted!\n"
@@ -396,26 +432,26 @@ while quit_game == False:
 			elif chess_board[row][column][2] == "P":
 				if pawn_move_valid(piece_colour) == 1:
 					chess_board[new_row][new_column] = pawn
-					redraw_valid(valid_move)
+					drawBoard.redraw_valid(valid_move)
 				else:
 					turn_counter -= 1
 			elif chess_board[row][column][2] == "N":
 				if knight_move(piece_colour) == 1:
 					chess_board[new_row][new_column] = knight
-					redraw_valid(valid_move)
+					drawBoard.redraw_valid(valid_move)
 				else:
 					turn_counter -= 1
 			elif chess_board[row][column][2] == "B":
 				if bishop_move(piece_colour) == 1:
 					chess_board[new_row][new_column] = bishop
-					redraw_valid(valid_move)
+					drawBoard.redraw_valid(valid_move)
 				else:
 					turn_counter -=1
 			elif chess_board[row][column][2] == "R":
 				if rook_move(piece_colour) == 1:
 					chess_board[new_row][new_column] = rook
-					redraw_valid(valid_move)
+					drawBoard.redraw_valid(valid_move)
 				else:
 					turn_counter -=1
 	#change player
-		turn_counter += 1
+	turn_counter += 1
