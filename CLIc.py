@@ -69,6 +69,32 @@ pawn_moves = [["bP1",2,0], ["bP2",2,0], ["bP3",2,0], ["bP4",2,0],
 	      ["wP5",2,0], ["wP6",2,0], ["wP7",2,0], ["wP8",2,0]]
 
 
+class DrawBoard(object):
+	def __init__(self, valid_move):
+		self.valid_move = valid_move
+		
+	def print_board(self):
+		"""Prints chess board"""
+		counter1 = 0
+		for i in chess_dim:
+			print "".join(chess_board[counter1])
+			counter1 +=1
+			
+	def redraw_valid(valid_move):
+		"""Checks that move is valid, then redraws piece on board"""
+		if valid_move is True:
+			chess_board[new_row][new_column] = chess_board[row][column]
+			if chess_board[row][column][0] == "{":
+				chess_board[row][column] = "{___}"
+			else:
+				chess_board[row][column] = "(   )"	
+
+
+
+
+
+
+
 def pawn_promotion(piece_colour):
 	"""Determine whether or not pawn has reached furthest rank from start point"""
 	promotion = False
@@ -147,14 +173,7 @@ def knight_move(piece_colour):
 		valid_move = False
 		return 0
 
-def redraw_valid(valid_move):
-	"""Checks that move is valid, then redraws piece on board"""
-	if valid_move is True:
-		chess_board[new_row][new_column] = chess_board[row][column]
-		if chess_board[row][column][0] == "{":
-			chess_board[row][column] = "{___}"
-		else:
-			chess_board[row][column] = "(   )"
+
 
 # Bishop and rook moves
 # Started 20/07/13 @ 16:40
@@ -293,16 +312,11 @@ def redraw_valid_for_pawns(valid_move):
 
 
 
-def print_board():
-	"""Prints chess board"""
-	counter1 = 0
-	for i in chess_dim:
-		print "".join(chess_board[counter1])
-		counter1 +=1
+drawBoard = DrawBoard(valid_move)
 
 while quit_game == False:
 	# print board for the first time
-	print_board()
+	drawBoard.print_board()
 	#assume input will be a valid move
 	real_move = True
 	#awful, awful code here
