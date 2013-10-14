@@ -96,13 +96,12 @@ class GameMechanics(object):
 	def __init__(self, turn_counter):
 		self.turn_counter = turn_counter
 
-	def turn_picker(self, turn_counter, turn):
-		self.turn = turn
+	def turn_picker(self, turn_counter):
 		if (turn_counter % 2 == 0):
 			turn = "White's"
 		else:
 			turn = "Black's"
-
+		return turn
 
 class PawnMovement(object):
 	def __init__(self, piece):
@@ -311,7 +310,7 @@ def pawn_move_valid(piece_colour):
 				x = int(move2[1]) - int(move1[1])
 			elif pawn_moves[each][0][0] == "b":
 				# black moves
-				x = new_column - pawn_moves[each][1]
+				x = int(move1[1]) - int(move2[1])
 			else:
 				break
 			# assign iteration to a fixed variable to call later
@@ -343,6 +342,11 @@ def pawn_move_valid(piece_colour):
 
 def redraw_valid_for_pawns(valid_move):
 	"""Special function for pawn movement""" 
+	#Bug report:
+	# I changed a few lines in here to fix white movement but have
+	# subsequently broken black movement as a result
+	# Sigh.
+	# I think it has to do with the piece_colour variable
 	global pawn, x, super_x
 	if valid_move is True:
 		if pawn == "":
@@ -351,11 +355,13 @@ def redraw_valid_for_pawns(valid_move):
 					pawn = "(" + pawn_moves[super_x][0] + ")"
 				else:
 					pawn = "{" + pawn_moves[super_x][0] + "}"
+				chess_board[row][column] = "{   }"
 			elif x == 2:
 				if chess_board[row][column][0] == "{":
 					pawn = "{" + pawn_moves[super_x][0] + "}"
 				else:
 					pawn = "(" + pawn_moves[super_x][0] + ")"
+				chess_board[row][column] = "(   )"
 			chess_board[new_row][new_column] = pawn
 
 
@@ -372,7 +378,7 @@ while quit_game == False:
 	#awful, awful code here
 	onwards = False
 	# check whose turn it is
-	turn_spec.turn_picker(turn_counter, turn)
+	turn = turn_spec.turn_picker(turn_counter)
 	#take a starting piece and where to move it to
 	#also checks that player does not wish to quit
 	move1 = raw_input(turn + " turn. Pick which piece to move: ")
@@ -389,6 +395,7 @@ while quit_game == False:
 	while real_move == True:
 		try:
 			chess_moves_col[move1[0]] != ""
+			chess_moves_row[move1[1]] != ""
 		except IndexError:		
 			print "Not a valid move"
 			real_move = False
@@ -396,6 +403,7 @@ while quit_game == False:
 		else:
 			onwards = True
 		break
+
 			
 	if onwards == True:
 	#assign it a value to check against dictionary
@@ -424,7 +432,7 @@ while quit_game == False:
 	# check that piece can move in that manner, piece by piece
 	# if so, redraw board with piece at its new location
 
-				pawn_move_checking = PawnMovement(piece_colour)
+			pawn_move_checking = PawnMovement(piece_colour)
 			if chess_board[row][column][2] == "P" and (new_row == 0 or new_row == 8):
 				if pawn_promotion(piece_colour) == 1:
 					print "\nPawn promoted!\n"
@@ -432,7 +440,8 @@ while quit_game == False:
 			elif chess_board[row][column][2] == "P":
 				if pawn_move_valid(piece_colour) == 1:
 					chess_board[new_row][new_column] = pawn
-					drawBoard.redraw_valid(valid_move)
+					redraw_valid_for_pawns(valid_move)
+#					drawBoard.redraw_valid(valid_move)
 				else:
 					turn_counter -= 1
 			elif chess_board[row][column][2] == "N":
@@ -453,5 +462,6 @@ while quit_game == False:
 					drawBoard.redraw_valid(valid_move)
 				else:
 					turn_counter -=1
+		onwards = False
 	#change player
 	turn_counter += 1
