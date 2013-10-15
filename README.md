@@ -15,7 +15,7 @@ carried out prior to a release candidate push/commit to GitHub
 **Version Update**
 
 Today is 15/10/13 and I have finally fixed some bugs. The biggest bug was that
-pawn movement didn't __actually__ work before. It does now, with a caveat:
+pawn movement didn't _actually_ work before. It does now, with a caveat:
 
 >If you try and move black pawn a7 to a6, the program crashes
 
