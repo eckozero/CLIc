@@ -404,7 +404,7 @@ while quit_game == False:
 		except IndexError:		
 			print "Not a valid move"
 			real_move = False
-			turn -= 1
+			turn_counter -= 1
 			break
 		else:
 			onwards = True
