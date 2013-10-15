@@ -23,9 +23,8 @@
 # is no computer opponent, instead you'll have to find a friend to play
 # with - sorry.
 #
-# I think it's fair to say that this is now a v0.2 jobby what with pawn
-# promotion and valid knight input included
-
+# Eventually there be will the option to play this over a network so you
+# can play with your friends who are likewise procrastinating
 
 
 				#rows down the side (1-8)
@@ -42,8 +41,8 @@ chess_board = [["  8  ","(bR1)", "{bN1}", "(bB1)", "{bK }", "(bQ )", "{bB2}", "(
 				
 chess_dim = range(len(chess_board))
 
-# dictionary to equate column to a numerical value, as integers easier to
-# manipulate than strings
+# dictionary to equate column to a numerical value, as integers are 
+# easier to manipulate than strings
 chess_moves_col = {"a" or "A": 1, "b" or "B": 2, "c" or "C": 3, "d" or "D": 4,
 		   "e" or "E": 5, "f" or "F": 6, "g" or "G": 7, "h" or "H": 8}
 
@@ -84,11 +83,14 @@ class DrawBoard(object):
 	def redraw_valid(self, valid_move):
 		"""Checks that move is valid, then redraws piece on board"""
 		if valid_move is True:
-			chess_board[new_row][new_column] = chess_board[row][column]
-			if chess_board[row][column][0] == "{":
-				chess_board[row][column] = "{___}"
-			else:
-				chess_board[row][column] = "(   )"	
+			if chess_board[row][column][1] == "P":
+				redraw_valid_for_pawns(valid_move)
+			else: 
+				chess_board[new_row][new_column] = chess_board[row][column]
+				if chess_board[row][column][0] == "{":
+					chess_board[row][column] = "{___}"
+				else:
+					chess_board[row][column] = "(   )"
 
 
 
@@ -302,28 +304,29 @@ def pawn_move_valid(piece_colour):
 	global x, each, super_x
 	super_x = 0
 	x = 0
-	for each in range(len(pawn_moves)):
-		# iterate through pawn_moves to find the piece in question
-		if pawn_moves[each][0][0:4] == chess_board[row][column][1:4]:
-			if pawn_moves[each][0][0] == "w":
-				# white moves
-				x = int(move2[1]) - int(move1[1])
-			elif pawn_moves[each][0][0] == "b":
-				# black moves
-				x = int(move1[1]) - int(move2[1])
-			else:
+	while super_x == 0:
+		for each in range(len(pawn_moves)):
+			# iterate through pawn_moves to find the piece in question
+			if pawn_moves[each][0][0:4] == chess_board[row][column][1:4]:
+				# assign iteration to a fixed variable to call later
+				super_x = each
+				if pawn_moves[each][0][0] == "w":
+					# white moves
+					x = int(move2[1]) - int(move1[1])
+				elif pawn_moves[each][0][0] == "b":
+					# black moves
+					x = int(move1[1]) - int(move2[1])
 				break
-			# assign iteration to a fixed variable to call later
-			super_x = each
 
-			if ((x == 1 or x == 2) and pawn_moves[each][2] == 0):
-				pawn_moves[each][1] = y
-				pawn_moves[each][2] += 1
-			elif x == 1 and pawn_moves[each][2] > 0:
-				pawn_moves[each][1] = y
-				pawn_moves[each][2] += 1
-			else:
-				pawn = "invalid"
+
+	if ((x == 1 or x == 2) and pawn_moves[each][2] == 0):
+		pawn_moves[each][1] = y
+		pawn_moves[each][2] += 1
+	elif x == 1 and pawn_moves[each][2] > 0:
+		pawn_moves[each][1] = y
+		pawn_moves[each][2] += 1
+	else:
+		pawn = "invalid"
 			
 	if pawn == "":
 		if x == 1:
@@ -347,6 +350,8 @@ def redraw_valid_for_pawns(valid_move):
 	# subsequently broken black movement as a result
 	# Sigh.
 	# I think it has to do with the piece_colour variable
+	# Above is now fixed. Move A7-A6 (black pawn) causes crash in its
+	# place. Bugger.
 	global pawn, x, super_x
 	if valid_move is True:
 		if pawn == "":
@@ -355,14 +360,14 @@ def redraw_valid_for_pawns(valid_move):
 					pawn = "(" + pawn_moves[super_x][0] + ")"
 				else:
 					pawn = "{" + pawn_moves[super_x][0] + "}"
-				chess_board[row][column] = "{   }"
+#				chess_board[row][column] = "(   )"
 			elif x == 2:
 				if chess_board[row][column][0] == "{":
 					pawn = "{" + pawn_moves[super_x][0] + "}"
 				else:
 					pawn = "(" + pawn_moves[super_x][0] + ")"
-				chess_board[row][column] = "(   )"
-			chess_board[new_row][new_column] = pawn
+#				chess_board[row][column] = "{   }"
+		chess_board[new_row][new_column] = pawn
 
 
 
@@ -399,6 +404,7 @@ while quit_game == False:
 		except IndexError:		
 			print "Not a valid move"
 			real_move = False
+			turn -= 1
 			break
 		else:
 			onwards = True
@@ -439,9 +445,9 @@ while quit_game == False:
 					chess_board[new_row][new_column] = pawn
 			elif chess_board[row][column][2] == "P":
 				if pawn_move_valid(piece_colour) == 1:
-					chess_board[new_row][new_column] = pawn
-					redraw_valid_for_pawns(valid_move)
-#					drawBoard.redraw_valid(valid_move)
+#					chess_board[new_row][new_column] = pawn
+#					redraw_valid_for_pawns(valid_move)
+					drawBoard.redraw_valid(valid_move)
 				else:
 					turn_counter -= 1
 			elif chess_board[row][column][2] == "N":
@@ -465,3 +471,5 @@ while quit_game == False:
 		onwards = False
 	#change player
 	turn_counter += 1
+	print x, each, super_x
+	print chess_board[row][column][0]
