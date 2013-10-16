@@ -23,11 +23,17 @@ Known bugs/issues as at 16/10/13:
 >If you try and move black pawn a7 to anywhere legal, the program crashes
 >No legal move rules for queens
 >No legal move rules for kings
+
 >No collision detection (e.g. not running through your own pieces)
+
 >No capture rules (e.g. continuing past an opposing piece)
+
 >No check rules
+
 >No castling
+
 >No pawn captures
+
 >No _en passant_ (and there likely never fucking will be)
 
 Such is life, eh?
