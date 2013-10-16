@@ -14,9 +14,20 @@ carried out prior to a release candidate push/commit to GitHub
 
 **Version Update**
 
-Today is 15/10/13 and I have finally fixed some bugs. The biggest bug was that
-pawn movement didn't _actually_ work before. It does now, with a caveat:
+I have finally fixed some bugs. The biggest bug was that pawn movement didn't _actually_ 
+work before. I have now fixed the redraw issue where any +1 movement for pawns was 
+redrawing an incorrect pawn.
 
->If you try and move black pawn a7 to a6, the program crashes
+Known bugs/issues as at 16/10/13:
+
+>If you try and move black pawn a7 to anywhere legal, the program crashes
+>No legal move rules for queens
+>No legal move rules for kings
+>No collision detection (e.g. not running through your own pieces)
+>No capture rules (e.g. continuing past an opposing piece)
+>No check rules
+>No castling
+>No pawn captures
+>No _en passant_ (and there likely never fucking will be)
 
 Such is life, eh?
