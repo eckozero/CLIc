@@ -467,6 +467,3 @@ while quit_game == False:
 		onwards = False
 	#change player
 	turn_counter += 1
-	print x, each, super_x, pawn
-	print chess_board[row][column]
-	print chess_board[new_row][new_column]
