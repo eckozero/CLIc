@@ -83,7 +83,7 @@ class DrawBoard(object):
 	def redraw_valid(self, valid_move):
 		"""Checks that move is valid, then redraws piece on board"""
 		if valid_move is True:
-			if chess_board[row][column][1] == "P":
+			if chess_board[row][column][2] == "P":
 				redraw_valid_for_pawns(valid_move)
 			else: 
 				chess_board[new_row][new_column] = chess_board[row][column]
@@ -299,9 +299,8 @@ def rook_move_valid():
 def pawn_move_valid(piece_colour):
 	"""Check pawn's move is valid"""
 	valid_move = False
-	pawn = ""
 	y = new_row
-	global x, each, super_x
+	global x, each, super_x, pawn
 	super_x = 0
 	x = 0
 	while super_x == 0:
@@ -346,27 +345,24 @@ def pawn_move_valid(piece_colour):
 def redraw_valid_for_pawns(valid_move):
 	"""Special function for pawn movement""" 
 	#Bug report:
-	# I changed a few lines in here to fix white movement but have
-	# subsequently broken black movement as a result
-	# Sigh.
-	# I think it has to do with the piece_colour variable
-	# Above is now fixed. Move A7-A6 (black pawn) causes crash in its
-	# place. Bugger.
+	# Black move a7-a(x) causes a crash
 	global pawn, x, super_x
 	if valid_move is True:
 		if pawn == "":
 			if x == 1:
 				if chess_board[row][column][0] == "{":
 					pawn = "(" + pawn_moves[super_x][0] + ")"
-				else:
+					chess_board[row][column] = "{  }"
+				elif chess_board[row][column][0] == "(":
 					pawn = "{" + pawn_moves[super_x][0] + "}"
-#				chess_board[row][column] = "(   )"
+					chess_board[row][column] = "(   )"
 			elif x == 2:
 				if chess_board[row][column][0] == "{":
 					pawn = "{" + pawn_moves[super_x][0] + "}"
+					chess_board[row][column] = "{   }"
 				else:
 					pawn = "(" + pawn_moves[super_x][0] + ")"
-#				chess_board[row][column] = "{   }"
+					chess_board[row][column] = "{   }"
 		chess_board[new_row][new_column] = pawn
 
 
@@ -471,5 +467,6 @@ while quit_game == False:
 		onwards = False
 	#change player
 	turn_counter += 1
-	print x, each, super_x
-	print chess_board[row][column][0]
+	print x, each, super_x, pawn
+	print chess_board[row][column]
+	print chess_board[new_row][new_column]
