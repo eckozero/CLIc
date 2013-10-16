@@ -21,7 +21,9 @@ redrawing an incorrect pawn.
 Known bugs/issues as at 16/10/13:
 
 >If you try and move black pawn a7 to anywhere legal, the program crashes
+
 >No legal move rules for queens
+
 >No legal move rules for kings
 
 >No collision detection (e.g. not running through your own pieces)
@@ -34,6 +36,7 @@ Known bugs/issues as at 16/10/13:
 
 >No pawn captures
 
->No _en passant_ (and there likely never fucking will be)
+>No _en passant_ (and there likely never fucking will be - seriously, that rule is 
+>completely ridiculous)
 
 Such is life, eh?
