@@ -79,7 +79,8 @@ class DrawBoard(object):
 		for i in chess_dim:
 			print "".join(chess_board[counter1])
 			counter1 +=1
-			
+	
+	# FIXME: Redraw doesn't work for anything other than pawns
 	def redraw_valid(self, valid_move):
 		"""Checks that move is valid, then redraws piece on board"""
 		if valid_move is True:
@@ -91,7 +92,6 @@ class DrawBoard(object):
 					chess_board[row][column] = "{___}"
 				else:
 					chess_board[row][column] = "(   )"
-
 
 
 class GameMechanics(object):
@@ -179,6 +179,7 @@ def pawn_promotion(self, piece_colour):
 # FIXME: Cannot move knight from g to h as this overspills last
 # column in list
 # FIXED: 20/07/13 @ 21:29
+# FIXME: Knight moves are acceptabl at (column+1 & row+1)
 
 def knight_move_valid():
 	"""Determine whether Knight can move in that manner"""
@@ -374,14 +375,14 @@ turn_spec = GameMechanics(turn_counter)
 while quit_game == False:
 	# print board for the first time
 	drawBoard.print_board()
-	#assume input will be a valid move
+	# assume input will be a valid move
 	real_move = True
-	#awful, awful code here
+	# lazy code. Seriously
 	onwards = False
 	# check whose turn it is
 	turn = turn_spec.turn_picker(turn_counter)
-	#take a starting piece and where to move it to
-	#also checks that player does not wish to quit
+	# take a starting piece and where to move it to
+	# also checks that player does not wish to quit
 	move1 = raw_input(turn + " turn. Pick which piece to move: ")
 	if move1 in ("q","Q"):
 		quit_game = True
@@ -408,11 +409,11 @@ while quit_game == False:
 
 			
 	if onwards == True:
-	#assign it a value to check against dictionary
+	# assign it a value to check against dictionary
 		column = chess_moves_col[move1[0]]
 		row = chess_moves_row[move1[1]]
 	
-	#check that move input is valid
+	# check that move input is valid
 
 		if (column in range(1,9)) and (row in range(0,8)):
 			new_column = chess_moves_col[move2[0]]
@@ -426,7 +427,7 @@ while quit_game == False:
 			turn_counter -=1
 			valid_move = False
 		piece_colour = turn[0].lower()
-	#check that player has picked their own piece
+	# check that player has picked their own piece
 		if valid_move != False:
 			if chess_board[row][column][1] != (turn[0]).lower():
 				print "That's not your piece! Try again!"
@@ -441,8 +442,6 @@ while quit_game == False:
 					chess_board[new_row][new_column] = pawn
 			elif chess_board[row][column][2] == "P":
 				if pawn_move_valid(piece_colour) == 1:
-#					chess_board[new_row][new_column] = pawn
-#					redraw_valid_for_pawns(valid_move)
 					drawBoard.redraw_valid(valid_move)
 				else:
 					turn_counter -= 1
@@ -465,5 +464,5 @@ while quit_game == False:
 				else:
 					turn_counter -=1
 		onwards = False
-	#change player
+	# change player
 	turn_counter += 1
