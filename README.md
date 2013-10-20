@@ -18,7 +18,7 @@ I have finally fixed some bugs. The biggest bug was that pawn movement didn't _a
 work before. I have now fixed the redraw issue where any +1 movement for pawns was 
 redrawing an incorrect pawn.
 
-I have fixed the redraw issue for non-pawn moves by rewriting the redraw_valid function.
+I have fixed the redraw issue for non-pawn moves by rewriting the __redraw_valid__ function.
 
 Knight code is now not only working (no longer accepts row&column +/-1) it's slightly
 more elegant. Not great, not by a long shot, but I've cut a lot of code to be left with
