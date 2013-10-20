@@ -304,12 +304,13 @@ def pawn_move_valid(piece_colour):
 	valid_move = False
 	y = new_row
 	global x, each, super_x, pawn
+	pawn = ""
 	super_x = 0
 	x = 0
 	while super_x == 0:
 		for each in range(len(pawn_moves)):
 			# iterate through pawn_moves to find the piece in question
-			if pawn_moves[each][0][0:4] == chess_board[row][column][1:4]:
+			if pawn_moves[each][0] == chess_board[row][column][1:4]:
 				# assign iteration to a fixed variable to call later
 				super_x = each
 				if pawn_moves[each][0][0] == "w":
@@ -324,7 +325,7 @@ def pawn_move_valid(piece_colour):
 	if ((x == 1 or x == 2) and pawn_moves[each][2] == 0):
 		pawn_moves[each][1] = y
 		pawn_moves[each][2] += 1
-	elif x == 1 and pawn_moves[each][2] > 0:
+	elif x == 1 and pawn_moves[each][2] != 0:
 		pawn_moves[each][1] = y
 		pawn_moves[each][2] += 1
 	else:
