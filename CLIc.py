@@ -299,7 +299,7 @@ def rook_move_valid():
 
 # New stuff - pawn movement excepting promotion as separate function
 
-def pawn_move_valid(piece_colour):
+def pawn_move_valid():
 	"""Check pawn's move is valid"""
 	valid_move = False
 	y = new_row
@@ -320,8 +320,8 @@ def pawn_move_valid(piece_colour):
 					# black moves
 					x = int(move1[1]) - int(move2[1])
 				break
-
-
+		break
+		
 	if ((x == 1 or x == 2) and pawn_moves[each][2] == 0):
 		pawn_moves[each][1] = y
 		pawn_moves[each][2] += 1
@@ -350,6 +350,7 @@ def redraw_valid_for_pawns(valid_move):
 	"""Special function for pawn movement""" 
 	#Bug report:
 	# Black move a7-a(x) causes a crash
+	# FIXED: No it doesn't
 	global pawn, x, super_x
 	if valid_move is True:
 		if pawn == "":
@@ -444,7 +445,7 @@ while quit_game == False:
 					print "\nPawn promoted!\n"
 					chess_board[new_row][new_column] = pawn
 			elif chess_board[row][column][2] == "P":
-				if pawn_move_valid(piece_colour) == 1:
+				if pawn_move_valid() == 1:
 					drawBoard.redraw_valid(valid_move)
 				else:
 					turn_counter -= 1
