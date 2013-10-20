@@ -22,9 +22,9 @@ Known bugs/issues as at 16/10/13:
 
 >If you try and move black pawn a7 to anywhere legal, the program crashes
 
->Valid redraw only occurs for certain moves
+>~~Valid redraw only occurs for certain moves~~
 
->Knights can move incorrectly _(specifically (row+/-1 & column+/-1)_
+>~~Knights can move incorrectly _(specifically (row+/-1 & column+/-1)_~~
 
 >No legal move rules for queens
 
