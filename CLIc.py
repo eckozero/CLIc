@@ -194,21 +194,16 @@ def knight_move_valid():
 	column_valid = False
 	# Knight moves are (column+2 & row+1) or (column+1 & row+1)
 	# Run validation on each move individually, and combine
-	if chess_board[new_row-2] == chess_board[row] or chess_board[new_row+2] == chess_board[row]:
-		row_valid = True
-	elif chess_board[new_row-1] == chess_board[row] or chess_board[new_row+1] == chess_board[row]:
-		row_valid = True
-	else:
-		row_valid = False
-
 	if chess_board[new_column-2] == chess_board[column] or chess_board[new_column] == chess_board[column-2]:
-		column_valid = True
+		if chess_board[new_row-1] == chess_board[row] or chess_board[new_row+1] == chess_board[row]:
+			column_valid = True
 	elif chess_board[new_column-1] == chess_board[column] or chess_board[new_column] == chess_board[column-1]:
-		column_valid = True
+		if chess_board[new_row-2] == chess_board[row] or chess_board[new_row+2] == chess_board[row]:
+			column_valid = True
 	else:
 		column_valid = False
 	
-	if row_valid is True and column_valid is True:
+	if column_valid is True:
 		return 1
 	else:
 		return 0
