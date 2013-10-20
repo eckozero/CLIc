@@ -18,7 +18,13 @@ I have finally fixed some bugs. The biggest bug was that pawn movement didn't _a
 work before. I have now fixed the redraw issue where any +1 movement for pawns was 
 redrawing an incorrect pawn.
 
-Known bugs/issues as at 16/10/13:
+I have fixed the redraw issue for non-pawn moves by rewriting the redraw_valid function.
+
+Knight code is now not only working (no longer accepts row&column +/-1) it's slightly
+more elegant. Not great, not by a long shot, but I've cut a lot of code to be left with
+a fairly small function.
+
+Known bugs/issues as at 20/10/13:
 
 >If you try and move black pawn a7 to anywhere legal, the program crashes
 
