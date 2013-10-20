@@ -24,9 +24,11 @@ Knight code is now not only working (no longer accepts row&column +/-1) it's sli
 more elegant. Not great, not by a long shot, but I've cut a lot of code to be left with
 a fairly small function.
 
+Now fixed the hideous a7-a(x) bug with a really ugly hack.
+
 Known bugs/issues as at 20/10/13:
 
->If you try and move black pawn a7 to anywhere legal, the program crashes
+>~~If you try and move black pawn a7 to anywhere legal, the program crashes~~
 
 >~~Valid redraw only occurs for certain moves~~
 
