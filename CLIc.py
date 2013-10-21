@@ -213,9 +213,9 @@ def knight_move_valid():
 #	else:
 #		return 0
 		
-def knight_move(piece_colour):
+def knight_move():
 	"""Check knight's move is valid"""
-	global knight
+	global knight, valid_move
 	knight = ""
 	is_it_correct = knight_move_valid()
 	if is_it_correct == 1:
@@ -237,9 +237,9 @@ def knight_move(piece_colour):
 # Completed 20/07/13 @ 17:30
 # Now CLIc accepts only valid knight and rook moves
 
-def bishop_move(piece_colour):
+def bishop_move():
 	"""Check bishop's move is valid"""
-	global bishop
+	global bishop, valid_move
 	bishop = ""
 	is_it_correct_b = bishop_move_valid()
 	if is_it_correct_b == 1:
@@ -274,9 +274,9 @@ def bishop_move_valid():
 #	else:
 #		return 0
 
-def rook_move(piece_colour):
+def rook_move():
 	"""Check rook's move is valid"""
-	global rook
+	global rook, valid_move
 	rook = ""
 	is_it_correct_r = rook_move_valid()
 	if is_it_correct_r == 1:
@@ -306,8 +306,8 @@ def rook_move_valid():
 
 # Queen moves ahead.
 
-def queen_move(valid_move):
-	global queen
+def queen_move():
+	global queen, valid_move
 	queen = ""
 	is_it_correct_q = queen_move_valid()
 	if is_it_correct_q == 1:
@@ -337,6 +337,40 @@ def queen_move_valid():
 	else:
 		return 0
 
+# Take this, it's dangerous to go alone!
+# You received "King Moves"!
+
+def king_move_valid():
+	"""Kings move like queens, except one space at a time"""
+	move_valid = False
+	x = new_column - column
+	y = new_row - row
+	if (x == 0 or y == 0) and (x == 1 or y == 1):
+		move_valid = True
+		return 1
+	if (x**2 == 1 or y**2 == 1) and (x == 0 or y == 0):
+		move_valid = True
+		return 1
+	else:
+		return 0
+
+def king_move():
+	global king, valid_move
+	king = ""
+	is_it_correct_k = king_move_valid()
+	if is_it_correct_k == 1:
+		if chess_board[new_row][new_column][0] == "{":
+			king = "{" + piece_colour + "K }"
+		else:
+			king = "(" + piece_colour + "K )"
+		valid_move = True
+		return 1
+	else:
+		print "Kings can't move like that =( "
+		valid_move = False
+		return 0
+
+	
 
 # New stuff - pawn movement excepting promotion as separate function
 
@@ -352,7 +386,7 @@ def pawn_move_valid(your_piece):
 		super_x = 0
 		x = 0
 		pawn_found = False
-		while pawn_found is False and your_piece == True:
+		while pawn_found is False:
 #		while super_x == 0:
 			for each in range(len(pawn_moves)):
 			# iterate through pawn_moves to find the piece in question
@@ -399,12 +433,12 @@ def pawn_move_valid(your_piece):
 #		return 0
 
 
-def redraw_valid_for_pawns(valid_move):
+def redraw_valid_for_pawns():
 	"""Special function for pawn movement""" 
 	#Bug report:
 	# Black move a7-a(x) causes a crash
 	# FIXED: No it doesn't
-	global pawn, x, super_x
+	global pawn, x, super_x, valid_move
 	if valid_move is True:
 		if pawn == "":
 			if x == 1:
@@ -511,26 +545,31 @@ while quit_game == False:
 				else:
 					turn_counter -= 1
 			elif chess_board[row][column][2] == "N":
-				if knight_move(piece_colour) == 1:
+				if knight_move() == 1:
 					chess_board[new_row][new_column] = knight
 #					drawBoard.redraw_valid(valid_move)
 				else:
 					turn_counter -= 1
 			elif chess_board[row][column][2] == "B":
-				if bishop_move(piece_colour) == 1:
+				if bishop_move() == 1:
 					chess_board[new_row][new_column] = bishop
 #					drawBoard.redraw_valid(valid_move)
 				else:
 					turn_counter -=1
 			elif chess_board[row][column][2] == "R":
-				if rook_move(piece_colour) == 1:
+				if rook_move() == 1:
 					chess_board[new_row][new_column] = rook
 #					drawBoard.redraw_valid(valid_move)
 				else:
 					turn_counter -=1
 			elif chess_board[row][column][2] == "Q":
-				if queen_move(piece_colour) == 1:
+				if queen_move() == 1:
 					chess_board[new_row][new_column] = queen
+				else:
+					turn_counter -= 1
+			elif chess_board[row][column][2] == "K":
+				if king_move() == 1:
+					chess_board[new_row][new_column] = king
 				else:
 					turn_counter -= 1
 			drawBoard.redraw_valid(valid_move)
