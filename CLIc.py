@@ -149,7 +149,7 @@ class PawnMovement(object):
 
 
 
-def pawn_promotion(self, piece_colour):
+def pawn_promotion(piece_colour):
 	"""Determine whether or not pawn has reached furthest rank from start point"""
 	promotion = False
 	# Check if piece moved is a pawn
@@ -199,7 +199,7 @@ def knight_move_valid():
 		if chess_board[new_row-1] == chess_board[row] or chess_board[new_row+1] == chess_board[row]:
 			column_valid = True
 			return 1
-	elif chess_board[new_column-1] == chess_board[column] or chess_board[new_column] == chess_board[column-1]:
+	elif chess_board[new_column-1] == chess_board[column] or chess_board[new_column+1] == chess_board[column]:
 		if chess_board[new_row-2] == chess_board[row] or chess_board[new_row+2] == chess_board[row]:
 			column_valid = True
 			return 1
@@ -314,8 +314,8 @@ def pawn_move_valid():
 	super_x = 0
 	x = 0
 	pawn_found = False
-	while pawn_found is False:
-#	while super_x == 0:
+#	while pawn_found is False:
+	while super_x == 0:
 		for each in range(len(pawn_moves)):
 			# iterate through pawn_moves to find the piece in question
 			if pawn_moves[each][0] == chess_board[row][column][1:4]:
@@ -327,8 +327,13 @@ def pawn_move_valid():
 				elif pawn_moves[each][0][0] == "b":
 					# black moves
 					x = int(move1[1]) - int(move2[1])
-				pawn_found = True
-		
+#				pawn_found = True
+				break
+		break
+	
+	if move1[0] != move2[0]:
+		pawn = "invalid"
+	
 	if ((x == 1 or x == 2) and pawn_moves[each][2] == 0):
 		pawn_moves[each][1] = y
 		pawn_moves[each][2] += 1
