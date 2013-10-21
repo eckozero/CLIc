@@ -235,7 +235,7 @@ def knight_move(piece_colour):
 # Bishop and rook moves
 # Started 20/07/13 @ 16:40
 # Completed 20/07/13 @ 17:30
-# Now CLIc accepts only valid knight, bishop and rook moves
+# Now CLIc accepts only valid knight and rook moves
 
 def bishop_move(piece_colour):
 	"""Check bishop's move is valid"""
@@ -264,7 +264,9 @@ def bishop_move_valid():
 		# n - n for x and y movement must be equal if move is valid
 		x = new_row - row
 		y = new_column - column
-		if x == y:
+		if x**2 == y**2:
+		# squaring means that negative integers will register the same
+		# as positive ones
 			move_valid = True
 			return 1
 #	if move_valid is True:
@@ -399,7 +401,8 @@ while quit_game == False:
 	drawBoard.print_board()
 	# assume input will be a valid move
 	real_move = True
-	# lazy code. Seriously
+	# lazy code. Seriously. This is for the exception handler
+	# after moves picked
 	onwards = False
 	# check whose turn it is
 	turn = turn_spec.turn_picker(turn_counter)
@@ -420,7 +423,13 @@ while quit_game == False:
 		try:
 			chess_moves_col[move1[0]] != ""
 			chess_moves_row[move1[1]] != ""
-		except IndexError:		
+			len(move1) == 2
+			len(move2) == 2
+			move1[0] in chess_moves_col
+			move2[0] in chess_moves_col
+			move1[1] in range(9)
+			move2[1] in range(9)
+		except (IndexError, KeyError):		
 			print "Not a valid move"
 			real_move = False
 			turn_counter -= 1
@@ -457,7 +466,6 @@ while quit_game == False:
 				turn_counter -= 1
 	# check that piece can move in that manner, piece by piece
 	# if so, redraw board with piece at its new location
-			print valid_move
 			pawn_move_checking = PawnMovement(piece_colour)
 			if chess_board[row][column][2] == "P" and (new_row == 0 or new_row == 8):
 				if pawn_promotion(piece_colour) == 1:
