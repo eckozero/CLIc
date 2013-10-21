@@ -304,6 +304,39 @@ def rook_move_valid():
 	else:
 		return 0
 
+# Queen moves ahead.
+
+def queen_move(valid_move):
+	global queen
+	queen = ""
+	is_it_correct_q = queen_move_valid()
+	if is_it_correct_q == 1:
+		if chess_board[new_row][new_column][0] == "{":
+			queen = "{" + piece_colour + "Q }"
+		else:
+			queen = "(" + piece_colour + "Q )"
+		valid_move = True
+		return 1
+	else:
+		print "Queens can't move like that =( "
+		valid_move = False
+		return 0
+
+
+def queen_move_valid():
+	"""Valid queen moves commented below"""
+	#row +/- n & column = 0, column +/- n & row = 0 (rook moves)
+	#row +/- n & column +/- n (bishop moves)
+	# assume move is wrong - get corrected later
+	queen_move = rook_move_valid()
+	if queen_move == 1:
+		return 1
+	queen_move = bishop_move_valid()
+	if queen_move == 1:
+		return 1
+	else:
+		return 0
+
 
 # New stuff - pawn movement excepting promotion as separate function
 
@@ -473,27 +506,34 @@ while quit_game == False:
 					chess_board[new_row][new_column] = pawn
 			elif chess_board[row][column][2] == "P":
 				if pawn_move_valid(valid_move) == 1:
-					drawBoard.redraw_valid(valid_move)
+					chess_board[new_row][new_column] = pawn
+#					drawBoard.redraw_valid(valid_move)
 				else:
 					turn_counter -= 1
 			elif chess_board[row][column][2] == "N":
 				if knight_move(piece_colour) == 1:
 					chess_board[new_row][new_column] = knight
-					drawBoard.redraw_valid(valid_move)
+#					drawBoard.redraw_valid(valid_move)
 				else:
 					turn_counter -= 1
 			elif chess_board[row][column][2] == "B":
 				if bishop_move(piece_colour) == 1:
 					chess_board[new_row][new_column] = bishop
-					drawBoard.redraw_valid(valid_move)
+#					drawBoard.redraw_valid(valid_move)
 				else:
 					turn_counter -=1
 			elif chess_board[row][column][2] == "R":
 				if rook_move(piece_colour) == 1:
 					chess_board[new_row][new_column] = rook
-					drawBoard.redraw_valid(valid_move)
+#					drawBoard.redraw_valid(valid_move)
 				else:
 					turn_counter -=1
+			elif chess_board[row][column][2] == "Q":
+				if queen_move(piece_colour) == 1:
+					chess_board[new_row][new_column] = queen
+				else:
+					turn_counter -= 1
+			drawBoard.redraw_valid(valid_move)
 		onwards = False
 	# change player
 	turn_counter += 1
