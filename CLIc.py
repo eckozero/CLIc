@@ -60,6 +60,7 @@ quit_game = False
 turn_counter = 10
 valid_move = True
 turn = "White's"
+pawn_found = False
 
 # Special list for pawn moves, as rules for pawns are vastly different
 # to other pieces
@@ -197,16 +198,20 @@ def knight_move_valid():
 	if chess_board[new_column-2] == chess_board[column] or chess_board[new_column] == chess_board[column-2]:
 		if chess_board[new_row-1] == chess_board[row] or chess_board[new_row+1] == chess_board[row]:
 			column_valid = True
+			return 1
 	elif chess_board[new_column-1] == chess_board[column] or chess_board[new_column] == chess_board[column-1]:
 		if chess_board[new_row-2] == chess_board[row] or chess_board[new_row+2] == chess_board[row]:
 			column_valid = True
-	else:
-		column_valid = False
-	
-	if column_valid is True:
-		return 1
+			return 1
 	else:
 		return 0
+#		column_valid = False
+#		
+#	
+#	if column_valid is True:
+#		return 1
+#	else:
+#		return 0
 		
 def knight_move(piece_colour):
 	"""Check knight's move is valid"""
@@ -254,17 +259,18 @@ def bishop_move_valid():
 	move_valid = False
 	if chess_board[new_column][new_row][0] != chess_board[row][column][0]:
 		move_valid = False
+		return 0
 	else:
 		# n - n for x and y movement must be equal if move is valid
 		x = new_row - row
 		y = new_column - column
 		if x == y:
 			move_valid = True
-			
-	if move_valid is True:
 			return 1
-	else:
-		return 0
+#	if move_valid is True:
+#			return 1
+#	else:
+#		return 0
 
 def rook_move(piece_colour):
 	"""Check rook's move is valid"""
@@ -290,9 +296,9 @@ def rook_move_valid():
 	y = new_row - row
 	if (x == 0 or y == 0) and (x != 0 or y != 0):
 		move_valid = True
-			
-	if move_valid is True:
-			return 1
+		return 1
+#	if move_valid is True:
+#			return 1
 	else:
 		return 0
 
@@ -303,11 +309,13 @@ def pawn_move_valid():
 	"""Check pawn's move is valid"""
 	valid_move = False
 	y = new_row
-	global x, each, super_x, pawn
+	global x, each, super_x, pawn, pawn_found
 	pawn = ""
 	super_x = 0
 	x = 0
-	while super_x == 0:
+	pawn_found = False
+	while pawn_found is False:
+#	while super_x == 0:
 		for each in range(len(pawn_moves)):
 			# iterate through pawn_moves to find the piece in question
 			if pawn_moves[each][0] == chess_board[row][column][1:4]:
@@ -319,8 +327,7 @@ def pawn_move_valid():
 				elif pawn_moves[each][0][0] == "b":
 					# black moves
 					x = int(move1[1]) - int(move2[1])
-				break
-		break
+				pawn_found = True
 		
 	if ((x == 1 or x == 2) and pawn_moves[each][2] == 0):
 		pawn_moves[each][1] = y
@@ -334,16 +341,19 @@ def pawn_move_valid():
 	if pawn == "":
 		if x == 1:
 			valid_move = True
+			return 1
 		elif x == 2:
 			valid_move = True
+			return 1
 	else:
 		print "Pawns can't move like that =( "
 		valid_move = False
-	
-	if valid_move is True:
-		return 1
-	else:
 		return 0
+	
+#	if valid_move is True:
+#		return 1
+#	else:
+#		return 0
 
 
 def redraw_valid_for_pawns(valid_move):
