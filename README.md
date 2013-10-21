@@ -29,7 +29,9 @@ _Update: code is now slightly less hideous_
 
 21/10/13: Updated exception handler so the program doesn't crash for invalid input
 
-Known bugs/issues as at 20/10/13:
+21/10/13: Added queen moves
+
+Known bugs/issues as at 21/10/13:
 
 >~~If you try and move black pawn a7 to anywhere legal, the program crashes~~
 
@@ -37,7 +39,7 @@ Known bugs/issues as at 20/10/13:
 
 >~~Knights can move incorrectly _(specifically (row+/-1 & column+/-1)_~~
 
->No legal move rules for queens
+>~~No legal move rules for queens~~
 
 >No legal move rules for kings
 
