@@ -27,9 +27,10 @@ a fairly small function.
 Now fixed the hideous a7-a(x) bug with a really ugly hack.
 _Update: code is now slightly less hideous_
 
-21/10/13: Updated exception handler so the program doesn't crash for invalid input
-
-21/10/13: Added queen moves
+21/10/13: 
+ Updated exception handler so the program doesn't crash for invalid input
+ Added Queen moves.
+ Added King moves
 
 Known bugs/issues as at 21/10/13:
 
@@ -41,7 +42,7 @@ Known bugs/issues as at 21/10/13:
 
 >~~No legal move rules for queens~~
 
->No legal move rules for kings
+>~~No legal move rules for kings~~
 
 >No collision detection _(e.g. not running through your own pieces)_
 
