@@ -25,6 +25,9 @@ more elegant. Not great, not by a long shot, but I've cut a lot of code to be le
 a fairly small function.
 
 Now fixed the hideous a7-a(x) bug with a really ugly hack.
+_Update: code is now slightly less hideous_
+
+21/10/13: Updated exception handler so the program doesn't crash for invalid input
 
 Known bugs/issues as at 20/10/13:
 
