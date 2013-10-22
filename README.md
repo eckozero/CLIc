@@ -24,15 +24,18 @@ Knight code is now not only working (no longer accepts row&column +/-1) it's sli
 more elegant. Not great, not by a long shot, but I've cut a lot of code to be left with
 a fairly small function.
 
-Now fixed the hideous a7-a(x) bug with a really ugly hack.
+Now fixed the hideous a7-a(x) bug with a really ugly hack. 
 _Update: code is now slightly less hideous_
 
 21/10/13: 
+
  Updated exception handler so the program doesn't crash for invalid input
+
  Added Queen moves.
+
  Added King moves
 
-Known bugs/issues as at 21/10/13:
+Known bugs/issues as at 22/10/13:
 
 >~~If you try and move black pawn a7 to anywhere legal, the program crashes~~
 
@@ -56,5 +59,7 @@ Known bugs/issues as at 21/10/13:
 
 >No __en passant__ _(and there likely never fucking will be - seriously, that rule is 
 >completely ridiculous)_
+
+> Issues with reddraw, particularly around pawn n2-n4 movements
 
 Such is life, eh?
