@@ -27,13 +27,23 @@ a fairly small function.
 Now fixed the hideous a7-a(x) bug with a really ugly hack. 
 _Update: code is now slightly less hideous_
 
-21/10/13: 
+__21/10/13:__ 
 
  Updated exception handler so the program doesn't crash for invalid input
 
  Added Queen moves.
 
  Added King moves
+
+__23/10/13:__
+
+Well that was fun. I made some changes, tidied up code and th like, and then pawn movement 
+totally crapped out on me. Luckily, GitHub stores raw files of every commit, so it was a 
+simple case of rolling back until I found a version that worked, then making sure to not 
+try and get clever with the pawn movement code. It's ugly as hell but by god it works.
+
+Anyway, I've now added the stuff back in and debugged queen and king moves. Seems like 
+I should call it on this for now...
 
 Known bugs/issues as at 22/10/13:
 
@@ -60,6 +70,6 @@ Known bugs/issues as at 22/10/13:
 >No __en passant__ _(and there likely never fucking will be - seriously, that rule is 
 >completely ridiculous)_
 
-> Issues with reddraw, particularly around pawn n2-n4 movements
+>~~ Issues with reddraw, particularly around pawn n2-n4 movements~~
 
 Such is life, eh?
