@@ -60,7 +60,6 @@ quit_game = False
 turn_counter = 10
 valid_move = True
 turn = "White's"
-pawn_found = False
 
 # Special list for pawn moves, as rules for pawns are vastly different
 # to other pieces
@@ -86,18 +85,19 @@ class DrawBoard(object):
 	def redraw_valid(self, valid_move):
 		"""Checks that move is valid, then redraws piece on board"""
 		if valid_move is True:
-			if chess_board[row][column][2] == "P" and pawn_move_valid(valid_move) == 1:
+			if chess_board[row][column][2] == "P":
 				redraw_valid_for_pawns(valid_move)
-			elif chess_board[row][column][2] != "P":
-				old_piece = chess_board[row][column][0]
-				new_piece = chess_board[row][column][1:4]
-				redraw_piece = chess_board[new_row][new_column][0]
-				if redraw_piece == "{":
+			else:
+				old_piece = chess_board[row][column][0] #curly brace
+				new_piece = chess_board[row][column][1:4] #"wK "
+				redraw_piece = chess_board[new_row][new_column][0] #curly brace
+				if redraw_piece == "{": #yes
 					chess_board[new_row][new_column] = "{" + new_piece + "}"
+					#"{wk }"
 				else:
 					chess_board[new_row][new_column] = "(" + new_piece + ")"
-				if old_piece == "{":
-					chess_board[row][column] = "{   }"
+				if old_piece == "{": #yes
+					chess_board[row][column] = "{   }" #yes
 				else:
 					chess_board[row][column] = "(   )"
 				
@@ -149,7 +149,7 @@ class PawnMovement(object):
 
 
 
-def pawn_promotion(piece_colour):
+def pawn_promotion(self, piece_colour):
 	"""Determine whether or not pawn has reached furthest rank from start point"""
 	promotion = False
 	# Check if piece moved is a pawn
@@ -198,24 +198,20 @@ def knight_move_valid():
 	if chess_board[new_column-2] == chess_board[column] or chess_board[new_column] == chess_board[column-2]:
 		if chess_board[new_row-1] == chess_board[row] or chess_board[new_row+1] == chess_board[row]:
 			column_valid = True
-			return 1
-	elif chess_board[new_column-1] == chess_board[column] or chess_board[new_column+1] == chess_board[column]:
+	elif chess_board[new_column-1] == chess_board[column] or chess_board[new_column] == chess_board[column-1]:
 		if chess_board[new_row-2] == chess_board[row] or chess_board[new_row+2] == chess_board[row]:
 			column_valid = True
-			return 1
+	else:
+		column_valid = False
+	
+	if column_valid is True:
+		return 1
 	else:
 		return 0
-#		column_valid = False
-#		
-#	
-#	if column_valid is True:
-#		return 1
-#	else:
-#		return 0
 		
-def knight_move():
+def knight_move(piece_colour):
 	"""Check knight's move is valid"""
-	global knight, valid_move
+	global knight
 	knight = ""
 	is_it_correct = knight_move_valid()
 	if is_it_correct == 1:
@@ -235,11 +231,11 @@ def knight_move():
 # Bishop and rook moves
 # Started 20/07/13 @ 16:40
 # Completed 20/07/13 @ 17:30
-# Now CLIc accepts only valid knight and rook moves
+# Now CLIc accepts only valid knight, bishop and rook moves
 
-def bishop_move():
+def bishop_move(piece_colour):
 	"""Check bishop's move is valid"""
-	global bishop, valid_move
+	global bishop
 	bishop = ""
 	is_it_correct_b = bishop_move_valid()
 	if is_it_correct_b == 1:
@@ -257,26 +253,25 @@ def bishop_move():
 def bishop_move_valid():
 	"""Bishops move row+n and column+n"""
 	move_valid = False
-	if chess_board[new_column][new_row][0] != chess_board[row][column][0]:
+	if (chess_board[new_row][new_column][0] == chess_board[row][column][0]) is False:
 		move_valid = False
-		return 0
+		print "debug in bishop"
+		print (chess_board[new_row][new_column][0] == chess_board[row][column][0])
 	else:
 		# n - n for x and y movement must be equal if move is valid
 		x = new_row - row
 		y = new_column - column
 		if x**2 == y**2:
-		# squaring means that negative integers will register the same
-		# as positive ones
 			move_valid = True
+			
+	if move_valid is True:
 			return 1
-#	if move_valid is True:
-#			return 1
-#	else:
-#		return 0
+	else:
+		return 0
 
-def rook_move():
+def rook_move(piece_colour):
 	"""Check rook's move is valid"""
-	global rook, valid_move
+	global rook
 	rook = ""
 	is_it_correct_r = rook_move_valid()
 	if is_it_correct_r == 1:
@@ -298,15 +293,15 @@ def rook_move_valid():
 	y = new_row - row
 	if (x == 0 or y == 0) and (x != 0 or y != 0):
 		move_valid = True
-		return 1
-#	if move_valid is True:
-#			return 1
+		print "rook debug"
+	if move_valid is True:
+			return 1
 	else:
 		return 0
 
 # Queen moves ahead.
 
-def queen_move():
+def queen_move(piece_colour):
 	global queen, valid_move
 	queen = ""
 	is_it_correct_q = queen_move_valid()
@@ -342,19 +337,22 @@ def queen_move_valid():
 
 def king_move_valid():
 	"""Kings move like queens, except one space at a time"""
+	global move_valid
 	move_valid = False
 	x = new_column - column
 	y = new_row - row
+#	Debugging line
+#	print x**2, y**2, x, y
 	if (x == 0 or y == 0) and (x == 1 or y == 1):
 		move_valid = True
 		return 1
-	if (x**2 == 1 or y**2 == 1) and (x == 0 or y == 0):
+	if (x**2 == 1 or y**2 == 1) and (x <= 0 or y <= 0):
 		move_valid = True
 		return 1
 	else:
 		return 0
 
-def king_move():
+def king_move(piece_colour):
 	global king, valid_move
 	king = ""
 	is_it_correct_k = king_move_valid()
@@ -370,81 +368,69 @@ def king_move():
 		valid_move = False
 		return 0
 
-	
+
 
 # New stuff - pawn movement excepting promotion as separate function
 
-def pawn_move_valid(your_piece):
+def pawn_move_valid():
 	"""Check pawn's move is valid"""
-	if your_piece is False:
-		return 0
-	else:
-		valid_move = False
-		y = new_row
-		global x, each, super_x, pawn, pawn_found
-		pawn = ""
-		super_x = 0
-		x = 0
-		pawn_found = False
-		while pawn_found is False:
-#		while super_x == 0:
-			for each in range(len(pawn_moves)):
+	valid_move = False
+	y = new_row
+	global x, each, super_x, pawn
+	pawn = ""
+	super_x = 0
+	x = 0
+	while super_x == 0:
+		for each in range(len(pawn_moves)):
 			# iterate through pawn_moves to find the piece in question
-				if pawn_moves[each][0] == chess_board[row][column][1:4]:
+			if pawn_moves[each][0] == chess_board[row][column][1:4]:
 				# assign iteration to a fixed variable to call later
-					super_x = each
-					if pawn_moves[each][0][0] == "w":
+				super_x = each
+				if pawn_moves[each][0][0] == "w":
 					# white moves
-						x = int(move2[1]) - int(move1[1])
-					elif pawn_moves[each][0][0] == "b":
+					x = int(move2[1]) - int(move1[1])
+				elif pawn_moves[each][0][0] == "b":
 					# black moves
-						x = int(move1[1]) - int(move2[1])
-					pawn_found = True
-					break
-			break
-	
-		if move1[0] != move2[0]:
-			pawn = "invalid"
-	
-		if ((x == 1 or x == 2) and pawn_moves[each][2] == 0):
-			pawn_moves[each][1] = y
-			pawn_moves[each][2] += 1
-		elif x == 1 and pawn_moves[each][2] != 0:
-			pawn_moves[each][1] = y
-			pawn_moves[each][2] += 1
-		else:
-			pawn = "invalid"
+					x = int(move1[1]) - int(move2[1])
+				break
+		break
+		
+	if ((x == 1 or x == 2) and pawn_moves[each][2] == 0):
+		pawn_moves[each][1] = y
+		pawn_moves[each][2] += 1
+	elif x == 1 and pawn_moves[each][2] != 0:
+		pawn_moves[each][1] = y
+		pawn_moves[each][2] += 1
+	else:
+		pawn = "invalid"
 			
-		if pawn == "":
-			if x == 1:
-				valid_move = True
-				return 1
-			elif x == 2:
-				valid_move = True
-				return 1
-		else:
-			print "Pawns can't move like that =( "
-			valid_move = False
-			return 0
+	if pawn == "":
+		if x == 1:
+			valid_move = True
+		elif x == 2:
+			valid_move = True
+	else:
+		print "Pawns can't move like that =( "
+		valid_move = False
 	
-#	if valid_move is True:
-#		return 1
-#	else:
-#		return 0
+	if valid_move is True:
+		return 1
+	else:
+		return 0
 
 
-def redraw_valid_for_pawns():
+def redraw_valid_for_pawns(valid_move):
 	"""Special function for pawn movement""" 
 	#Bug report:
 	# Black move a7-a(x) causes a crash
 	# FIXED: No it doesn't
-	global pawn, x, super_x, valid_move
+	global pawn, x, super_x
 	if valid_move is True:
 		if pawn == "":
 			if x == 1:
 				if chess_board[row][column][0] == "{":
 					pawn = "(" + pawn_moves[super_x][0] + ")"
-					chess_board[row][column] = "{  }"
+					chess_board[row][column] = "{   }"
 				elif chess_board[row][column][0] == "(":
 					pawn = "{" + pawn_moves[super_x][0] + "}"
 					chess_board[row][column] = "(   )"
@@ -452,10 +438,10 @@ def redraw_valid_for_pawns():
 				if chess_board[row][column][0] == "{":
 					pawn = "{" + pawn_moves[super_x][0] + "}"
 					chess_board[row][column] = "{   }"
-				else:
+				elif chess_board[row][column][0] == "(":
 					pawn = "(" + pawn_moves[super_x][0] + ")"
-					chess_board[row][column] = "{   }"
-			chess_board[new_row][new_column] = pawn
+					chess_board[row][column] = "(   )"
+		chess_board[new_row][new_column] = pawn
 
 
 
@@ -468,8 +454,7 @@ while quit_game == False:
 	drawBoard.print_board()
 	# assume input will be a valid move
 	real_move = True
-	# lazy code. Seriously. This is for the exception handler
-	# after moves picked
+	# lazy code. Seriously
 	onwards = False
 	# check whose turn it is
 	turn = turn_spec.turn_picker(turn_counter)
@@ -496,7 +481,7 @@ while quit_game == False:
 			move2[0] in chess_moves_col
 			move1[1] in range(9)
 			move2[1] in range(9)
-		except (IndexError, KeyError):		
+		except (IndexError, KeyError):
 			print "Not a valid move"
 			real_move = False
 			turn_counter -= 1
@@ -505,7 +490,7 @@ while quit_game == False:
 			onwards = True
 		break
 
-			
+
 	if onwards == True:
 	# assign it a value to check against dictionary
 		column = chess_moves_col[move1[0]]
@@ -529,50 +514,52 @@ while quit_game == False:
 		if valid_move != False:
 			if chess_board[row][column][1] != (turn[0]).lower():
 				print "That's not your piece! Try again!"
-				valid_move = False
 				turn_counter -= 1
 	# check that piece can move in that manner, piece by piece
 	# if so, redraw board with piece at its new location
+
 			pawn_move_checking = PawnMovement(piece_colour)
 			if chess_board[row][column][2] == "P" and (new_row == 0 or new_row == 8):
 				if pawn_promotion(piece_colour) == 1:
 					print "\nPawn promoted!\n"
 					chess_board[new_row][new_column] = pawn
 			elif chess_board[row][column][2] == "P":
-				if pawn_move_valid(valid_move) == 1:
-					chess_board[new_row][new_column] = pawn
+				if pawn_move_valid() == 1:
+					pass
 #					drawBoard.redraw_valid(valid_move)
 				else:
 					turn_counter -= 1
 			elif chess_board[row][column][2] == "N":
-				if knight_move() == 1:
+				if knight_move(piece_colour) == 1:
 					chess_board[new_row][new_column] = knight
 #					drawBoard.redraw_valid(valid_move)
 				else:
 					turn_counter -= 1
 			elif chess_board[row][column][2] == "B":
-				if bishop_move() == 1:
+				if bishop_move(piece_colour) == 1:
 					chess_board[new_row][new_column] = bishop
 #					drawBoard.redraw_valid(valid_move)
 				else:
 					turn_counter -=1
 			elif chess_board[row][column][2] == "R":
-				if rook_move() == 1:
+				if rook_move(piece_colour) == 1:
 					chess_board[new_row][new_column] = rook
 #					drawBoard.redraw_valid(valid_move)
 				else:
 					turn_counter -=1
 			elif chess_board[row][column][2] == "Q":
-				if queen_move() == 1:
+				if queen_move(piece_colour) == 1:
 					chess_board[new_row][new_column] = queen
 				else:
-					turn_counter -= 1
+					turn_counter -=1
 			elif chess_board[row][column][2] == "K":
-				if king_move() == 1:
+				if king_move(piece_colour) == 1:
 					chess_board[new_row][new_column] = king
+#					drawBoard.redraw_valid(valid_move)
 				else:
-					turn_counter -= 1
+					turn_counter -=1
 			drawBoard.redraw_valid(valid_move)
 		onwards = False
 	# change player
 	turn_counter += 1
+	print chess_board[new_row][new_column][0], chess_board[row][column][0]
