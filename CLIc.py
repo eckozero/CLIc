@@ -88,6 +88,7 @@ class DrawBoard(object):
 		"""Checks that move is valid, then redraws piece on board"""
 		if valid_move is True:
 			if chess_board[row][column][2] == "P":
+#				if pawn_capture(row, column, new_row, new_column) == 0:
 				redraw_valid_for_pawns(valid_move)
 			else:
 				old_piece = chess_board[row][column][0] #curly brace
@@ -399,8 +400,8 @@ def pawn_capture(row, column, new_row, new_column):
 def pawn_move_valid():
 	"""Check pawn's move is valid"""
 	y = new_row
+	global x, each, super_x, pawn, valid_move, other_y
 	other_y = new_column - column
-	global x, each, super_x, pawn, valid_move
 	valid_move = True
 	pawn = ""
 	super_x = 0
@@ -462,23 +463,32 @@ def redraw_valid_for_pawns(valid_move):
 	#Bug report:
 	# Black move a7-a(x) causes a crash
 	# FIXED: No it doesn't
-	global pawn, x, super_x
+	global pawn, x, super_x, other_y
 	if valid_move is True:
 		if pawn == "":
-			if x == 1:
+			if x == 1 and other_y == 0:
 				if chess_board[row][column][0] == "{":
 					pawn = "(" + pawn_moves[super_x][0] + ")"
 					chess_board[row][column] = "{   }"
 				elif chess_board[row][column][0] == "(":
 					pawn = "{" + pawn_moves[super_x][0] + "}"
 					chess_board[row][column] = "(   )"
-			elif x == 2:
+			elif x == 2 and other_y == 0:
 				if chess_board[row][column][0] == "{":
 					pawn = "{" + pawn_moves[super_x][0] + "}"
 					chess_board[row][column] = "{   }"
 				elif chess_board[row][column][0] == "(":
 					pawn = "(" + pawn_moves[super_x][0] + ")"
 					chess_board[row][column] = "(   )"
+			else:
+				pawn_front = chess_board[new_row][new_column][0]
+				pawn_back = chess_board[new_row][new_column][4]
+				pawn_middle = pawn_moves[super_x][0]
+				pawn = pawn_front + pawn_middle + pawn_back
+				if chess_board[row][column][0] == "(":
+					chess_board[row][column] = "(   )"
+				else:
+					chess_board[row][column] = "{   }"
 		chess_board[new_row][new_column] = pawn
 
 
@@ -599,4 +609,3 @@ while quit_game == False:
 		onwards = False
 	# change player
 	turn_counter += 1
-	print chess_board[row][column][2]
