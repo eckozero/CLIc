@@ -45,7 +45,14 @@ try and get clever with the pawn movement code. It's ugly as hell but by god it 
 Anyway, I've now added the stuff back in and debugged queen and king moves. Seems like 
 I should call it on this for now...
 
-Known bugs/issues as at 22/10/13:
+__24/10/13:__
+
+I have added in some form of pawn captures today. The code came to me at work 
+and I made a mental note of it. The code that's in the program is pretty 
+much only syntatically different from my mind code. There's probably bugs 
+in there though, so I wont celebrate too much.
+
+Known bugs/issues as at 24/10/13:
 
 >~~If you try and move black pawn a7 to anywhere legal, the program crashes~~
 
@@ -65,7 +72,7 @@ Known bugs/issues as at 22/10/13:
 
 >No castling
 
->No pawn captures
+>~~No pawn captures~~
 
 >No __en passant__ _(and there likely never fucking will be - seriously, that rule is 
 >completely ridiculous)_
