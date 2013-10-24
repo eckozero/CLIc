@@ -61,6 +61,8 @@ turn_counter = 10
 valid_move = True
 turn = "White's"
 
+empty_space = ("(   )" or "{   }")
+
 # Special list for pawn moves, as rules for pawns are vastly different
 # to other pieces
 pawn_moves = [["bP1",2,0], ["bP2",2,0], ["bP3",2,0], ["bP4",2,0], 
@@ -371,12 +373,35 @@ def king_move(piece_colour):
 
 
 # New stuff - pawn movement excepting promotion as separate function
+# Updated new stuff for pawn captures
+
+def pawn_capture(row, column, new_row, new_column):
+	x = new_row - row
+	y = new_column - column
+	print chess_board[new_row][new_column], chess_board[new_row][new_column][1]
+	print x, y, chess_board[new_row][new_column][2]
+#	if chess_board[new_row][new_column][1] != "":
+#		if chess_board[row][column][1] == "w":
+	if chess_board[new_row][new_column] != empty_space:
+		if (x == -1 or x == 1) and (y == 1):
+			return 1
+		else:
+			print "nailed it"
+			return 0
+#		if chess_board[row][column][1] == "b":
+#			if (x == 1) and (y == 1 or y == -1):
+#				return 1
+#			else:
+#				return 0
+	else:
+		return 0
 
 def pawn_move_valid():
 	"""Check pawn's move is valid"""
-	valid_move = False
 	y = new_row
-	global x, each, super_x, pawn
+	other_y = new_column - column
+	global x, each, super_x, pawn, valid_move
+	valid_move = True
 	pawn = ""
 	super_x = 0
 	x = 0
@@ -394,16 +419,29 @@ def pawn_move_valid():
 					x = int(move1[1]) - int(move2[1])
 				break
 		break
-		
-	if ((x == 1 or x == 2) and pawn_moves[each][2] == 0):
-		pawn_moves[each][1] = y
-		pawn_moves[each][2] += 1
-	elif x == 1 and pawn_moves[each][2] != 0:
-		pawn_moves[each][1] = y
-		pawn_moves[each][2] += 1
+
+	if other_y == 0:
+	
+		if ((x == 1 or x == 2) and pawn_moves[each][2] == 0):
+			pawn_moves[each][1] = y
+			pawn_moves[each][2] += 1
+		elif x == 1 and pawn_moves[each][2] != 0:
+			pawn_moves[each][1] = y
+			pawn_moves[each][2] += 1
+		else:
+			pawn = "invalid"
 	else:
 		pawn = "invalid"
-			
+#	print other_y, pawn_capture(row, column, new_row, new_column)
+#	
+	if other_y != 0:
+		if pawn_capture(row, column, new_row, new_column) == 1:
+			pawn_moves[each][1] = y
+			pawn_moves[each][2] += 1
+			pawn = ""
+		else:
+			pawn = "invalid"
+	
 	if pawn == "":
 		if x == 1:
 			valid_move = True
@@ -458,6 +496,8 @@ while quit_game == False:
 	onwards = False
 	# check whose turn it is
 	turn = turn_spec.turn_picker(turn_counter)
+	# apparently this is causing problems so...
+	valid_move = True
 	# take a starting piece and where to move it to
 	# also checks that player does not wish to quit
 	move1 = raw_input(turn + " turn. Pick which piece to move: ")
@@ -524,10 +564,7 @@ while quit_game == False:
 					print "\nPawn promoted!\n"
 					chess_board[new_row][new_column] = pawn
 			elif chess_board[row][column][2] == "P":
-				if pawn_move_valid() == 1:
-					pass
-#					drawBoard.redraw_valid(valid_move)
-				else:
+				if pawn_move_valid() != 1:
 					turn_counter -= 1
 			elif chess_board[row][column][2] == "N":
 				if knight_move(piece_colour) == 1:
@@ -562,4 +599,4 @@ while quit_game == False:
 		onwards = False
 	# change player
 	turn_counter += 1
-	print chess_board[new_row][new_column][0], chess_board[row][column][0]
+	print chess_board[row][column][2]
