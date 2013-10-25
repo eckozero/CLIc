@@ -532,7 +532,20 @@ def castling(move):
 				rook = "(wR2)"
 				chess_board[7][6] = rook
 				chess_board[7][5] = "{   }"
-				drawBoard.print_board()
+
+	elif move == "o-o-o":
+		if (turn[0]).lower() == "w":
+			if white_king_moved == True or wR1_moved == True:
+				print "Your king and/or rook has moved"
+				return 0
+			elif white_king_moved == False and wR1_moved == False:
+				chess_board[7][1] = "{   }"
+				king = "{wK }"
+				chess_board[7][3] = king
+				rook = "(wR1)"
+				chess_board[7][4] = rook
+				chess_board[7][5] = "{   }"
+	drawBoard.print_board()		
 #	pass
 	
 
