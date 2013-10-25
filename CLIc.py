@@ -61,7 +61,14 @@ turn_counter = 10
 valid_move = True
 turn = "White's"
 
+# Magic variables. A.K.A. lazy code to facilitate complex rules
 empty_space = ("(   )" or "{   }")
+white_king_moved = False
+black_king_moved = False
+wR1_moved = False
+wr2_moved = False
+bR1_moved = False
+bR2_moved = False
 
 # Special list for pawn moves, as rules for pawns are vastly different
 # to other pieces
@@ -152,7 +159,7 @@ class PawnMovement(object):
 
 
 
-def pawn_promotion(self, piece_colour):
+def pawn_promotion(piece_colour):
 	"""Determine whether or not pawn has reached furthest rank from start point"""
 	promotion = False
 	# Check if piece moved is a pawn
@@ -274,15 +281,23 @@ def bishop_move_valid():
 
 def rook_move(piece_colour):
 	"""Check rook's move is valid"""
-	global rook
+	global rook, wR1_moved, wR2_moved, bR1_moved, bR2_moved
 	rook = ""
 	is_it_correct_r = rook_move_valid()
 	if is_it_correct_r == 1:
 		if chess_board[new_row][new_column][0] == "{":
-			rook = "{" + piece_colour + "R }"
+			rook = "{" + piece_colour + "R" + chess_board[row][column][3] + "}"
 		else:
-			rook = "(" + piece_colour + "R )"
+			rook = "(" + piece_colour + "R" + chess_board[row][column][3] + ")"
 		valid_move = True
+		if rook == "(wR1)" or rook == "{wR1}":
+			wR1_moved = True
+		elif rook == "(wR2)" or rook == "{wR2}":
+			wR2_moved = True
+		elif rook == "(bR2)" or rook == "{bR2}":
+			bR2_moved = True
+		else:
+			bR1_moved = True
 		return 1
 	else:
 		print "Rooks can't move like that =( "
@@ -356,7 +371,7 @@ def king_move_valid():
 		return 0
 
 def king_move(piece_colour):
-	global king, valid_move
+	global king, valid_move, white_king_moved, black_king_moved
 	king = ""
 	is_it_correct_k = king_move_valid()
 	if is_it_correct_k == 1:
@@ -365,6 +380,13 @@ def king_move(piece_colour):
 		else:
 			king = "(" + piece_colour + "K )"
 		valid_move = True
+		if king == "(wK )":
+			white_king_moved = True
+		elif king == "{wK }":
+			white_king_moved = True
+		else:
+			black_king_moved = True
+		print king
 		return 1
 	else:
 		print "Kings can't move like that =( "
@@ -387,7 +409,7 @@ def pawn_capture(row, column, new_row, new_column):
 		if (x == -1 or x == 1) and (y == 1):
 			return 1
 		else:
-			print "nailed it"
+#			print "nailed it"
 			return 0
 #		if chess_board[row][column][1] == "b":
 #			if (x == 1) and (y == 1 or y == -1):
@@ -492,6 +514,14 @@ def redraw_valid_for_pawns(valid_move):
 		chess_board[new_row][new_column] = pawn
 
 
+# Looking at building castling rules
+
+def castling():
+	"""Currently empty function"""
+	pass
+	
+
+
 
 drawBoard = DrawBoard(valid_move)
 turn_spec = GameMechanics(turn_counter)
@@ -519,7 +549,13 @@ while quit_game == False:
 		if move2 in ("q","Q"):
 			quit_game = True
 			break
-	
+
+	# Below prompt for castling
+	if move1 == "o-o" or move1 == "o-o-o":
+		castling()
+		castling_attempt = True
+		real_move = False
+		onwards = True
 	
 	while real_move == True:
 		try:
@@ -542,6 +578,9 @@ while quit_game == False:
 
 
 	if onwards == True:
+#		if castling_attempt is True:
+#			pass
+#		else:
 	# assign it a value to check against dictionary
 		column = chess_moves_col[move1[0]]
 		row = chess_moves_row[move1[1]]
@@ -609,3 +648,4 @@ while quit_game == False:
 		onwards = False
 	# change player
 	turn_counter += 1
+	print white_king_moved, black_king_moved
