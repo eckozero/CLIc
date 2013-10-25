@@ -52,6 +52,17 @@ and I made a mental note of it. The code that's in the program is pretty
 much only syntatically different from my mind code. There's probably bugs 
 in there though, so I wont celebrate too much.
 
+__25/10/13:__
+
+There are definitely bugs in the pawn capture. Namely pawn captures only work 
+on one side (column +1, not -1).
+
+Castling is being introduced. At the moment there is _white king-side_  
+castling __only__. It also causes the program to crash but that's because I 
+was more excited about committing the change than I was about the necessary 
+amendments to the main loop to make sure it doesn't crash. In time though...
+
+
 Known bugs/issues as at 24/10/13:
 
 >~~If you try and move black pawn a7 to anywhere legal, the program crashes~~
@@ -70,7 +81,7 @@ Known bugs/issues as at 24/10/13:
 
 >No check rules
 
->No castling
+>~~No castling~~ _White King-side castling __only___
 
 >~~No pawn captures~~
 
@@ -79,4 +90,8 @@ Known bugs/issues as at 24/10/13:
 
 >~~Issues with redraw, particularly around pawn n2-n4 movements~~
 
-Such is life, eh?
+> Pawn capture only works for column +1, not column -1
+
+> Pawn function will redraw the board even if you didn't move your own pawn
+
+All in, things are shaping up nicely.
