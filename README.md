@@ -57,10 +57,10 @@ __25/10/13:__
 There are definitely bugs in the pawn capture. Namely pawn captures only work 
 on one side (column +1, not -1).
 
-Castling is being introduced. At the moment there is _white king-side   
-castling_ __only__. It also causes the program to crash but that's because I 
-was more excited about committing the change than I was about the necessary 
-amendments to the main loop to make sure it doesn't crash. In time though...
+Castling is being introduced. At the moment there is _white castling_ only. 
+It also causes the program to crash but that's because I was more excited 
+about committing the change than I was about the necessary amendments to the 
+main loop to make sure it doesn't crash. In time though...
 
 
 Known bugs/issues as at 24/10/13:
@@ -81,7 +81,7 @@ Known bugs/issues as at 24/10/13:
 
 >No check rules
 
->~~No castling~~ _White King-side castling **only**_
+>~~No castling~~ _White castling_
 
 >~~No pawn captures~~
 
