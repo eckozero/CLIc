@@ -66,7 +66,7 @@ empty_space = ("(   )" or "{   }")
 white_king_moved = False
 black_king_moved = False
 wR1_moved = False
-wr2_moved = False
+wR2_moved = False
 bR1_moved = False
 bR2_moved = False
 
@@ -516,9 +516,24 @@ def redraw_valid_for_pawns(valid_move):
 
 # Looking at building castling rules
 
-def castling():
+def castling(move):
 	"""Currently empty function"""
-	pass
+	global king, turn, white_king_moved, black_king_moved
+	global wR1_moved, wR2_moved, bR1_moved, bR2_moved
+	if move == "o-o":
+		if (turn[0]).lower() == "w":
+			if white_king_moved == True or wR2_moved == True:
+				print "Your king and/or rook has moved!"
+				return 0
+			elif white_king_moved == False and wR2_moved == False:
+				chess_board[7][8] = "(   )" 
+				king =  "{wK }"
+				chess_board[7][7] = king 
+				rook = "(wR2)"
+				chess_board[7][6] = rook
+				chess_board[7][5] = "{   }"
+				drawBoard.print_board()
+#	pass
 	
 
 
@@ -552,7 +567,7 @@ while quit_game == False:
 
 	# Below prompt for castling
 	if move1 == "o-o" or move1 == "o-o-o":
-		castling()
+		castling(move1)
 		castling_attempt = True
 		real_move = False
 		onwards = True
