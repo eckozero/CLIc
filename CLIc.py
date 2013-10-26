@@ -558,7 +558,7 @@ def castling(move):
 				chess_board[7][5] = "{   }"
 		else:
 			if black_king_moved == True or bR1_moved == True:
-				print "Your king and/ore rook has moved!"
+				print "Your king and/or rook has moved!"
 				return 0
 			else:
 				chess_board[0][1] = "(   )"
@@ -567,7 +567,7 @@ def castling(move):
 				rook = "{bR1}"
 				chess_board[0][4] = rook
 				chess_board[0][5] = "(   )"
-	drawBoard.print_board()		
+	drawBoard.print_board()
 #	pass
 	
 
@@ -605,7 +605,7 @@ while quit_game == False:
 		castling(move1)
 		castling_attempt = True
 		real_move = False
-		onwards = True
+		onwards = False
 	
 	while real_move == True:
 		try:
@@ -698,4 +698,3 @@ while quit_game == False:
 		onwards = False
 	# change player
 	turn_counter += 1
-	print white_king_moved, black_king_moved
