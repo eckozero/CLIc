@@ -63,6 +63,14 @@ about committing the change than I was about the necessary amendments to the
 main loop to make sure it doesn't crash. In time though...
 
 
+__26/10/13:__
+
+King and queenside castling now completed. Code wise that is. It's still 
+a bit free-and-easy with the rules. Remember kids, you can't castle into, 
+through, or out of check. Not that CLIc cares about this at the moment...
+
+
+
 Known bugs/issues as at 24/10/13:
 
 >~~If you try and move black pawn a7 to anywhere legal, the program crashes~~
@@ -81,7 +89,7 @@ Known bugs/issues as at 24/10/13:
 
 >No check rules
 
->~~No castling~~ _White castling_
+>~~No castling~~ ~~_White castling_~~
 
 >~~No pawn captures~~
 
