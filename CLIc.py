@@ -98,16 +98,16 @@ class DrawBoard(object):
 #				if pawn_capture(row, column, new_row, new_column) == 0:
 				redraw_valid_for_pawns(valid_move)
 			else:
-				old_piece = chess_board[row][column][0] #curly brace
-				new_piece = chess_board[row][column][1:4] #"wK "
+				old_piece = chess_board[row][column][0] 
+				new_piece = chess_board[row][column][1:4] 
 				redraw_piece = chess_board[new_row][new_column][0] #curly brace
-				if redraw_piece == "{": #yes
+				if redraw_piece == "{": 
 					chess_board[new_row][new_column] = "{" + new_piece + "}"
-					#"{wk }"
+					
 				else:
 					chess_board[new_row][new_column] = "(" + new_piece + ")"
-				if old_piece == "{": #yes
-					chess_board[row][column] = "{   }" #yes
+				if old_piece == "{": 
+					chess_board[row][column] = "{   }" 
 				else:
 					chess_board[row][column] = "(   )"
 				
@@ -122,6 +122,9 @@ class GameMechanics(object):
 		else:
 			turn = "Black's"
 		return turn
+
+
+# Broken. Don't uncomment.
 
 #class PawnMovement(object):
 #	def __init__(self, piece):
@@ -517,7 +520,10 @@ def redraw_valid_for_pawns(valid_move):
 		chess_board[new_row][new_column] = pawn
 
 
-# Looking at building castling rules
+# Castling rules complete apart from collision detection and not castling
+# out of, through, or into check. It seemed like a good idea to do everything
+# for castling in one function, rather than passing god knows what to god knows
+# which other functions
 
 def castling(move):
 	"""Very sloppily completes all aspects of castling"""
@@ -581,7 +587,6 @@ def castling(move):
 	drawBoard.print_board()
 #	pass
 	
-
 
 
 drawBoard = DrawBoard(valid_move)
