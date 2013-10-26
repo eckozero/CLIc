@@ -28,7 +28,7 @@
 
 
 				#rows down the side (1-8)
-chess_board = [["  8  ","(bR1)", "{bN1}", "(bB1)", "{bK }", "(bQ )", "{bB2}", "(bN2)", "{bR2}"],
+chess_board = [["  8  ","(bR1)", "{bN1}", "(bB1)", "{bQ }", "(bK )", "{bB2}", "(bN2)", "{bR2}"],
 	       ["  7  ","{bP1}", "(bP2)", "{bP3}", "(bP4)", "{bP5}", "(bP6)", "{bP7}", "(bP8)"],
 	       ["  6  ","(   )", "{___}", "(   )", "{___}", "(   )", "{___}", "(   )", "{___}"],
 	       ["  5  ","{___}", "(   )", "{___}", "(   )", "{___}", "(   )", "{___}", "(   )"],
@@ -517,7 +517,7 @@ def redraw_valid_for_pawns(valid_move):
 # Looking at building castling rules
 
 def castling(move):
-	"""Currently empty function"""
+	"""Very sloppily completes all aspects of castling"""
 	global king, turn, white_king_moved, black_king_moved
 	global wR1_moved, wR2_moved, bR1_moved, bR2_moved
 	if move == "o-o":
@@ -532,6 +532,17 @@ def castling(move):
 				rook = "(wR2)"
 				chess_board[7][6] = rook
 				chess_board[7][5] = "{   }"
+		else:
+			if black_king_moved == True or bR2_moved == True:
+				print "Your king and/or rook has moved!"
+				return 0
+			else:
+				chess_board[0][8] = "{   }"
+				king = "(bK )"
+				chess_board[0][7] = king
+				rook = "{bR2}"
+				chess_board[0][6] = rook
+				chess_board[0][5] = "(   )"
 
 	elif move == "o-o-o":
 		if (turn[0]).lower() == "w":
@@ -545,6 +556,17 @@ def castling(move):
 				rook = "(wR1)"
 				chess_board[7][4] = rook
 				chess_board[7][5] = "{   }"
+		else:
+			if black_king_moved == True or bR1_moved == True:
+				print "Your king and/ore rook has moved!"
+				return 0
+			else:
+				chess_board[0][1] = "(   )"
+				king = "(bK )"
+				chess_board[0][3] = king
+				rook = "{bR1}"
+				chess_board[0][4] = rook
+				chess_board[0][5] = "(   )"
 	drawBoard.print_board()		
 #	pass
 	
