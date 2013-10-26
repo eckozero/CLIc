@@ -69,6 +69,9 @@ King and queenside castling now completed. Code wise that is. It's still
 a bit free-and-easy with the rules. Remember kids, you can't castle into, 
 through, or out of check. Not that CLIc cares about this at the moment...
 
+The good thing is that I have now fixed the code that was causing the crash 
+when the move was executed.
+
 
 
 Known bugs/issues as at 24/10/13:
