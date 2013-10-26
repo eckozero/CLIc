@@ -123,55 +123,58 @@ class GameMechanics(object):
 			turn = "Black's"
 		return turn
 
-class PawnMovement(object):
-	def __init__(self, piece):
-		self.piece = piece
-		
-	def pawn_promotion(self, piece_colour):
-		"""Determine whether or not pawn has reached furthest rank from start point"""
-		promotion = False
-		# Check if piece moved is a pawn
-		for every in range(len(pawn_moves)):
-			check_pawn = pawn_moves[every][0]
-			if chess_board[row][column] == check_pawn:
-				# replace number value from list with new location of pawn
-				pawn_moves[each][1] = chess_moves_row[chess_board[new_row][0][2]]
-		# iterate through pawn_moves list to find and replace the pawns 
-		# position on the chess board
-		for each in range(len(pawn_moves)):
-			if pawn_moves[each][1] == 7 or pawn_moves[each][1] == 0:
-				# pawn has reach furthest rank and is to be promoted
-				# Enable selection of promotion piece
-				pieces = ["Q", "B", "R", "N"] 
-				while promotion == False:
-					new_piece = str(raw_input("\nPlease select which piece pawn is to be promoted to: \n"))
-					if new_piece.upper() in pieces:
-						promotion = True
-					else:
-						print "\nSorry, I don't think that's a real piece."
-						print "Just use the first letter of the piece you want"
-				# Check whether Pawn is promoted on a white square or black square
-				if chess_board[new_row][new_column][0] == "{":
-					pawn_moves[each][0] = "{" + piece_colour + new_piece.upper() + " }"
-				else:
-					pawn_moves[each][0] = "(" + piece_colour + new_piece.upper() + " )"
-				pawn = str(pawn_moves[each][0])
+#class PawnMovement(object):
+#	def __init__(self, piece):
+#		self.piece = piece
+#		
+#	def pawn_promotion(self, piece_colour):
+#		"""Determine whether or not pawn has reached furthest rank from start point"""
+#		promotion = False
+#		# Check if piece moved is a pawn
+#		for every in range(len(pawn_moves)):
+#			check_pawn = pawn_moves[every][0]
+#			if chess_board[row][column] == check_pawn:
+#				# replace number value from list with new location of pawn
+#				pawn_moves[each][1] = chess_moves_row[chess_board[new_row][0][2]]
+#		# iterate through pawn_moves list to find and replace the pawns 
+#		# position on the chess board
+#		for each in range(len(pawn_moves)):
+#			if pawn_moves[each][1] == 7 or pawn_moves[each][1] == 0:
+#				# pawn has reach furthest rank and is to be promoted
+#				# Enable selection of promotion piece
+#				pieces = ["Q", "B", "R", "N"] 
+#				while promotion == False:
+#					new_piece = str(raw_input("\nPlease select which piece pawn is to be promoted to: \n"))
+#					if new_piece.upper() in pieces:
+#						promotion = True
+#					else:
+#						print "\nSorry, I don't think that's a real piece."
+#						print "Just use the first letter of the piece you want"
+#				# Check whether Pawn is promoted on a white square or black square
+#				if chess_board[new_row][new_column][0] == "{":
+#					pawn_moves[each][0] = "{" + piece_colour + new_piece.upper() + " }"
+#				else:
+#					pawn_moves[each][0] = "(" + piece_colour + new_piece.upper() + " )"
+#				pawn = str(pawn_moves[each][0])
+#		if promotion is True:
+#			return pawn
 
 
 
 def pawn_promotion(piece_colour):
 	"""Determine whether or not pawn has reached furthest rank from start point"""
+	global pawn
 	promotion = False
 	# Check if piece moved is a pawn
 	for every in range(len(pawn_moves)):
 		check_pawn = pawn_moves[every][0]
 		if chess_board[row][column] == check_pawn:
 			# replace number value from list with new location of pawn
-			pawn_moves[each][1] = chess_moves_row[chess_board[new_row][0][2]]
+			pawn_moves[super_x][1] = chess_moves_row[chess_board[new_row][0][2]]
 	# iterate through pawn_moves list to find and replace the pawns 
 	# position on the chess board
-	for each in range(len(pawn_moves)):
-		if pawn_moves[each][1] == 7 or pawn_moves[each][1] == 0:
+	for each2 in range(len(pawn_moves)):
+		if pawn_moves[each2][1] == 7 or pawn_moves[each2][1] == 0:
 			# pawn has reach furthest rank and is to be promoted
 			# Enable selection of promotion piece
 			pieces = ["Q", "B", "R", "N"] 
@@ -184,11 +187,11 @@ def pawn_promotion(piece_colour):
 					print "Just use the first letter of the piece you want"
 			# Check whether Pawn is promoted on a white square or black square
 			if chess_board[new_row][new_column][0] == "{":
-				pawn_moves[each][0] = "{" + piece_colour + new_piece.upper() + " }"
+				pawn_moves[each2][0] = "{" + piece_colour + new_piece.upper() + " }"
 			else:
-				pawn_moves[each][0] = "(" + piece_colour + new_piece.upper() + " )"
-			pawn = str(pawn_moves[each][0])
-
+				pawn_moves[each2][0] = "(" + piece_colour + new_piece.upper() + " )"
+			pawn = str(pawn_moves[each2][0])
+	return pawn
 
 
 
@@ -406,7 +409,7 @@ def pawn_capture(row, column, new_row, new_column):
 #	if chess_board[new_row][new_column][1] != "":
 #		if chess_board[row][column][1] == "w":
 	if chess_board[new_row][new_column] != empty_space:
-		if (x == -1 or x == 1) and (y == 1):
+		if (x**2 == 1) and (y**2 == 1):
 			return 1
 		else:
 #			print "nailed it"
@@ -442,7 +445,7 @@ def pawn_move_valid():
 					x = int(move1[1]) - int(move2[1])
 				break
 		break
-
+	print other_y
 	if other_y == 0:
 	
 		if ((x == 1 or x == 2) and pawn_moves[each][2] == 0):
@@ -526,6 +529,8 @@ def castling(move):
 				print "Your king and/or rook has moved!"
 				return 0
 			elif white_king_moved == False and wR2_moved == False:
+				white_king_moved = True
+				wR2_moved = True
 				chess_board[7][8] = "(   )" 
 				king =  "{wK }"
 				chess_board[7][7] = king 
@@ -537,6 +542,8 @@ def castling(move):
 				print "Your king and/or rook has moved!"
 				return 0
 			else:
+				black_king_moved = True
+				bR2_moved = True
 				chess_board[0][8] = "{   }"
 				king = "(bK )"
 				chess_board[0][7] = king
@@ -550,6 +557,8 @@ def castling(move):
 				print "Your king and/or rook has moved"
 				return 0
 			elif white_king_moved == False and wR1_moved == False:
+				white_king_moved = True
+				wR1_moved = True
 				chess_board[7][1] = "{   }"
 				king = "{wK }"
 				chess_board[7][3] = king
@@ -561,6 +570,8 @@ def castling(move):
 				print "Your king and/or rook has moved!"
 				return 0
 			else:
+				black_king_moved = True
+				bR1_moved = True
 				chess_board[0][1] = "(   )"
 				king = "(bK )"
 				chess_board[0][3] = king
@@ -606,7 +617,7 @@ while quit_game == False:
 		castling_attempt = True
 		real_move = False
 		onwards = False
-	
+	# Exception handler for non-valid moves
 	while real_move == True:
 		try:
 			chess_moves_col[move1[0]] != ""
@@ -628,14 +639,11 @@ while quit_game == False:
 
 
 	if onwards == True:
-#		if castling_attempt is True:
-#			pass
-#		else:
-	# assign it a value to check against dictionary
+	# assign move a value to check against relevant dictionary
 		column = chess_moves_col[move1[0]]
 		row = chess_moves_row[move1[1]]
 	
-	# check that move input is valid
+	# check that move (not move input) is valid
 
 		if (column in range(1,9)) and (row in range(0,8)):
 			new_column = chess_moves_col[move2[0]]
@@ -657,11 +665,19 @@ while quit_game == False:
 	# check that piece can move in that manner, piece by piece
 	# if so, redraw board with piece at its new location
 
-			pawn_move_checking = PawnMovement(piece_colour)
+#			pawn_move_checking = PawnMovement(piece_colour)
 			if chess_board[row][column][2] == "P" and (new_row == 0 or new_row == 8):
-				if pawn_promotion(piece_colour) == 1:
-					print "\nPawn promoted!\n"
-					chess_board[new_row][new_column] = pawn
+#				if pawn_promotion(piece_colour) == 1:
+					if pawn_move_valid() == 1:
+						pawn = pawn_promotion(piece_colour)
+						chess_board[new_row][new_column] = pawn
+						if chess_board[row][column[0] == "{":
+							chess_board[row][column] = "{   }"
+						else:
+							chess_board[row][column] = "(   )"
+						print pawn
+						print "\nPawn promoted!\n"
+#					chess_board[new_row][new_column] = pawn
 			elif chess_board[row][column][2] == "P":
 				if pawn_move_valid() != 1:
 					turn_counter -= 1
