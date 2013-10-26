@@ -72,7 +72,7 @@ through, or out of check. Not that CLIc cares about this at the moment...
 The good thing is that I have now fixed the code that was causing the crash 
 when the move was executed.
 
-
+Removed bug that was causing pawn capture to go wrong.
 
 Known bugs/issues as at 24/10/13:
 
@@ -101,7 +101,7 @@ Known bugs/issues as at 24/10/13:
 
 >~~Issues with redraw, particularly around pawn n2-n4 movements~~
 
-> Pawn capture only works for column +1, not column -1
+> ~~Pawn capture only works for column +1, not column -1~~
 
 > Pawn function will redraw the board even if you didn't move your own pawn
 
