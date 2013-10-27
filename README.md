@@ -96,6 +96,15 @@ as they are the first ones I encounter.)
 There's also a bug where certain length moves to the left of the board as 
 you look at it are causing a list to explode.
 
+_Update_
+
+Well that was a little embarassing. I'd been deliberately avoiding the bug 
+for pawn redraw where choosing the other persons piece still redrew the board 
+because I was worried I'd get caught up in it. Turns out it was a simple 
+two-lines-of-code job to fix. Whoops.
+
+Still, one less (known) bug.
+
 
 Known bugs/issues as at 24/10/13:
 
@@ -128,6 +137,10 @@ fixed, see updates 27/10/13 for details
 
 > ~~Pawn capture only works for column +1, not column -1~~
 
-> Pawn function will redraw the board even if you didn't move your own pawn
+> ~~Pawn function will redraw the board even if you didn't move your own pawn~~
 
-All in, things are shaping up nicely.
+All in, things are shaping up nicely. I mean, seriously. I can almost _taste_ 
+completion. Check is going to be a bugger though.
+
+In other news, I found a simpler wording for the __en passant__ rule so I 
+*may* look to add this in at some (much) later point.
