@@ -174,7 +174,7 @@ def pawn_promotion(piece_colour):
 		if chess_board[row][column] == check_pawn:
 			# replace number value from list with new location of pawn
 			pawn_moves[super_x][1] = chess_moves_row[chess_board[new_row][0][2]]
-	# iterate through pawn_moves list to find and replace the pawns 
+	# iterate through pawn_moves list to find and replace the pawn's 
 	# position on the chess board
 	for each2 in range(len(pawn_moves)):
 		if pawn_moves[each2][1] == 7 or pawn_moves[each2][1] == 0:
@@ -194,6 +194,10 @@ def pawn_promotion(piece_colour):
 			else:
 				pawn_moves[each2][0] = "(" + piece_colour + new_piece.upper() + " )"
 			pawn = str(pawn_moves[each2][0])
+#	if chess_board[row][column][0] == "{":
+#		chess_board[row][column] = "{   }"
+#	else:
+#		chess_board[row][column] = "(   )" 
 	return pawn
 
 
@@ -588,6 +592,51 @@ def castling(move):
 #	pass
 	
 
+def collision_detection(row, column, new_row, new_column):
+	"""Checks that all spaces between start and finish pos are blank"""
+	global valid_move
+	x = row - new_row
+	y = column - new_column
+	print x, y
+	if x < 0:
+		range_neg = range(x, 0)
+		range1 = []
+		for i in range_neg:
+			range1.append(range_neg[1])
+	else:
+		range1 = range(x+1)
+	if y < 0:
+		range_neg = range(y, 0)
+		range2 = []
+		for e in range_neg:
+			range2.append(range_neg[e])
+	else:
+		range2 = range(y+1)
+	counter1 = counter2 = 0
+	if x == 0:
+		"""enter code here"""
+		while counter2 != len(range2):
+			empty_check = chess_board[row][column+(range2[counter2])]
+			if empty_check[1] != " ":
+				print "hit it"
+				return 0
+		# need to include something for minus numbers
+		pass
+	if counter2 == 0:
+		"""enter code here"""
+		# need to include something for minus numbers
+		pass
+	while counter1 != len(range1) and counter2 != len(range2):
+		empty_check = chess_board[row +(range1[counter1])][column +(range2[counter2])]
+		if empty_check[1] != " ":
+			print "hit it"
+			return 0
+		counter1 += 1
+		counter2 += 1
+	return 0
+
+
+
 
 drawBoard = DrawBoard(valid_move)
 turn_spec = GameMechanics(turn_counter)
@@ -661,6 +710,8 @@ while quit_game == False:
 			print "\nThat's not a valid move! Try again \n"
 			turn_counter -=1
 			valid_move = False
+		if collision_detection(row, column, new_row, new_column) == 1:
+			pass
 		piece_colour = turn[0].lower()
 	# check that player has picked their own piece
 		if valid_move != False:
@@ -676,11 +727,11 @@ while quit_game == False:
 					if pawn_move_valid() == 1:
 						pawn = pawn_promotion(piece_colour)
 						chess_board[new_row][new_column] = pawn
-						if chess_board[row][column[0] == "{":
+						if chess_board[row][column][0] == "{":
 							chess_board[row][column] = "{   }"
 						else:
-							chess_board[row][column] = "(   )"
-						print pawn
+							chess_board[row][column] = "(   )" 
+
 						print "\nPawn promoted!\n"
 #					chess_board[new_row][new_column] = pawn
 			elif chess_board[row][column][2] == "P":
