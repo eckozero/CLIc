@@ -638,10 +638,11 @@ def collision_detection(row, column, new_row, new_column):
 #				print list_index, range1
 				if x < 0:
 					list_index -= 1
-					empty_check = chess_board[row+(range1[list_index])][column]
-				else:
-					empty_check = chess_board[row-(range1[list_index])][column]
+#					empty_check = chess_board[row-(range1[list_index])][column]
+#				else:
+				empty_check = chess_board[row-(range1[list_index])][column]
 				if list_index > 0:
+					print empty_check
 					if empty_check[1] == " " or empty_check[1] == "_":
 						pass
 					else:
@@ -659,13 +660,24 @@ def collision_detection(row, column, new_row, new_column):
 		
 		
 		else:
-			while counter2 != len(range1) and counter2 != len(range2):
+			counter1 = 0
+			while counter2 != len(range1) and counter1 != len(range2):
 #			list_index = int((range1[counter2]**2)**0.5)
 				empty_check = chess_board[row +counter2][column +counter2]
-				if empty_check[1] != " ":
+				if empty_check[1] != " " or empty_check != "_":
 					print "hit it 3"
-					return 0
+#					return 0
 				counter2 += 1
+				counter1 -= 1
+			
+			if counter2 == len(range1) or counter2 == len(range2):
+				if chess_board[new_row][new_column][1] == chess_board[row][column][1]:
+					print "hit it 4"
+					print "You can't take your own pieces"
+					return 0
+				else:
+					return 1
+					
 	else:
 		if chess_board[new_row][new_column][1] == chess_board[row][column][1]:
 			return 0
