@@ -82,6 +82,21 @@ Added in some form of collision detection. You can't run through your own
 pieces anymore, but you can't capture opposing pieces either.
 
 
+This section is (predictably enough) pretty difficult, code-wise. I have 
+told it to search every square that the piece you control will go through, 
+and then run it through varying degrees of evlauations (is the space empty, 
+if not is it one of your own or an opposing piece etc) and then returning a
+numerical value so the program knows whether to continue or not.
+
+The latter part of the evaluations, are causing some problems but I have at 
+least two types of pawn capture included in them; both types of white pawn 
+capture as it happens. (My code is biased towards fixing white moves first 
+as they are the first ones I encounter.)
+
+There's also a bug where certain length moves to the left of the board as 
+you look at it are causing a list to explode.
+
+
 Known bugs/issues as at 24/10/13:
 
 >~~If you try and move black pawn a7 to anywhere legal, the program crashes~~
@@ -95,9 +110,10 @@ Known bugs/issues as at 24/10/13:
 >~~No legal move rules for kings~~
 
 >~~No collision detection _(e.g. not running through your own pieces)_~~ 
-Collision detection but no capture rules
+Collision detection ~~but no~~ with _some_ capture rules
 
->No capture rules _(e.g. continuing past an opposing piece)_
+>~~No capture rules _(e.g. continuing past an opposing piece)_~~ Partially 
+fixed, see updates 27/10/13 for details
 
 >No check rules
 
