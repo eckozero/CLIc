@@ -595,7 +595,6 @@ def castling(move):
 def collision_detection(row, column, new_row, new_column):
 	"""Checks that all spaces between start and finish pos are blank"""
 	if chess_board[row][column][2] != "N":
-		global valid_move
 		x = row - new_row
 		y = column - new_column
 		print x, y
@@ -603,7 +602,8 @@ def collision_detection(row, column, new_row, new_column):
 			range_neg = range(x, 0)
 			range1 = []
 			for i in range_neg:
-				range1.append(range_neg[1])
+				range1.append(range_neg[i])
+			range1.reverse()
 		else:
 			range1 = range(x+1)
 		if y < 0:
@@ -611,31 +611,53 @@ def collision_detection(row, column, new_row, new_column):
 			range2 = []
 			for e in range_neg:
 				range2.append(range_neg[e])
+				range2.reverse()
 		else:
 			range2 = range(y+1)
 		counter2 = 0
+		
+		
 		if x == 0:
 			"""enter code here"""
 			while counter2 != len(range2):
 				list_index = int((range2[counter2]**2)**0.5)
 				empty_check = chess_board[row][column+(range2[list_index])]
-				if empty_check[1] != " ":
-					print "hit it"
-					return 0
+				if list_index !=0:
+					if empty_check[1] != " ":
+						print "hit it"
+						return 0
 				counter2 += 1
-			return 1
+				
 		# need to include something for minus numbers
+		
+		
 		if y == 0:
 			"""enter code here"""
 			while counter2 != len(range1):
 				list_index = int((range1[counter2]**2)**0.5)
-				empty_check = chess_board[row+(range1[list_index])][column]
-				if empty_check[1] != " ":
-					print "hit it 2"
-					return 0
+#				print list_index, range1
+				if x < 0:
+					list_index -= 1
+					empty_check = chess_board[row+(range1[list_index])][column]
+				else:
+					empty_check = chess_board[row-(range1[list_index])][column]
+				if list_index > 0:
+					if empty_check[1] == " " or empty_check[1] == "_":
+						pass
+					else:
+						print "hit it 2"
+						return 0
 				counter2 += 1
-			return 1
+				if counter2 == len(range1):
+					if chess_board[new_row][new_column][1] == chess_board[row][column][1]:
+						print "You can't take your own pieces"
+						return 0
+					else:
+						return 1
+#			return 1
 		# need to include something for minus numbers
+		
+		
 		else:
 			while counter2 != len(range1) and counter2 != len(range2):
 #			list_index = int((range1[counter2]**2)**0.5)
@@ -644,7 +666,11 @@ def collision_detection(row, column, new_row, new_column):
 					print "hit it 3"
 					return 0
 				counter2 += 1
-	return 1
+	else:
+		if chess_board[new_row][new_column][1] == chess_board[row][column][1]:
+			return 0
+		else:
+			return 1
 
 
 
