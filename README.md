@@ -12,7 +12,8 @@ As this receives alpha version updates, more extensive testing will be
 carried out prior to a release candidate push/commit to GitHub
 
 
-**Version Update**
+Version Update
+--------------
 
 I have finally fixed some bugs. The biggest bug was that pawn movement didn't _actually_ 
 work before. I have now fixed the redraw issue where any +1 movement for pawns was 
@@ -74,6 +75,13 @@ when the move was executed.
 
 Removed bug that was causing pawn capture to go wrong.
 
+
+__27/10/13:__
+
+Added in some form of collision detection. You can't run through your own 
+pieces anymore, but you can't capture opposing pieces either.
+
+
 Known bugs/issues as at 24/10/13:
 
 >~~If you try and move black pawn a7 to anywhere legal, the program crashes~~
@@ -86,7 +94,8 @@ Known bugs/issues as at 24/10/13:
 
 >~~No legal move rules for kings~~
 
->No collision detection _(e.g. not running through your own pieces)_
+>~~No collision detection _(e.g. not running through your own pieces)_~~ 
+Collision detection but no capture rules
 
 >No capture rules _(e.g. continuing past an opposing piece)_
 
