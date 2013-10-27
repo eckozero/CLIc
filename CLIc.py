@@ -495,6 +495,8 @@ def redraw_valid_for_pawns(valid_move):
 	#Bug report:
 	# Black move a7-a(x) causes a crash
 	# FIXED: No it doesn't
+	if chess_board[row][column][1] != (turn[0]).lower():
+		return 0
 	global pawn, x, super_x, other_y
 	if valid_move is True:
 		if pawn == "":
