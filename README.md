@@ -105,6 +105,14 @@ two-lines-of-code job to fix. Whoops.
 
 Still, one less (known) bug.
 
+__28/10/13:__
+
+Fixed some crap in the collision detection function (which is just hideous by 
+the way). Lists no longer explode as you move around the board although I 
+haven't had chance to check bishop and queen diagonal moves. I have piece 
+capture built into the collision detection though, and now Knights can't 
+capture Kings (although they're the only piece that can't...)
+
 
 Known bugs/issues as at 24/10/13:
 
@@ -138,6 +146,9 @@ fixed, see updates 27/10/13 for details
 > ~~Pawn capture only works for column +1, not column -1~~
 
 > ~~Pawn function will redraw the board even if you didn't move your own pawn~~
+
+> Unfortunately, the __redraw_valid()__ function doesn't quite do what I want 
+it to and if you move other people's pieces, it redraws.
 
 All in, things are shaping up nicely. I mean, seriously. I can almost _taste_ 
 completion. Check is going to be a bugger though.
