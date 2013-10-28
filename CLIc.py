@@ -62,7 +62,7 @@ valid_move = True
 turn = "White's"
 
 # Magic variables. A.K.A. lazy code to facilitate complex rules
-empty_space = ("(   )" or "{   }")
+empty_space = ["(   )" ,"{   }"]
 white_king_moved = False
 black_king_moved = False
 wR1_moved = False
@@ -409,13 +409,10 @@ def king_move(piece_colour):
 # Updated new stuff for pawn captures
 
 def pawn_capture(row, column, new_row, new_column):
-	x = new_row - row
-	y = new_column - column
-	print chess_board[new_row][new_column], chess_board[new_row][new_column][1]
-	print x, y, chess_board[new_row][new_column][2]
-#	if chess_board[new_row][new_column][1] != "":
-#		if chess_board[row][column][1] == "w":
-	if chess_board[new_row][new_column] != empty_space:
+	x = row - new_row
+	y = column - new_column
+	print "pawn capture", chess_board[new_row][new_column] in empty_space
+	if chess_board[new_row][new_column] not in empty_space:
 		if (x**2 == 1) and (y**2 == 1):
 			return 1
 		else:
@@ -498,31 +495,32 @@ def redraw_valid_for_pawns(valid_move):
 	if chess_board[row][column][1] != (turn[0]).lower():
 		return 0
 	global pawn, x, super_x, other_y
-	if valid_move is True:
-		if pawn == "":
-			if x == 1 and other_y == 0:
-				if chess_board[row][column][0] == "{":
-					pawn = "(" + pawn_moves[super_x][0] + ")"
-					chess_board[row][column] = "{   }"
-				elif chess_board[row][column][0] == "(":
-					pawn = "{" + pawn_moves[super_x][0] + "}"
-					chess_board[row][column] = "(   )"
-			elif x == 2 and other_y == 0:
-				if chess_board[row][column][0] == "{":
-					pawn = "{" + pawn_moves[super_x][0] + "}"
-					chess_board[row][column] = "{   }"
-				elif chess_board[row][column][0] == "(":
-					pawn = "(" + pawn_moves[super_x][0] + ")"
-					chess_board[row][column] = "(   )"
-			else:
-				pawn_front = chess_board[new_row][new_column][0]
-				pawn_back = chess_board[new_row][new_column][4]
-				pawn_middle = pawn_moves[super_x][0]
-				pawn = pawn_front + pawn_middle + pawn_back
-				if chess_board[row][column][0] == "(":
-					chess_board[row][column] = "(   )"
+	if collision_detection(row, column, new_row, new_column) == 1:
+		if valid_move is True:
+			if pawn == "":
+				if x == 1 and other_y == 0:
+					if chess_board[row][column][0] == "{":
+						pawn = "(" + pawn_moves[super_x][0] + ")"
+						chess_board[row][column] = "{   }"
+					elif chess_board[row][column][0] == "(":
+						pawn = "{" + pawn_moves[super_x][0] + "}"
+						chess_board[row][column] = "(   )"
+				elif x == 2 and other_y == 0:
+					if chess_board[row][column][0] == "{":
+						pawn = "{" + pawn_moves[super_x][0] + "}"
+						chess_board[row][column] = "{   }"
+					elif chess_board[row][column][0] == "(":
+						pawn = "(" + pawn_moves[super_x][0] + ")"
+						chess_board[row][column] = "(   )"
 				else:
-					chess_board[row][column] = "{   }"
+					pawn_front = chess_board[new_row][new_column][0]
+					pawn_back = chess_board[new_row][new_column][4]
+					pawn_middle = pawn_moves[super_x][0]
+					pawn = pawn_front + pawn_middle + pawn_back
+					if chess_board[row][column][0] == "(":
+						chess_board[row][column] = "(   )"
+					else:
+						chess_board[row][column] = "{   }"
 		chess_board[new_row][new_column] = pawn
 
 
@@ -622,6 +620,8 @@ def collision_detection(row, column, new_row, new_column):
 			while counter2 != len(range2):
 				list_index = (int((range2[counter2]**2)**0.5) - 1)
 				print list_index, range2, column, range2[list_index]
+				if y < 0:
+					list_index -= 1
 				empty_check = chess_board[row][column-(range2[list_index])]
 				if list_index > 0:
 					print empty_check
@@ -631,6 +631,22 @@ def collision_detection(row, column, new_row, new_column):
 						print empty_check
 						print "hit it"
 						return 0
+				# not very pretty
+				if y < 0 and list_index == 0:
+					if chess_board[row][column-(range1[0])][1] == " " or chess_board[row][column-(range1[0])][1] == "_":
+						pass
+					else:
+						print empty_check
+						print "hit it hack x"
+						return 0
+				if counter2+1 == len(range1):
+					if chess_board[new_row][new_column][1] == chess_board[row][column][1]:
+						print "You can't take your own pieces"
+						return 0
+					else:
+						if chess_board[new_row][new_column][1] != chess_board[row][column][1] and chess_board[new_row][new_column][2] != "K":
+							return 1
+
 				counter2 += 1
 				
 		# need to include something for minus numbers
@@ -675,6 +691,7 @@ def collision_detection(row, column, new_row, new_column):
 				counter2 += 1
 #			return 1
 		# need to include something for minus numbers
+		
 		
 		
 #		else:
