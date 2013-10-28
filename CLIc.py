@@ -609,23 +609,26 @@ def collision_detection(row, column, new_row, new_column):
 		else:
 			range1 = range(x+1)
 		if y < 0:
-			range_neg = range(y, 0)
-			range2 = []
-			for e in range_neg:
-				range2.append(range_neg[e])
-				range2.reverse()
+			range2 = range(y, 0)
+			range2.reverse()
+#				range2.sort()
 		else:
 			range2 = range(y+1)
 		counter2 = 0
-		
+		print range1, range2
 		
 		if x == 0:
 			"""enter code here"""
 			while counter2 != len(range2):
-				list_index = int((range2[counter2]**2)**0.5)
-				empty_check = chess_board[row][column+(range2[list_index])]
-				if list_index !=0:
-					if empty_check[1] != " ":
+				list_index = (int((range2[counter2]**2)**0.5) - 1)
+				print list_index, range2, column, range2[list_index]
+				empty_check = chess_board[row][column-(range2[list_index])]
+				if list_index > 0:
+					print empty_check
+					if empty_check[1] == " " or empty_check[1] == "_":
+						pass
+					else:
+						print empty_check
 						print "hit it"
 						return 0
 				counter2 += 1
@@ -636,8 +639,9 @@ def collision_detection(row, column, new_row, new_column):
 		if y == 0:
 			"""enter code here"""
 			while counter2 != len(range1):
-				list_index = int((range1[counter2]**2)**0.5)
-#				print list_index, range1
+				list_index = (int((range1[counter2]**2)**0.5)-1)
+				print list_index, range1
+				# returns a value of one on a single (0) length list
 				if x < 0:
 					list_index -= 1
 #					empty_check = chess_board[row-(range1[list_index])][column]
@@ -650,41 +654,56 @@ def collision_detection(row, column, new_row, new_column):
 					else:
 						print "hit it 2"
 						return 0
-				counter2 += 1
-				if counter2 == len(range1):
+
+				# not very pretty
+				if x < 0 and list_index == 0:
+					if chess_board[row-(range1[0])][column][1] == " " or chess_board[row-(range1[0])][column][1] == "_":
+						pass
+					else:
+						print "hit it hack"
+						return 0 
+
+#				counter2 += 1
+				if counter2+1 == len(range1):
 					if chess_board[new_row][new_column][1] == chess_board[row][column][1]:
 						print "You can't take your own pieces"
 						return 0
 					else:
-						return 1
+						if chess_board[new_row][new_column][1] != chess_board[row][column][1] and chess_board[new_row][new_column][2] != "K":
+							return 1
+
+				counter2 += 1
 #			return 1
 		# need to include something for minus numbers
 		
 		
-		else:
-			counter1 = 0
-			while counter2 != len(range1) and counter1 != len(range2):
-#			list_index = int((range1[counter2]**2)**0.5)
-				empty_check = chess_board[row +counter2][column +counter2]
-				if empty_check[1] != " " or empty_check != "_":
-					print "hit it 3"
-#					return 0
-				counter2 += 1
-				counter1 -= 1
+#		else:
+#			counter1 = 0
+#			while counter2 != len(range1) and counter1 != len(range2):
+##			list_index = int((range1[counter2]**2)**0.5)
+	#			empty_check = chess_board[row +counter2][column +counter2]
+	#			if empty_check[1] != " " or empty_check != "_":
+	#				print "hit it 3"
+#	#				return 0
+	#			counter2 += 1
+	#			counter1 -= 1
 			
-			if counter2 == len(range1) or counter2 == len(range2):
-				if chess_board[new_row][new_column][1] == chess_board[row][column][1]:
-					print "hit it 4"
-					print "You can't take your own pieces"
-					return 0
-				else:
-					return 1
+		if counter2+1 == len(range1) or counter2 == len(range2):
+			if chess_board[new_row][new_column][1] == chess_board[row][column][1]:
+				print "hit it 4"
+				print "You can't take your own pieces"
+				return 0
+			else:
+				return 1
 					
 	else:
 		if chess_board[new_row][new_column][1] == chess_board[row][column][1]:
 			return 0
 		else:
-			return 1
+			if chess_board[new_row][new_column][2] == "K":
+				return 0
+			else:
+				return 1
 
 
 
