@@ -113,6 +113,10 @@ haven't had chance to check bishop and queen diagonal moves. I have piece
 capture built into the collision detection though, and now Knights can't 
 capture Kings (although they're the only piece that can't...)
 
+Pawn capture is not as stable as I thought. I can't get it to play nicely with 
+collision detection.
+
+
 
 Known bugs/issues as at 24/10/13:
 
@@ -149,6 +153,9 @@ fixed, see updates 27/10/13 for details
 
 > Unfortunately, the __redraw_valid()__ function doesn't quite do what I want 
 it to and if you move other people's pieces, it redraws.
+
+> Pawn capture OR collision detection, not both
+
 
 All in, things are shaping up nicely. I mean, seriously. I can almost _taste_ 
 completion. Check is going to be a bugger though.
