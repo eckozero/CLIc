@@ -117,6 +117,14 @@ Pawn capture is not as stable as I thought. I can't get it to play nicely with
 collision detection.
 
 
+__29/10/13:__
+
+The collision detection module is now 152 lines of ugly, ugly code. But it 
+does work, so assuming the old adage 'Functional > Elegant' I think it's a 
+win.
+
+The __redraw_valid()__ problem has been solved by shuffling some code around 
+and adding one more line in.
 
 Known bugs/issues as at 24/10/13:
 
@@ -131,7 +139,7 @@ Known bugs/issues as at 24/10/13:
 >~~No legal move rules for kings~~
 
 >~~No collision detection _(e.g. not running through your own pieces)_~~ 
-Collision detection ~~but no~~ with _some_ capture rules
+~~Collision detection ~~but no~~ with _some_ capture rules~~
 
 >~~No capture rules _(e.g. continuing past an opposing piece)_~~ Partially 
 fixed, see updates 27/10/13 for details
@@ -151,14 +159,15 @@ fixed, see updates 27/10/13 for details
 
 > ~~Pawn function will redraw the board even if you didn't move your own pawn~~
 
-> Unfortunately, the __redraw_valid()__ function doesn't quite do what I want 
-it to and if you move other people's pieces, it redraws.
+> ~~Unfortunately, the __redraw_valid()__ function doesn't quite do what I want 
+it to and if you move other people's pieces, it redraws.~~
 
-> Pawn capture OR collision detection, not both
+> ~~Pawn capture OR collision detection, not both~~
 
 
 All in, things are shaping up nicely. I mean, seriously. I can almost _taste_ 
 completion. Check is going to be a bugger though.
+
 
 In other news, I found a simpler wording for the __en passant__ rule so I 
 *may* look to add this in at some (much) later point.
