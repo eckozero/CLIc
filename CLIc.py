@@ -704,6 +704,49 @@ def collision_detection(row, column, new_row, new_column):
 #	#				return 0
 	#			counter2 += 1
 	#			counter1 -= 1
+		counter2 = 0
+		if (x**2) == (y**2):
+			while counter2 != len(range1):
+				list_index1 = int(((range1[counter2])**2)**0.5)
+				list_index2 = int(((range2[counter2])**2)**0.5)
+#				if x < 0:
+#					list_index1 -= 1
+#				if y < 0:
+#					list_index2 -= 1
+				if (x < 0 and y > 0) and list_index1 != 0:
+					list_index1 -= 1
+				elif (x > 0 and y < 0) and list_index2 != 0:
+					list_index2 -=1
+#				else:
+#					list_index1 -=1
+#					list_index2 -=2
+				if counter2 == 0:
+					if range1[list_index1] == 0:
+						list_index1 += 1
+					if range2[list_index2] == 0:
+						list_index2 += 1
+				print list_index1, list_index2
+				empty_check = chess_board[row-(range1[list_index1])][column-(range2[list_index2])]
+				print empty_check
+				if list_index1 > 0 and list_index2 > 0:
+					if empty_check[1] == " " or empty_check[1] == "_":
+						pass
+					else:
+						print empty_check
+						print "hit it"
+						return 0
+				
+				if counter2+1 == len(range1) or counter2+1 == len(range2):
+					if chess_board[new_row][new_column][1] == chess_board[row][column][1]:
+						print "You can't take your own pieces"
+						return 0
+					else:
+						if chess_board[new_row][new_column][1] != chess_board[row][column][1] and chess_board[new_row][new_column][2] != "K":
+							return 1
+				
+				counter2 += 1
+				
+			
 			
 		if counter2+1 == len(range1) or counter2 == len(range2):
 			if chess_board[new_row][new_column][1] == chess_board[row][column][1]:
