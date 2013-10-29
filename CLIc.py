@@ -93,23 +93,26 @@ class DrawBoard(object):
 	# FIXED: 20/10/13 - ^^ yes it does
 	def redraw_valid(self, valid_move):
 		"""Checks that move is valid, then redraws piece on board"""
-		if valid_move is True:
-			if chess_board[row][column][2] == "P":
+		if piece_colour != chess_board[row][column][1]:
+			return 0
+		else:
+			if valid_move is True:
+				if chess_board[row][column][2] == "P":
 #				if pawn_capture(row, column, new_row, new_column) == 0:
-				redraw_valid_for_pawns(valid_move)
-			else:
-				old_piece = chess_board[row][column][0] 
-				new_piece = chess_board[row][column][1:4] 
-				redraw_piece = chess_board[new_row][new_column][0] #curly brace
-				if redraw_piece == "{": 
-					chess_board[new_row][new_column] = "{" + new_piece + "}"
+					redraw_valid_for_pawns(valid_move)
+				else:
+					old_piece = chess_board[row][column][0] 
+					new_piece = chess_board[row][column][1:4] 
+					redraw_piece = chess_board[new_row][new_column][0] #curly brace
+					if redraw_piece == "{": 
+						chess_board[new_row][new_column] = "{" + new_piece + "}"
 					
-				else:
-					chess_board[new_row][new_column] = "(" + new_piece + ")"
-				if old_piece == "{": 
-					chess_board[row][column] = "{   }" 
-				else:
-					chess_board[row][column] = "(   )"
+					else:
+						chess_board[new_row][new_column] = "(" + new_piece + ")"
+					if old_piece == "{": 
+						chess_board[row][column] = "{   }" 
+					else:
+						chess_board[row][column] = "(   )"
 				
 
 class GameMechanics(object):
@@ -854,52 +857,54 @@ while quit_game == False:
 				turn_counter -= 1
 	# check that piece can move in that manner, piece by piece
 	# if so, redraw board with piece at its new location
-
+			if drawBoard.redraw_valid(valid_move) == 0:
+				pass
 #			pawn_move_checking = PawnMovement(piece_colour)
-			if chess_board[row][column][2] == "P" and (new_row == 0 or new_row == 8):
+			else:
+				if chess_board[row][column][2] == "P" and (new_row == 0 or new_row == 8):
 #				if pawn_promotion(piece_colour) == 1:
-					if pawn_move_valid() == 1:
-						pawn = pawn_promotion(piece_colour)
-						chess_board[new_row][new_column] = pawn
-						if chess_board[row][column][0] == "{":
-							chess_board[row][column] = "{   }"
-						else:
-							chess_board[row][column] = "(   )" 
+						if pawn_move_valid() == 1:
+							pawn = pawn_promotion(piece_colour)
+							chess_board[new_row][new_column] = pawn
+							if chess_board[row][column][0] == "{":
+								chess_board[row][column] = "{   }"
+							else:
+								chess_board[row][column] = "(   )" 
 
-						print "\nPawn promoted!\n"
+							print "\nPawn promoted!\n"
 #					chess_board[new_row][new_column] = pawn
-			elif chess_board[row][column][2] == "P":
-				if pawn_move_valid() != 1:
-					turn_counter -= 1
-			elif chess_board[row][column][2] == "N":
-				if knight_move(piece_colour) == 1:
-					chess_board[new_row][new_column] = knight
+				elif chess_board[row][column][2] == "P":
+					if pawn_move_valid() != 1:
+						turn_counter -= 1
+				elif chess_board[row][column][2] == "N":
+					if knight_move(piece_colour) == 1:
+						chess_board[new_row][new_column] = knight
 #					drawBoard.redraw_valid(valid_move)
-				else:
-					turn_counter -= 1
-			elif chess_board[row][column][2] == "B":
-				if bishop_move(piece_colour) == 1:
-					chess_board[new_row][new_column] = bishop
+					else:
+						turn_counter -= 1
+				elif chess_board[row][column][2] == "B":
+					if bishop_move(piece_colour) == 1:
+						chess_board[new_row][new_column] = bishop
 #					drawBoard.redraw_valid(valid_move)
-				else:
-					turn_counter -=1
-			elif chess_board[row][column][2] == "R":
-				if rook_move(piece_colour) == 1:
-					chess_board[new_row][new_column] = rook
+					else:
+						turn_counter -=1
+				elif chess_board[row][column][2] == "R":
+					if rook_move(piece_colour) == 1:
+						chess_board[new_row][new_column] = rook
 #					drawBoard.redraw_valid(valid_move)
-				else:
-					turn_counter -=1
-			elif chess_board[row][column][2] == "Q":
-				if queen_move(piece_colour) == 1:
-					chess_board[new_row][new_column] = queen
-				else:
-					turn_counter -=1
-			elif chess_board[row][column][2] == "K":
-				if king_move(piece_colour) == 1:
-					chess_board[new_row][new_column] = king
+					else:
+						turn_counter -=1
+				elif chess_board[row][column][2] == "Q":
+					if queen_move(piece_colour) == 1:
+						chess_board[new_row][new_column] = queen
+					else:
+						turn_counter -=1
+				elif chess_board[row][column][2] == "K":
+					if king_move(piece_colour) == 1:
+						chess_board[new_row][new_column] = king
 #					drawBoard.redraw_valid(valid_move)
-				else:
-					turn_counter -=1
+					else:
+						turn_counter -=1
 			drawBoard.redraw_valid(valid_move)
 		onwards = False
 	# change player
