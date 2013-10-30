@@ -126,7 +126,25 @@ win.
 The __redraw_valid()__ problem has been solved by shuffling some code around 
 and adding one more line in.
 
-Known bugs/issues as at 24/10/13:
+
+__30/10/13:__
+
+The __redraw_valid()__ problem is still a problem. I had to remove the fix 
+because it broke pawn moves. I can fix it though, just not tonight.
+
+In **much** better news, I started making a check function. I'm still not 
+100% sure on how it's going to work at the end... but that's because I code 
+like I write.
+
+Currently, all it does is find the co-ordinates of the King on the board with 
+a couple of pre-validation checks. Now it does that, it's a _simple_ 
+(naturally) matter of separately counting back to row 0, up to row 8, down to 
+column 0, up to column 0, and going up +/- _n_ for diagonals and checking 
+that nothing of the opposing piece is in any of those spaces, unless something 
+is in the way. Easy, right?
+
+
+Known bugs/issues as at 30/10/13:
 
 >~~If you try and move black pawn a7 to anywhere legal, the program crashes~~
 
@@ -144,7 +162,7 @@ Known bugs/issues as at 24/10/13:
 >~~No capture rules _(e.g. continuing past an opposing piece)_~~ Partially 
 fixed, see updates 27/10/13 for details
 
->No check rules
+>No check rules - see updates for latest
 
 >~~No castling~~ ~~_White castling_~~
 
@@ -159,8 +177,8 @@ fixed, see updates 27/10/13 for details
 
 > ~~Pawn function will redraw the board even if you didn't move your own pawn~~
 
-> ~~Unfortunately, the __redraw_valid()__ function doesn't quite do what I want 
-it to and if you move other people's pieces, it redraws.~~
+> Unfortunately, the __redraw_valid()__ function doesn't quite do what I want 
+it to and if you move other people's pieces, it redraws. _Reinstated bug_
 
 > ~~Pawn capture OR collision detection, not both~~
 
