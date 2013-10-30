@@ -69,6 +69,9 @@ wR1_moved = False
 wR2_moved = False
 bR1_moved = False
 bR2_moved = False
+white_king_check = False
+black_king_check = False
+
 
 # Special list for pawn moves, as rules for pawns are vastly different
 # to other pieces
@@ -602,10 +605,7 @@ def collision_detection(row, column, new_row, new_column):
 		y = column - new_column
 		print x, y
 		if x < 0:
-			range_neg = range(x, 0)
-			range1 = []
-			for i in range_neg:
-				range1.append(range_neg[i])
+			range1 = range(x, 0)
 			range1.reverse()
 		else:
 			range1 = range(x+1)
@@ -619,10 +619,12 @@ def collision_detection(row, column, new_row, new_column):
 		print range1, range2
 		
 		if x == 0:
-			"""enter code here"""
+			"""Deals with straightforward left and right movements"""
 			while counter2 != len(range2):
 				list_index = (int((range2[counter2]**2)**0.5) - 1)
 				print list_index, range2, column, range2[list_index]
+				# returns a value of one on a single (0) length list;
+				# outside of list range. Corrects for this
 				if y < 0:
 					list_index -= 1
 				empty_check = chess_board[row][column-(range2[list_index])]
@@ -634,7 +636,9 @@ def collision_detection(row, column, new_row, new_column):
 						print empty_check
 						print "hit it"
 						return 0
-				# not very pretty
+				# not very pretty: corrects for disparity in list lengths
+				# by forcing first evaluation to read position 0 in the
+				# relevant list, instead of position 1
 				if y < 0 and list_index == 0:
 					if chess_board[row][column-(range1[0])][1] == " " or chess_board[row][column-(range1[0])][1] == "_":
 						pass
@@ -656,15 +660,15 @@ def collision_detection(row, column, new_row, new_column):
 		
 		
 		if y == 0:
-			"""enter code here"""
+			"""Deals with straightforward up and down moves"""
 			while counter2 != len(range1):
 				list_index = (int((range1[counter2]**2)**0.5)-1)
 				print list_index, range1
-				# returns a value of one on a single (0) length list
+				# returns a value of one on a single (0) length list;
+				# outside of list range. Corrects for this
 				if x < 0:
 					list_index -= 1
-#					empty_check = chess_board[row-(range1[list_index])][column]
-#				else:
+
 				empty_check = chess_board[row-(range1[list_index])][column]
 				if list_index > 0:
 					print empty_check
@@ -674,7 +678,9 @@ def collision_detection(row, column, new_row, new_column):
 						print "hit it 2"
 						return 0
 
-				# not very pretty
+				# not very pretty: corrects for disparity in list lengths
+				# by forcing first evaluation to read position 0 in the
+				# relevant list, instead of position 1
 				if x < 0 and list_index == 0:
 					if chess_board[row-(range1[0])][column][1] == " " or chess_board[row-(range1[0])][column][1] == "_":
 						pass
@@ -682,7 +688,6 @@ def collision_detection(row, column, new_row, new_column):
 						print "hit it hack"
 						return 0 
 
-#				counter2 += 1
 				if counter2+1 == len(range1):
 					if chess_board[new_row][new_column][1] == chess_board[row][column][1]:
 						print "You can't take your own pieces"
@@ -692,37 +697,27 @@ def collision_detection(row, column, new_row, new_column):
 							return 1
 
 				counter2 += 1
-#			return 1
-		# need to include something for minus numbers
-		
-		
-		
-#		else:
-#			counter1 = 0
-#			while counter2 != len(range1) and counter1 != len(range2):
-##			list_index = int((range1[counter2]**2)**0.5)
-	#			empty_check = chess_board[row +counter2][column +counter2]
-	#			if empty_check[1] != " " or empty_check != "_":
-	#				print "hit it 3"
-#	#				return 0
-	#			counter2 += 1
-	#			counter1 -= 1
+
 		counter2 = 0
 		if (x**2) == (y**2):
+			"""Deals with diagonal moves"""
 			while counter2 != len(range1):
 				list_index1 = int(((range1[counter2])**2)**0.5)
 				list_index2 = int(((range2[counter2])**2)**0.5)
-#				if x < 0:
-#					list_index1 -= 1
-#				if y < 0:
-#					list_index2 -= 1
+
+				# if x or y is less than 0, that list is one item less 
+				# than the other. (e.g. [0,1,2] [-1,-2])
+				# this code checks if there is disparity in the list
+				# lengths and corrects accordingly
 				if (x < 0 and y > 0) and list_index1 != 0:
 					list_index1 -= 1
 				elif (x > 0 and y < 0) and list_index2 != 0:
 					list_index2 -=1
-#				else:
-#					list_index1 -=1
-#					list_index2 -=2
+
+				# counter2 is the position in the list. if reading pos
+				# 0 in the list, you will compare 0 to -1, leading to 
+				# the wrong chess square being evaluated. This code 
+				# corrects for that
 				if counter2 == 0:
 					if range1[list_index1] == 0:
 						list_index1 += 1
@@ -750,15 +745,20 @@ def collision_detection(row, column, new_row, new_column):
 				counter2 += 1
 				
 			
-			
-		if counter2+1 == len(range1) or counter2 == len(range2):
+		"""Checks that last position is of different colour and allows capture"""	
+		if counter2+1 == len(range1) or counter2+1 == len(range2):
 			if chess_board[new_row][new_column][1] == chess_board[row][column][1]:
 				print "hit it 4"
 				print "You can't take your own pieces"
 				return 0
 			else:
-				return 1
-					
+				# cannot capture kings
+				if chess_board[new_row][new_column][2] != "K":
+					return 1
+				else:
+					return 0
+	# evaluates knight moves and ensures that you are not taking your
+	# own pieces or a King
 	else:
 		if chess_board[new_row][new_column][1] == chess_board[row][column][1]:
 			return 0
@@ -768,6 +768,37 @@ def collision_detection(row, column, new_row, new_column):
 			else:
 				return 1
 
+
+
+def check_for_check():
+	"""Woo. Code here"""
+	local_check = None
+	check_row = 0
+	check_column = 0
+	king_found = False
+	if piece_colour == "w":
+		local_check = white_king_check
+	else:
+		local_check = black_king_check
+	if local_check == True:
+		pass
+	else:
+#		while king_found is False:
+		for pieces in range(9):
+			for columns in range(9):
+				if chess_board[pieces][columns][2] == "K":
+					if chess_board[pieces][columns][1] == piece_colour:
+						print "Test hit"
+						check_row = pieces
+						check_column = columns
+						king_found == True
+						break
+				if king_found == True:
+					break
+			if king_found == True:
+				break
+
+	print check_row, check_column, chess_board[check_row][check_column]
 
 
 
@@ -857,8 +888,6 @@ while quit_game == False:
 				turn_counter -= 1
 	# check that piece can move in that manner, piece by piece
 	# if so, redraw board with piece at its new location
-			if drawBoard.redraw_valid(valid_move) == 0:
-				pass
 #			pawn_move_checking = PawnMovement(piece_colour)
 			else:
 				if chess_board[row][column][2] == "P" and (new_row == 0 or new_row == 8):
@@ -872,6 +901,9 @@ while quit_game == False:
 								chess_board[row][column] = "(   )" 
 
 							print "\nPawn promoted!\n"
+#				if drawBoard.redraw_valid(valid_move) == 0:
+#					pass
+
 #					chess_board[new_row][new_column] = pawn
 				elif chess_board[row][column][2] == "P":
 					if pawn_move_valid() != 1:
