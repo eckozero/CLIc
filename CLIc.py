@@ -281,8 +281,8 @@ def bishop_move_valid():
 	move_valid = False
 	if (chess_board[new_row][new_column][0] == chess_board[row][column][0]) is False:
 		move_valid = False
-		print "debug in bishop"
-		print (chess_board[new_row][new_column][0] == chess_board[row][column][0])
+#		print "debug in bishop"
+#		print (chess_board[new_row][new_column][0] == chess_board[row][column][0])
 	else:
 		# n - n for x and y movement must be equal if move is valid
 		x = new_row - row
@@ -327,7 +327,7 @@ def rook_move_valid():
 	y = new_row - row
 	if (x == 0 or y == 0) and (x != 0 or y != 0):
 		move_valid = True
-		print "rook debug"
+#		print "rook debug"
 	if move_valid is True:
 			return 1
 	else:
@@ -402,7 +402,7 @@ def king_move(piece_colour):
 			white_king_moved = True
 		else:
 			black_king_moved = True
-		print king
+#		print king
 		return 1
 	else:
 		print "Kings can't move like that =( "
@@ -417,7 +417,7 @@ def king_move(piece_colour):
 def pawn_capture(row, column, new_row, new_column):
 	x = row - new_row
 	y = column - new_column
-	print "pawn capture", chess_board[new_row][new_column] in empty_space
+#	print "pawn capture", chess_board[new_row][new_column] in empty_space
 	if chess_board[new_row][new_column] not in empty_space:
 		if (x**2 == 1) and (y**2 == 1):
 			return 1
@@ -455,7 +455,7 @@ def pawn_move_valid():
 					x = int(move1[1]) - int(move2[1])
 				break
 		break
-	print other_y
+#	print other_y
 	if other_y == 0:
 	
 		if ((x == 1 or x == 2) and pawn_moves[each][2] == 0):
@@ -603,7 +603,7 @@ def collision_detection(row, column, new_row, new_column):
 	if chess_board[row][column][2] != "N":
 		x = row - new_row
 		y = column - new_column
-		print x, y
+#		print x, y
 		if x < 0:
 			range1 = range(x, 0)
 			range1.reverse()
@@ -616,24 +616,24 @@ def collision_detection(row, column, new_row, new_column):
 		else:
 			range2 = range(y+1)
 		counter2 = 0
-		print range1, range2
+#		print range1, range2
 		
 		if x == 0:
 			"""Deals with straightforward left and right movements"""
 			while counter2 != len(range2):
 				list_index = (int((range2[counter2]**2)**0.5) - 1)
-				print list_index, range2, column, range2[list_index]
+#				print list_index, range2, column, range2[list_index]
 				# returns a value of one on a single (0) length list;
 				# outside of list range. Corrects for this
 				if y < 0:
 					list_index -= 1
 				empty_check = chess_board[row][column-(range2[list_index])]
 				if list_index > 0:
-					print empty_check
+#					print empty_check
 					if empty_check[1] == " " or empty_check[1] == "_":
 						pass
 					else:
-						print empty_check
+#						print empty_check
 						print "hit it"
 						return 0
 				# not very pretty: corrects for disparity in list lengths
@@ -643,7 +643,7 @@ def collision_detection(row, column, new_row, new_column):
 					if chess_board[row][column-(range1[0])][1] == " " or chess_board[row][column-(range1[0])][1] == "_":
 						pass
 					else:
-						print empty_check
+#						print empty_check
 						print "hit it hack x"
 						return 0
 				if counter2+1 == len(range1):
@@ -663,7 +663,7 @@ def collision_detection(row, column, new_row, new_column):
 			"""Deals with straightforward up and down moves"""
 			while counter2 != len(range1):
 				list_index = (int((range1[counter2]**2)**0.5)-1)
-				print list_index, range1
+#				print list_index, range1
 				# returns a value of one on a single (0) length list;
 				# outside of list range. Corrects for this
 				if x < 0:
@@ -671,7 +671,7 @@ def collision_detection(row, column, new_row, new_column):
 
 				empty_check = chess_board[row-(range1[list_index])][column]
 				if list_index > 0:
-					print empty_check
+#					print empty_check
 					if empty_check[1] == " " or empty_check[1] == "_":
 						pass
 					else:
@@ -723,14 +723,14 @@ def collision_detection(row, column, new_row, new_column):
 						list_index1 += 1
 					if range2[list_index2] == 0:
 						list_index2 += 1
-				print list_index1, list_index2
+#				print list_index1, list_index2
 				empty_check = chess_board[row-(range1[list_index1])][column-(range2[list_index2])]
-				print empty_check
+#				print empty_check
 				if list_index1 > 0 and list_index2 > 0:
 					if empty_check[1] == " " or empty_check[1] == "_":
 						pass
 					else:
-						print empty_check
+#						print empty_check
 						print "hit it"
 						return 0
 				
@@ -780,10 +780,7 @@ def check_for_check():
 		local_check = white_king_check
 	else:
 		local_check = black_king_check
-	if local_check == True:
-		pass
-	else:
-#		while king_found is False:
+	if local_check != True:
 		for pieces in range(9):
 			for columns in range(9):
 				if chess_board[pieces][columns][2] == "K":
@@ -797,10 +794,26 @@ def check_for_check():
 					break
 			if king_found == True:
 				break
-
-	print check_row, check_column, chess_board[check_row][check_column]
-
-
+		row_range1 = range(0, check_row)
+		row_range2 = range(check_row, 10)
+		col_range1 = range(0, check_column)
+		col_range2 = range(check_column, 10)
+		print check_row, check_column, chess_board[check_row][check_column]
+		print row_range1, row_range2
+		print col_range1, col_range2
+		print local_check
+		iteration_for_check = 0
+		for moves in row_range1:
+			check_space = chess_board[check_row][check_column-(row_range1[iteration_for_check])]
+			if check_space in empty_space:
+				pass
+			else:
+				print check_space
+				if check_space[1] != piece_colour:
+					if check_space[2] == "Q" or check_space[2] == "R":
+						local_check = True
+			iteration_for_check += 1
+	print "Made it this far...", local_check
 
 drawBoard = DrawBoard(valid_move)
 turn_spec = GameMechanics(turn_counter)
@@ -941,3 +954,4 @@ while quit_game == False:
 		onwards = False
 	# change player
 	turn_counter += 1
+	check_for_check()
