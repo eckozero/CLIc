@@ -62,7 +62,7 @@ valid_move = True
 turn = "White's"
 
 # Magic variables. A.K.A. lazy code to facilitate complex rules
-empty_space = ["(   )" ,"{   }"]
+empty_space = ["(   )" ,"{___}"]
 white_king_moved = False
 black_king_moved = False
 wR1_moved = False
@@ -113,7 +113,7 @@ class DrawBoard(object):
 					else:
 						chess_board[new_row][new_column] = "(" + new_piece + ")"
 					if old_piece == "{": 
-						chess_board[row][column] = "{   }" 
+						chess_board[row][column] = "{___}" 
 					else:
 						chess_board[row][column] = "(   )"
 				
@@ -507,14 +507,14 @@ def redraw_valid_for_pawns(valid_move):
 				if x == 1 and other_y == 0:
 					if chess_board[row][column][0] == "{":
 						pawn = "(" + pawn_moves[super_x][0] + ")"
-						chess_board[row][column] = "{   }"
+						chess_board[row][column] = "{___}"
 					elif chess_board[row][column][0] == "(":
 						pawn = "{" + pawn_moves[super_x][0] + "}"
 						chess_board[row][column] = "(   )"
 				elif x == 2 and other_y == 0:
 					if chess_board[row][column][0] == "{":
 						pawn = "{" + pawn_moves[super_x][0] + "}"
-						chess_board[row][column] = "{   }"
+						chess_board[row][column] = "{___}"
 					elif chess_board[row][column][0] == "(":
 						pawn = "(" + pawn_moves[super_x][0] + ")"
 						chess_board[row][column] = "(   )"
@@ -526,7 +526,7 @@ def redraw_valid_for_pawns(valid_move):
 					if chess_board[row][column][0] == "(":
 						chess_board[row][column] = "(   )"
 					else:
-						chess_board[row][column] = "{   }"
+						chess_board[row][column] = "{___}"
 		chess_board[new_row][new_column] = pawn
 
 
@@ -552,7 +552,7 @@ def castling(move):
 				chess_board[7][7] = king 
 				rook = "(wR2)"
 				chess_board[7][6] = rook
-				chess_board[7][5] = "{   }"
+				chess_board[7][5] = "{___}"
 		else:
 			if black_king_moved == True or bR2_moved == True:
 				print "Your king and/or rook has moved!"
@@ -560,7 +560,7 @@ def castling(move):
 			else:
 				black_king_moved = True
 				bR2_moved = True
-				chess_board[0][8] = "{   }"
+				chess_board[0][8] = "{___}"
 				king = "(bK )"
 				chess_board[0][7] = king
 				rook = "{bR2}"
@@ -575,12 +575,12 @@ def castling(move):
 			elif white_king_moved == False and wR1_moved == False:
 				white_king_moved = True
 				wR1_moved = True
-				chess_board[7][1] = "{   }"
+				chess_board[7][1] = "{___}"
 				king = "{wK }"
 				chess_board[7][3] = king
 				rook = "(wR1)"
 				chess_board[7][4] = rook
-				chess_board[7][5] = "{   }"
+				chess_board[7][5] = "{___}"
 		else:
 			if black_king_moved == True or bR1_moved == True:
 				print "Your king and/or rook has moved!"
@@ -909,7 +909,7 @@ while quit_game == False:
 							pawn = pawn_promotion(piece_colour)
 							chess_board[new_row][new_column] = pawn
 							if chess_board[row][column][0] == "{":
-								chess_board[row][column] = "{   }"
+								chess_board[row][column] = "{___}"
 							else:
 								chess_board[row][column] = "(   )" 
 
