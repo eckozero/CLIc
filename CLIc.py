@@ -853,7 +853,8 @@ def check_for_check():
 			if row_range1[iteration_for_check] != 8:
 #				if row_range1[iteration_for_check] != 0:
 				if check_space in empty_space:
-					pass
+					print check_space
+#					pass
 				else:
 					print check_space
 					if check_space[1] != piece_colour:
