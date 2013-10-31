@@ -795,24 +795,75 @@ def check_for_check():
 			if king_found == True:
 				break
 		row_range1 = range(0, check_row)
-		row_range2 = range(check_row, 10)
+		row_range1.reverse()
+		row_range2 = range(check_row, 9)
 		col_range1 = range(0, check_column)
-		col_range2 = range(check_column, 10)
+		col_range1.reverse()
+		col_range2 = range(check_column, 9)
 		print check_row, check_column, chess_board[check_row][check_column]
 		print row_range1, row_range2
 		print col_range1, col_range2
 		print local_check
 		iteration_for_check = 0
-		for moves in row_range1:
-			check_space = chess_board[check_row][check_column-(row_range1[iteration_for_check])]
-			if check_space in empty_space:
-				pass
+		for moves in col_range1:
+			check_space = chess_board[check_row][(col_range1[iteration_for_check])]
+			if col_range1[iteration_for_check] != 0:
+				if check_space in empty_space:
+					pass
+				else:
+#					print check_space
+					if check_space[1] != piece_colour:
+						if check_space[2] == "Q" or check_space[2] == "R":
+							local_check = True
+				iteration_for_check += 1
 			else:
-				print check_space
-				if check_space[1] != piece_colour:
-					if check_space[2] == "Q" or check_space[2] == "R":
-						local_check = True
-			iteration_for_check += 1
+				pass
+		iteration_for_check = 0
+		for moves in col_range2:
+			check_space = chess_board[check_row][(col_range2[iteration_for_check])]
+			if col_range2[iteration_for_check] != 0:
+				if check_space in empty_space:
+					pass
+				else:
+#					print check_space
+					if check_space[1] != piece_colour:
+						if check_space[2] == "Q" or check_space[2] == "R":
+							local_check = True
+				iteration_for_check += 1
+			else:
+				pass
+		iteration_for_check = 0
+		for moves in row_range2:
+			check_space = chess_board[(row_range2[iteration_for_check])][check_column]
+			if row_range2[iteration_for_check] != 0:
+				if row_range2[iteration_for_check] != 8:
+					if check_space in empty_space:
+						pass
+					else:
+						print check_space
+						if check_space[1] != piece_colour:
+							if check_space[2] == "Q" or check_space[2] == "R":
+								local_check = True
+					iteration_for_check += 1
+			else:
+				pass
+		iteration_for_check = 0
+		for moves in row_range1:
+			check_space = chess_board[(row_range1[iteration_for_check])][check_column]
+			if row_range1[iteration_for_check] != 8:
+#				if row_range1[iteration_for_check] != 0:
+				if check_space in empty_space:
+					pass
+				else:
+					print check_space
+					if check_space[1] != piece_colour:
+						if check_space[2] == "Q" or check_space[2] == "R":
+							local_check = True
+				iteration_for_check += 1
+			else:
+				pass
+			
+
 	print "Made it this far...", local_check
 
 drawBoard = DrawBoard(valid_move)
