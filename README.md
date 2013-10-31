@@ -144,6 +144,14 @@ that nothing of the opposing piece is in any of those spaces, unless something
 is in the way. Easy, right?
 
 
+__31/10/13:__
+
+Check works surprisingly exactly like it does in my update above. I have check 
+for rooks and queens on non-diagonals picked up by the function now. I will 
+have to do some kind of acrobatics to make it actually spit out a usable 
+result, but that's not what I'm building right now.
+
+
 Known bugs/issues as at 30/10/13:
 
 >~~If you try and move black pawn a7 to anywhere legal, the program crashes~~
@@ -184,7 +192,8 @@ it to and if you move other people's pieces, it redraws. _Reinstated bug_
 
 
 All in, things are shaping up nicely. I mean, seriously. I can almost _taste_ 
-completion. Check is going to be a bugger though.
+completion. ~~Check is going to be a bugger though.~~ Check is coming along 
+nicely now.
 
 
 In other news, I found a simpler wording for the __en passant__ rule so I 
