@@ -152,6 +152,18 @@ have to do some kind of acrobatics to make it actually spit out a usable
 result, but that's not what I'm building right now.
 
 
+__11/11/13:__
+
+There has been an 11 day hiatus because I was participating in [NaNoWriMo]
+(http://nanowrimo.org) so now that I've finished my novel, I'm back to chess.
+
+Annoyingly enough this update is to say that I fixed some code that I mangled 
+on 31/10/13 regarding collision detection.
+
+Check is giving me a headache, and I can't write code tonight.
+
+
+
 Known bugs/issues as at 30/10/13:
 
 >~~If you try and move black pawn a7 to anywhere legal, the program crashes~~
