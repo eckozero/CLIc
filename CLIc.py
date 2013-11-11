@@ -603,18 +603,18 @@ def collision_detection(row, column, new_row, new_column):
 	if chess_board[row][column][2] != "N":
 		x = row - new_row
 		y = column - new_column
-#		print x, y
+		print x, y
 		if x < 0:
 			range1 = range(x, 0)
 			range1.reverse()
 		else:
-			range1 = range(x+1)
+			range1 = range(1,x+1)
 		if y < 0:
 			range2 = range(y, 0)
 			range2.reverse()
 #				range2.sort()
 		else:
-			range2 = range(y+1)
+			range2 = range(1,y+1)
 		counter2 = 0
 #		print range1, range2
 		
@@ -630,7 +630,7 @@ def collision_detection(row, column, new_row, new_column):
 				empty_check = chess_board[row][column-(range2[list_index])]
 				if list_index > 0:
 #					print empty_check
-					if empty_check[1] == " " or empty_check[1] == "_":
+					if empty_check in empty_space:
 						pass
 					else:
 #						print empty_check
@@ -663,7 +663,7 @@ def collision_detection(row, column, new_row, new_column):
 			"""Deals with straightforward up and down moves"""
 			while counter2 != len(range1):
 				list_index = (int((range1[counter2]**2)**0.5)-1)
-#				print list_index, range1
+				print list_index, range1
 				# returns a value of one on a single (0) length list;
 				# outside of list range. Corrects for this
 				if x < 0:
@@ -671,8 +671,8 @@ def collision_detection(row, column, new_row, new_column):
 
 				empty_check = chess_board[row-(range1[list_index])][column]
 				if list_index > 0:
-#					print empty_check
-					if empty_check[1] == " " or empty_check[1] == "_":
+					print empty_check
+					if empty_check in empty_space:
 						pass
 					else:
 						print "hit it 2"
@@ -701,38 +701,44 @@ def collision_detection(row, column, new_row, new_column):
 		counter2 = 0
 		if (x**2) == (y**2):
 			"""Deals with diagonal moves"""
-			while counter2 != len(range1):
+			while counter2+1 < len(range1):
 				list_index1 = int(((range1[counter2])**2)**0.5)
 				list_index2 = int(((range2[counter2])**2)**0.5)
 
+				print range1, range2
+				"""What the f**k was I thinking?"""
 				# if x or y is less than 0, that list is one item less 
 				# than the other. (e.g. [0,1,2] [-1,-2])
 				# this code checks if there is disparity in the list
 				# lengths and corrects accordingly
-				if (x < 0 and y > 0) and list_index1 != 0:
-					list_index1 -= 1
-				elif (x > 0 and y < 0) and list_index2 != 0:
-					list_index2 -=1
+#				if (x > 0 and y < 0) and list_index1 != 0:
+#					list_index1 -= 1
+#				elif (x < 0 and y > 0) and list_index2 != 0:
+#					list_index2 -=1
 
 				# counter2 is the position in the list. if reading pos
 				# 0 in the list, you will compare 0 to -1, leading to 
 				# the wrong chess square being evaluated. This code 
 				# corrects for that
+#				if counter2 == 0:
+#					if range1[list_index1] == 0:
+#						list_index1 += 1
+#					if range2[list_index2] == 0:
+#						list_index2 += 1
+						
+				print list_index1, list_index2
 				if counter2 == 0:
-					if range1[list_index1] == 0:
-						list_index1 += 1
-					if range2[list_index2] == 0:
-						list_index2 += 1
-#				print list_index1, list_index2
+					list_index1 = 0
+					list_index2 = 0
 				empty_check = chess_board[row-(range1[list_index1])][column-(range2[list_index2])]
 #				print empty_check
-				if list_index1 > 0 and list_index2 > 0:
-					if empty_check[1] == " " or empty_check[1] == "_":
-						pass
-					else:
-#						print empty_check
-						print "hit it"
-						return 0
+#				if list_index1 > 0 and list_index2 > 0:
+				if empty_check in empty_space:
+					pass
+				else:
+#					print empty_check
+					print "hit it"
+					return 0
 				
 				if counter2+1 == len(range1) or counter2+1 == len(range2):
 					if chess_board[new_row][new_column][1] == chess_board[row][column][1]:
@@ -776,15 +782,20 @@ def check_for_check():
 	check_row = 0
 	check_column = 0
 	king_found = False
+	# check whose turn it is to look for check on that turn
 	if piece_colour == "w":
 		local_check = white_king_check
 	else:
 		local_check = black_king_check
 	if local_check != True:
+		# iterate through each column and row to find which piece has
+		# the king in it
 		for pieces in range(9):
 			for columns in range(9):
 				if chess_board[pieces][columns][2] == "K":
 					if chess_board[pieces][columns][1] == piece_colour:
+						# successfully found King. Assign location to
+						# a variable
 						print "Test hit"
 						check_row = pieces
 						check_column = columns
@@ -794,26 +805,33 @@ def check_for_check():
 					break
 			if king_found == True:
 				break
+		# create lists to search for attacking pieces in all directions
+		# from kings position
 		row_range1 = range(0, check_row)
+		# reverse range to iterate through lists consistently
 		row_range1.reverse()
 		row_range2 = range(check_row, 9)
 		col_range1 = range(0, check_column)
 		col_range1.reverse()
 		col_range2 = range(check_column, 9)
-		print check_row, check_column, chess_board[check_row][check_column]
-		print row_range1, row_range2
-		print col_range1, col_range2
-		print local_check
+#		print check_row, check_column, chess_board[check_row][check_column]
+#		print row_range1, row_range2
+#		print col_range1, col_range2
+#		print local_check
 		iteration_for_check = 0
 		for moves in col_range1:
 			check_space = chess_board[check_row][(col_range1[iteration_for_check])]
 			if col_range1[iteration_for_check] != 0:
 				if check_space in empty_space:
+					# space is empty - move on
 					pass
 				else:
-#					print check_space
+					# space not empty. is it your piece?
 					if check_space[1] != piece_colour:
+						# Not your piece. is it attacking piece with a
+						# vaid attack on king?
 						if check_space[2] == "Q" or check_space[2] == "R":
+							# Yes to above. King is in check
 							local_check = True
 				iteration_for_check += 1
 			else:
@@ -853,8 +871,7 @@ def check_for_check():
 			if row_range1[iteration_for_check] != 8:
 #				if row_range1[iteration_for_check] != 0:
 				if check_space in empty_space:
-					print check_space
-#					pass
+					pass
 				else:
 					print check_space
 					if check_space[1] != piece_colour:
@@ -864,7 +881,8 @@ def check_for_check():
 			else:
 				pass
 			
-
+	# king is not in check
+#	return check
 	print "Made it this far...", local_check
 
 drawBoard = DrawBoard(valid_move)
