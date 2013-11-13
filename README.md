@@ -163,8 +163,16 @@ on 31/10/13 regarding collision detection.
 Check is giving me a headache, and I can't write code tonight.
 
 
+__13/11/13:__
 
-Known bugs/issues as at 30/10/13:
+Added a Class for check, rather than trying to squeeze everything into one 
+ridiculously oversized function. It's going well, and the Check class can now 
+find the King *(always a good start)* **and** check horizontal spaces. It 
+also now stops running if one of your pieces is blocking the King, because
+obviously it's not in check in that case.
+
+
+Known bugs/issues as at 13/11/13:
 
 >~~If you try and move black pawn a7 to anywhere legal, the program crashes~~
 
@@ -205,7 +213,8 @@ it to and if you move other people's pieces, it redraws. _Reinstated bug_
 
 All in, things are shaping up nicely. I mean, seriously. I can almost _taste_ 
 completion. ~~Check is going to be a bugger though.~~ Check is coming along 
-nicely now.
+nicely now, including its own class, which is nice because I thought I'd
+forgotten how to use them.
 
 
 In other news, I found a simpler wording for the __en passant__ rule so I 
