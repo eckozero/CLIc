@@ -150,7 +150,6 @@ class Check(object):
 
 	def check_h(self):
 		"""Checks horizontal moves + and - from King pos"""
-		piece_blocking = False
 		local_check = False
 		check_row, check_column = self.find_king()
 		col_range1 = range(1, check_column)
@@ -161,7 +160,7 @@ class Check(object):
 		for each in super_list:
 			for every in range(0, len(each)):
 				check_space = chess_board[check_row][check_column - (each[every])]
-				print check_space, (each[every]), each, every
+#				print check_space, (each[every]), each, every
 				if check_space in empty_space:
 				# space is empty - move on
 					pass
