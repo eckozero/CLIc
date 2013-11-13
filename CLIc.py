@@ -62,7 +62,7 @@ valid_move = True
 turn = "White's"
 
 # Magic variables. A.K.A. lazy code to facilitate complex rules
-empty_space = ["(   )" ,"{___}"]
+empty_space = ("(   )" ,"{___}")
 white_king_moved = False
 black_king_moved = False
 wR1_moved = False
@@ -129,6 +129,59 @@ class GameMechanics(object):
 			turn = "Black's"
 		return turn
 
+
+class Check(object):
+	def __init__(self, white_king_check, black_king_check):
+		self.white_king_check = white_king_check
+		self.black_king_check = black_king_check
+	
+	def find_king(self):
+		for pieces in range(9):
+			for columns in range(9):
+				if chess_board[pieces][columns][2] == "K":
+					if chess_board[pieces][columns][1] == piece_colour:
+						# successfully found King. Assign location to
+						# a variable
+						print "Test hit"
+						check_row = pieces
+						check_column = columns
+						break
+		return check_row, check_column
+
+	def check_h(self):
+		"""Checks horizontal moves + and - from King pos"""
+		piece_blocking = False
+		local_check = False
+		check_row, check_column = self.find_king()
+		col_range1 = range(1, check_column)
+		col_range2 = range((check_column * -1), 0)
+		col_range2.reverse()
+		super_list = [col_range1, col_range2]
+		print col_range1, col_range2
+		for each in super_list:
+			for every in range(0, len(each)):
+				check_space = chess_board[check_row][check_column - (each[every])]
+				print check_space, (each[every]), each, every
+				if check_space in empty_space:
+				# space is empty - move on
+					pass
+				else:
+					# space not empty. is it your piece?
+					if check_space[1] != piece_colour:
+					# Not your piece. is it attacking piece with a
+					# vaid attack on king?
+						if check_space[2] == "Q" or check_space[2] == "R":
+						# Yes to above. King is in check
+							local_check = True
+					else:
+						# Your piece is blocking
+						local_check = False
+						break
+						
+		return local_check
+		
+
+checkCheck = Check(white_king_check, black_king_check)
 
 # Broken. Don't uncomment.
 
@@ -782,105 +835,47 @@ def check_for_check():
 	check_row = 0
 	check_column = 0
 	king_found = False
+	kingFound = checkCheck.find_king()
+	print kingFound
 	# check whose turn it is to look for check on that turn
 	if piece_colour == "w":
 		local_check = white_king_check
 	else:
 		local_check = black_king_check
-	if local_check != True:
-		# iterate through each column and row to find which piece has
-		# the king in it
-		for pieces in range(9):
-			for columns in range(9):
-				if chess_board[pieces][columns][2] == "K":
-					if chess_board[pieces][columns][1] == piece_colour:
-						# successfully found King. Assign location to
-						# a variable
-						print "Test hit"
-						check_row = pieces
-						check_column = columns
-						king_found == True
-						break
-				if king_found == True:
-					break
-			if king_found == True:
-				break
-		# create lists to search for attacking pieces in all directions
-		# from kings position
-		row_range1 = range(0, check_row)
-		# reverse range to iterate through lists consistently
-		row_range1.reverse()
-		row_range2 = range(check_row, 9)
-		col_range1 = range(0, check_column)
-		col_range1.reverse()
-		col_range2 = range(check_column, 9)
-#		print check_row, check_column, chess_board[check_row][check_column]
-#		print row_range1, row_range2
-#		print col_range1, col_range2
-#		print local_check
-		iteration_for_check = 0
-		for moves in col_range1:
-			check_space = chess_board[check_row][(col_range1[iteration_for_check])]
-			if col_range1[iteration_for_check] != 0:
-				if check_space in empty_space:
-					# space is empty - move on
-					pass
-				else:
-					# space not empty. is it your piece?
-					if check_space[1] != piece_colour:
-						# Not your piece. is it attacking piece with a
-						# vaid attack on king?
-						if check_space[2] == "Q" or check_space[2] == "R":
-							# Yes to above. King is in check
-							local_check = True
-				iteration_for_check += 1
-			else:
-				pass
-		iteration_for_check = 0
-		for moves in col_range2:
-			check_space = chess_board[check_row][(col_range2[iteration_for_check])]
-			if col_range2[iteration_for_check] != 0:
-				if check_space in empty_space:
-					pass
-				else:
+	check_row, check_column = kingFound
+	localCheck = checkCheck.check_h()
+	print localCheck
+#	iteration_for_check = 0
+#	for moves in row_range2:
+#		check_space = chess_board[(row_range2[iteration_for_check])][check_column]
+#		if row_range2[iteration_for_check] != 0:
+#			if row_range2[iteration_for_check] != 8:
+#				if check_space in empty_space:
+#					pass
+#				else:
 #					print check_space
-					if check_space[1] != piece_colour:
-						if check_space[2] == "Q" or check_space[2] == "R":
-							local_check = True
-				iteration_for_check += 1
-			else:
-				pass
-		iteration_for_check = 0
-		for moves in row_range2:
-			check_space = chess_board[(row_range2[iteration_for_check])][check_column]
-			if row_range2[iteration_for_check] != 0:
-				if row_range2[iteration_for_check] != 8:
-					if check_space in empty_space:
-						pass
-					else:
-						print check_space
-						if check_space[1] != piece_colour:
-							if check_space[2] == "Q" or check_space[2] == "R":
-								local_check = True
-					iteration_for_check += 1
-			else:
-				pass
-		iteration_for_check = 0
-		for moves in row_range1:
-			check_space = chess_board[(row_range1[iteration_for_check])][check_column]
-			if row_range1[iteration_for_check] != 8:
-#				if row_range1[iteration_for_check] != 0:
-				if check_space in empty_space:
-					pass
-				else:
-					print check_space
-					if check_space[1] != piece_colour:
-						if check_space[2] == "Q" or check_space[2] == "R":
-							local_check = True
-				iteration_for_check += 1
-			else:
-				pass
-			
+#					if check_space[1] != piece_colour:
+#						if check_space[2] == "Q" or check_space[2] == "R":
+#							local_check = True
+#				iteration_for_check += 1
+#		else:
+#			pass
+#	iteration_for_check = 0
+#	for moves in row_range1:
+#		check_space = chess_board[(row_range1[iteration_for_check])][check_column]
+#		if row_range1[iteration_for_check] != 8:
+##				if row_range1[iteration_for_check] != 0:
+	#		if check_space in empty_space:
+	#			pass
+	#		else:
+	#			print check_space
+	#			if check_space[1] != piece_colour:
+	#				if check_space[2] == "Q" or check_space[2] == "R":
+	#					local_check = True
+	#		iteration_for_check += 1
+	#	else:
+	#		pass
+	#	
 	# king is not in check
 #	return check
 	print "Made it this far...", local_check
