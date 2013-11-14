@@ -171,6 +171,15 @@ find the King *(always a good start)* **and** check horizontal spaces. It
 also now stops running if one of your pieces is blocking the King, because
 obviously it's not in check in that case.
 
+__14/11/13:__
+
+Added vertical check validation. The code is virtually identical to the code for above.
+
+Started added diagonal check validation. Ran into the snag that where I thought I was 
+running all four directions I was just running two directions, twice.
+
+This is a very trivial update, because it's copy, paste, slightly amend.
+
 
 Known bugs/issues as at 13/11/13:
 
