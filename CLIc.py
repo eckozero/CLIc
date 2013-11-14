@@ -152,19 +152,22 @@ class Check(object):
 		"""Checks horizontal moves + and - from King pos"""
 		local_check = False
 		check_row, check_column = self.find_king()
-		col_range1 = range(1, check_column)
-		col_range2 = range((check_column * -1), 0)
+		col_range1 = range(1, check_column+1)
+		col_range2 = range(((8 - check_column)*-1), 0)
 		col_range2.reverse()
 		super_list = [col_range1, col_range2]
 		print col_range1, col_range2
 		for each in super_list:
 			for every in range(0, len(each)):
 				check_space = chess_board[check_row][check_column - (each[every])]
-#				print check_space, (each[every]), each, every
+				print check_space
 				if check_space in empty_space:
 				# space is empty - move on
 					pass
 				else:
+					# is it a piece space?
+					if check_space[1] != ("{" or "("):
+						pass
 					# space not empty. is it your piece?
 					if check_space[1] != piece_colour:
 					# Not your piece. is it attacking piece with a
@@ -172,6 +175,7 @@ class Check(object):
 						if check_space[2] == "Q" or check_space[2] == "R":
 						# Yes to above. King is in check
 							local_check = True
+							break
 					else:
 						# Your piece is blocking
 						local_check = False
@@ -179,6 +183,47 @@ class Check(object):
 						
 		return local_check
 		
+	def check_v(self):
+		"""Checks horizontal moves + and - from King pos"""
+		local_check = False
+		check_row, check_column = self.find_king()
+		row_range1 = range(1, check_row+1)
+		row_range2 = range(((8 - check_row) * -1), 0)
+		row_range2.reverse()
+		super_list = [row_range1, row_range2]
+		print row_range1, row_range2
+		for each in super_list:
+			for every in range(0, len(each)):
+				check_space = chess_board[check_row - (each[every])][check_column]
+				print check_space
+				if check_space in empty_space:
+				# space is empty - move on
+					pass
+				else:
+					# is it a piece space?
+					if check_space[1] != ("{" or "("):
+						pass
+					# space not empty. is it your piece?
+					if check_space[1] != piece_colour:
+					# Not your piece. is it attacking piece with a
+					# vaid attack on king?
+						if check_space[2] == "Q" or check_space[2] == "R":
+						# Yes to above. King is in check
+							local_check = True
+							break
+					else:
+						# Your piece is blocking
+						local_check = False
+						break
+						
+		return local_check
+	
+	def check_d(self):
+		"""Checks horizontal moves + and - from King pos"""
+		local_check = False
+		check_row, check_column = self.find_king()
+
+		return local_check				
 
 checkCheck = Check(white_king_check, black_king_check)
 
@@ -844,6 +889,12 @@ def check_for_check():
 	check_row, check_column = kingFound
 	localCheck = checkCheck.check_h()
 	print localCheck
+	if localCheck == False:
+		localCheck = checkCheck.check_v()
+		print localCheck
+	
+#	if localCheck == False:
+#		localCheck = checkCheck.check_d()
 #	iteration_for_check = 0
 #	for moves in row_range2:
 #		check_space = chess_board[(row_range2[iteration_for_check])][check_column]
@@ -877,7 +928,7 @@ def check_for_check():
 	#	
 	# king is not in check
 #	return check
-	print "Made it this far...", local_check
+	print "Made it this far...", localCheck
 
 drawBoard = DrawBoard(valid_move)
 turn_spec = GameMechanics(turn_counter)
