@@ -181,7 +181,17 @@ running all four directions I was just running two directions, twice.
 This is a very trivial update, because it's copy, paste, slightly amend.
 
 
-Known bugs/issues as at 13/11/13:
+__14/11/13:__
+
+The big brain am winning again.
+
+Managed to fix the **check_d()** function. I still need to sort out the issues with check 
+validation happening at the wrong time, and add in something to make it so you can't move 
+into check, and you can't make a move that would then put you in check but little steps... 
+If you're wondering, I'm quoting Futurama for no raisin.
+
+
+Known bugs/issues as at 14/11/13:
 
 >~~If you try and move black pawn a7 to anywhere legal, the program crashes~~
 
@@ -225,6 +235,9 @@ completion. ~~Check is going to be a bugger though.~~ Check is coming along
 nicely now, including its own class, which is nice because I thought I'd
 forgotten how to use them.
 
+The Check class is almost done, it has a function for horizontal, vertical and diagonal 
+check validation. As per the update on 14/11/13 I have yet to make this work according to 
+the rules of the game.
 
 In other news, I found a simpler wording for the __en passant__ rule so I 
 *may* look to add this in at some (much) later point.
