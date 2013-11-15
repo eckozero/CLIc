@@ -156,17 +156,17 @@ class Check(object):
 		col_range2 = range(((8 - check_column)*-1), 0)
 		col_range2.reverse()
 		super_list = [col_range1, col_range2]
-		print col_range1, col_range2
+#		print col_range1, col_range2
 		for each in super_list:
 			for every in range(0, len(each)):
 				check_space = chess_board[check_row][check_column - (each[every])]
-				print check_space
+#				print check_space
 				if check_space in empty_space:
 				# space is empty - move on
 					pass
 				else:
 					# is it a piece space?
-					if check_space[1] != ("{" or "("):
+					if check_space[0] != "{" and check_space[0] != "(":
 						pass
 					# space not empty. is it your piece?
 					if check_space[1] != piece_colour:
@@ -191,17 +191,17 @@ class Check(object):
 		row_range2 = range(((8 - check_row) * -1), 0)
 		row_range2.reverse()
 		super_list = [row_range1, row_range2]
-		print row_range1, row_range2
+#		print row_range1, row_range2
 		for each in super_list:
 			for every in range(0, len(each)):
 				check_space = chess_board[check_row - (each[every])][check_column]
-				print check_space
+#				print check_space
 				if check_space in empty_space:
 				# space is empty - move on
 					pass
 				else:
 					# is it a piece space?
-					if check_space[1] != ("{" or "("):
+					if check_space[0] != "{" or check_space[0] != "(":
 						pass
 					# space not empty. is it your piece?
 					if check_space[1] != piece_colour:
@@ -229,39 +229,54 @@ class Check(object):
 		col_range2 = range(((8 - check_column)*-1), 0)
 		col_range2.reverse()
 		super_list = [row_range1, row_range2, col_range1, col_range2]
-		print super_list
-		"""Issue below is that there is no difference in the row/col ranges
-		it is running the same validation as it moves through the 4 iterable
-		items in the list. Need to make it run each of 4 possible validations
-		separately (+/+, +/-, -/+, -/- for row/column)"""
+#		print super_list
+#		"""Issue below is that there is no difference in the row/col ranges
+#		it is running the same validation as it moves through the 4 iterable
+#		items in the list. Need to make it run each of 4 possible validations
+#		separately (+/+, +/-, -/+, -/- for row/column)"""
+		counter = 0
 		for each in super_list:
-			print each
+			print local_check
 			if local_check == True:
 				break
 			for every in range(0, len(each)):
-				check_space = chess_board[check_row - (each[every])][check_column - (each[every])]
+				if counter == 0:
+					check_space = chess_board[check_row - (each[every])][check_column - (each[every])]
+				elif counter == 1:
+					check_space = chess_board[check_row - (each[every])][check_column - (each[every])]
+				elif counter == 2:
+					check_space = chess_board[check_row - (each[every])][check_column + (each[every])]
+				elif counter == 3:
+					check_space = chess_board[check_row - (each[every])][check_column + (each[every])]
+
+
 				print check_space
+
 				if check_space in empty_space:
-			# space is empty - move on
+				# space is empty - move on
 					pass
 				else:
-				# is it a piece space?
-					if check_space[1] != "{" or check_space[1] != "(":
-						break
-				# space not empty. is it your piece?
-					if check_space[1] != piece_colour:
-				# Not your piece. is it attacking piece with a
-				# vaid attack on king?
-						if check_space[2] == "Q" or check_space[2] == "B":
-					# Yes to above. King is in check
-							local_check = True
+					# is it a piece space?
+					if check_space[0] == "{" or check_space[0] == "(":
+					# space not empty. is it your piece?
+						if check_space[1] != piece_colour:
+					# Not your piece. is it attacking piece with a
+					# vaid attack on king?
+							if check_space[2] == "Q" or check_space[2] == "B":
+						# Yes to above. King is in check
+								local_check = True
+								print "big brain am winning again"
+								break
+						else:
+							# your piece in the way
 							break
 					else:
-						# Your piece is blocking
-						local_check = False
+						print "i am the greetest"
+#						pass
 						break
-				
-		return local_check			
+						# Your piece is blocking
+			counter += 1	
+		return local_check
 
 checkCheck = Check(white_king_check, black_king_check)
 
@@ -738,7 +753,7 @@ def collision_detection(row, column, new_row, new_column):
 	if chess_board[row][column][2] != "N":
 		x = row - new_row
 		y = column - new_column
-		print x, y
+#		print x, y
 		if x < 0:
 			range1 = range(x, 0)
 			range1.reverse()
@@ -798,7 +813,7 @@ def collision_detection(row, column, new_row, new_column):
 			"""Deals with straightforward up and down moves"""
 			while counter2 != len(range1):
 				list_index = (int((range1[counter2]**2)**0.5)-1)
-				print list_index, range1
+#				print list_index, range1
 				# returns a value of one on a single (0) length list;
 				# outside of list range. Corrects for this
 				if x < 0:
@@ -806,7 +821,7 @@ def collision_detection(row, column, new_row, new_column):
 
 				empty_check = chess_board[row-(range1[list_index])][column]
 				if list_index > 0:
-					print empty_check
+#					print empty_check
 					if empty_check in empty_space:
 						pass
 					else:
@@ -840,7 +855,7 @@ def collision_detection(row, column, new_row, new_column):
 				list_index1 = int(((range1[counter2])**2)**0.5)
 				list_index2 = int(((range2[counter2])**2)**0.5)
 
-				print range1, range2
+#				print range1, range2
 				"""What the f**k was I thinking?"""
 				# if x or y is less than 0, that list is one item less 
 				# than the other. (e.g. [0,1,2] [-1,-2])
@@ -924,7 +939,9 @@ def check_for_check():
 		local_check = white_king_check
 	else:
 		local_check = black_king_check
+
 	check_row, check_column = kingFound
+
 	localCheck = checkCheck.check_h()
 	print localCheck
 	if localCheck == False:
@@ -934,7 +951,7 @@ def check_for_check():
 	if localCheck == False:
 		localCheck = checkCheck.check_d()
 		print localCheck
-	print "Made it this far...", localCheck
+#	print "Made it this far...", localCheck
 
 drawBoard = DrawBoard(valid_move)
 turn_spec = GameMechanics(turn_counter)
