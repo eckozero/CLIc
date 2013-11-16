@@ -277,6 +277,15 @@ class Check(object):
 						# Your piece is blocking
 			counter += 1	
 		return local_check
+		
+	def check_k():
+		"""Checks if King is in check from Knight"""
+		local_check = False
+		check_row, check_column = self.find_king()
+		# knight check positions are:
+		# row+2 column+1, row+2 column-1, row-2 column+1, row-2 column-1
+		# row+1 column+2, row+1 column-2, row-1 column+2, row-1 column-2
+		
 
 checkCheck = Check(white_king_check, black_king_check)
 
