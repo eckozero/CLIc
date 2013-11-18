@@ -181,7 +181,7 @@ running all four directions I was just running two directions, twice.
 This is a very trivial update, because it's copy, paste, slightly amend.
 
 
-__14/11/13:__
+__15/11/13:__
 
 The big brain am winning again.
 
@@ -191,7 +191,17 @@ into check, and you can't make a move that would then put you in check but littl
 If you're wondering, I'm quoting Futurama for no raisin.
 
 
-Known bugs/issues as at 14/11/13:
+__18/11/13:__
+
+Implemented **check_k()** function which decides whether a king is in check by 
+a ka-nig-et or not (Ni!). Not fully tested but definitely works from King 
+starting position. Same detail with the chess function as above - it can tell 
+whether a position is check, but can't stop play until the issue is resolved 
+and will let you move into check. Still, knight check is mighty fine step in 
+the right direction.
+
+
+Known bugs/issues as at 16/11/13:
 
 >~~If you try and move black pawn a7 to anywhere legal, the program crashes~~
 
