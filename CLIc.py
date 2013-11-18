@@ -236,7 +236,7 @@ class Check(object):
 #		separately (+/+, +/-, -/+, -/- for row/column)"""
 		counter = 0
 		for each in super_list:
-			print local_check
+#			print local_check
 			if local_check == True:
 				break
 			for every in range(0, len(each)):
@@ -250,7 +250,7 @@ class Check(object):
 					check_space = chess_board[check_row - (each[every])][check_column + (each[every])]
 
 
-				print check_space
+#				print check_space
 
 				if check_space in empty_space:
 				# space is empty - move on
@@ -265,27 +265,76 @@ class Check(object):
 							if check_space[2] == "Q" or check_space[2] == "B":
 						# Yes to above. King is in check
 								local_check = True
-								print "big brain am winning again"
+#								print "big brain am winning again"
 								break
 						else:
 							# your piece in the way
 							break
 					else:
-						print "i am the greetest"
+#						print "i am the greetest"
 #						pass
 						break
 						# Your piece is blocking
 			counter += 1	
 		return local_check
 		
-	def check_k():
+	def check_k(self):
 		"""Checks if King is in check from Knight"""
 		local_check = False
 		check_row, check_column = self.find_king()
 		# knight check positions are:
 		# row+2 column+1, row+2 column-1, row-2 column+1, row-2 column-1
 		# row+1 column+2, row+1 column-2, row-1 column+2, row-1 column-2
-		
+		super_list = [[2,1],[-2,1],[-2,1],[2,1],[1,2],[-1,2],[1,-2],[1,2]]
+		counter = 0
+		for each in super_list:
+			check_space = ""
+			print each, check_row, check_column, (check_row + each[0])
+			if local_check == True:
+				break
+			for every in range(0,len(super_list)):
+				if counter % 2 == 0:
+					if (check_row + each[0]) <= 8 and (check_row + each[0]) >= 0:
+						if (check_column + each[1]) <= 8 and (check_column + each[1]) >= 0:
+							check_space = chess_board[check_row+(each[0])][check_column+(each[1])]
+#						else:
+#							pass
+#					elif 
+#					pass
+				else:
+					if (check_row - each[0]) <= 8 and (check_row - each[0]) >= 0:
+						if (check_column - each[1]) <= 8 and (check_column - each[1]) >= 0:
+							check_space = chess_board[check_row-(each[0])][check_column-(each[1])]
+#						else:
+#							pass
+#					else:
+#						pass
+
+				print check_space
+				
+				if check_space != "":
+				
+					if check_space in empty_space:
+				# space is empty - move on
+						pass
+					else:
+				# is it a piece space?
+						if check_space[0] == "{" or check_space[0] == "(":
+				# space not empty. is it your piece?
+							if check_space[1] != piece_colour:
+				# Not your piece. is it attacking piece with a
+				# vaid attack on king?
+								if check_space[2] == "N":
+					# Yes to above. King is in check
+									local_check = True
+									print "big brain am winning again"
+									break
+							else:
+						# your piece in the way
+								break
+				counter += 1	
+		return local_check
+
 
 checkCheck = Check(white_king_check, black_king_check)
 
@@ -952,14 +1001,18 @@ def check_for_check():
 	check_row, check_column = kingFound
 
 	localCheck = checkCheck.check_h()
-	print localCheck
+	#print localCheck
 	if localCheck == False:
 		localCheck = checkCheck.check_v()
-		print localCheck
+		#print localCheck
 	
 	if localCheck == False:
 		localCheck = checkCheck.check_d()
-		print localCheck
+		#print localCheck
+		
+	if localCheck == False:
+		localCheck = checkCheck.check_k()
+	print localCheck
 #	print "Made it this far...", localCheck
 
 drawBoard = DrawBoard(valid_move)
