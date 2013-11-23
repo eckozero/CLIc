@@ -142,7 +142,7 @@ class Check(object):
 					if chess_board[pieces][columns][1] == piece_colour:
 						# successfully found King. Assign location to
 						# a variable
-						print "Test hit"
+#						print "Test hit"
 						check_row = pieces
 						check_column = columns
 						break
@@ -263,18 +263,15 @@ class Check(object):
 					# Not your piece. is it attacking piece with a
 					# vaid attack on king?
 							if check_space[2] == "Q" or check_space[2] == "B":
-						# Yes to above. King is in check
+							# Yes to above. King is in check
 								local_check = True
-#								print "big brain am winning again"
 								break
 						else:
-							# your piece in the way
+							# your piece - no threat
 							break
 					else:
-#						print "i am the greetest"
-#						pass
+					# not a piece space
 						break
-						# Your piece is blocking
 			counter += 1	
 		return local_check
 		
@@ -289,7 +286,7 @@ class Check(object):
 		counter = 0
 		for each in super_list:
 			check_space = ""
-			print each, check_row, check_column, (check_row + each[0])
+#			print each, check_row, check_column, (check_row + each[0])
 			if local_check == True:
 				break
 			for every in range(0,len(super_list)):
@@ -297,20 +294,12 @@ class Check(object):
 					if (check_row + each[0]) <= 8 and (check_row + each[0]) >= 0:
 						if (check_column + each[1]) <= 8 and (check_column + each[1]) >= 0:
 							check_space = chess_board[check_row+(each[0])][check_column+(each[1])]
-#						else:
-#							pass
-#					elif 
-#					pass
 				else:
 					if (check_row - each[0]) <= 8 and (check_row - each[0]) >= 0:
 						if (check_column - each[1]) <= 8 and (check_column - each[1]) >= 0:
 							check_space = chess_board[check_row-(each[0])][check_column-(each[1])]
-#						else:
-#							pass
-#					else:
-#						pass
 
-				print check_space
+#				print check_space
 				
 				if check_space != "":
 				
@@ -327,7 +316,7 @@ class Check(object):
 								if check_space[2] == "N":
 					# Yes to above. King is in check
 									local_check = True
-									print "big brain am winning again"
+#									print "big brain am winning again"
 									break
 							else:
 						# your piece in the way
@@ -337,45 +326,6 @@ class Check(object):
 
 
 checkCheck = Check(white_king_check, black_king_check)
-
-# Broken. Don't uncomment.
-
-#class PawnMovement(object):
-#	def __init__(self, piece):
-#		self.piece = piece
-#		
-#	def pawn_promotion(self, piece_colour):
-#		"""Determine whether or not pawn has reached furthest rank from start point"""
-#		promotion = False
-#		# Check if piece moved is a pawn
-#		for every in range(len(pawn_moves)):
-#			check_pawn = pawn_moves[every][0]
-#			if chess_board[row][column] == check_pawn:
-#				# replace number value from list with new location of pawn
-#				pawn_moves[each][1] = chess_moves_row[chess_board[new_row][0][2]]
-#		# iterate through pawn_moves list to find and replace the pawns 
-#		# position on the chess board
-#		for each in range(len(pawn_moves)):
-#			if pawn_moves[each][1] == 7 or pawn_moves[each][1] == 0:
-#				# pawn has reach furthest rank and is to be promoted
-#				# Enable selection of promotion piece
-#				pieces = ["Q", "B", "R", "N"] 
-#				while promotion == False:
-#					new_piece = str(raw_input("\nPlease select which piece pawn is to be promoted to: \n"))
-#					if new_piece.upper() in pieces:
-#						promotion = True
-#					else:
-#						print "\nSorry, I don't think that's a real piece."
-#						print "Just use the first letter of the piece you want"
-#				# Check whether Pawn is promoted on a white square or black square
-#				if chess_board[new_row][new_column][0] == "{":
-#					pawn_moves[each][0] = "{" + piece_colour + new_piece.upper() + " }"
-#				else:
-#					pawn_moves[each][0] = "(" + piece_colour + new_piece.upper() + " )"
-#				pawn = str(pawn_moves[each][0])
-#		if promotion is True:
-#			return pawn
-
 
 
 def pawn_promotion(piece_colour):
@@ -842,7 +792,7 @@ def collision_detection(row, column, new_row, new_column):
 						pass
 					else:
 #						print empty_check
-						print "hit it"
+#						print "hit it"
 						return 0
 				# not very pretty: corrects for disparity in list lengths
 				# by forcing first evaluation to read position 0 in the
@@ -852,7 +802,7 @@ def collision_detection(row, column, new_row, new_column):
 						pass
 					else:
 #						print empty_check
-						print "hit it hack x"
+#						print "hit it hack x"
 						return 0
 				if counter2+1 == len(range1):
 					if chess_board[new_row][new_column][1] == chess_board[row][column][1]:
@@ -883,7 +833,7 @@ def collision_detection(row, column, new_row, new_column):
 					if empty_check in empty_space:
 						pass
 					else:
-						print "hit it 2"
+#						print "hit it 2"
 						return 0
 
 				# not very pretty: corrects for disparity in list lengths
@@ -893,7 +843,7 @@ def collision_detection(row, column, new_row, new_column):
 					if chess_board[row-(range1[0])][column][1] == " " or chess_board[row-(range1[0])][column][1] == "_":
 						pass
 					else:
-						print "hit it hack"
+#						print "hit it hack"
 						return 0 
 
 				if counter2+1 == len(range1):
@@ -913,28 +863,8 @@ def collision_detection(row, column, new_row, new_column):
 				list_index1 = int(((range1[counter2])**2)**0.5)
 				list_index2 = int(((range2[counter2])**2)**0.5)
 
-#				print range1, range2
-				"""What the f**k was I thinking?"""
-				# if x or y is less than 0, that list is one item less 
-				# than the other. (e.g. [0,1,2] [-1,-2])
-				# this code checks if there is disparity in the list
-				# lengths and corrects accordingly
-#				if (x > 0 and y < 0) and list_index1 != 0:
-#					list_index1 -= 1
-#				elif (x < 0 and y > 0) and list_index2 != 0:
-#					list_index2 -=1
-
-				# counter2 is the position in the list. if reading pos
-				# 0 in the list, you will compare 0 to -1, leading to 
-				# the wrong chess square being evaluated. This code 
-				# corrects for that
-#				if counter2 == 0:
-#					if range1[list_index1] == 0:
-#						list_index1 += 1
-#					if range2[list_index2] == 0:
-#						list_index2 += 1
 						
-				print list_index1, list_index2
+#				print list_index1, list_index2
 				if counter2 == 0:
 					list_index1 = 0
 					list_index2 = 0
@@ -945,7 +875,7 @@ def collision_detection(row, column, new_row, new_column):
 					pass
 				else:
 #					print empty_check
-					print "hit it"
+#					print "hit it"
 					return 0
 				
 				if counter2+1 == len(range1) or counter2+1 == len(range2):
@@ -962,7 +892,7 @@ def collision_detection(row, column, new_row, new_column):
 		"""Checks that last position is of different colour and allows capture"""	
 		if counter2+1 == len(range1) or counter2+1 == len(range2):
 			if chess_board[new_row][new_column][1] == chess_board[row][column][1]:
-				print "hit it 4"
+#				print "hit it 4"
 				print "You can't take your own pieces"
 				return 0
 			else:
@@ -986,34 +916,43 @@ def collision_detection(row, column, new_row, new_column):
 
 def check_for_check():
 	"""Woo. Code here"""
-	local_check = None
+	localCheck = None
 	check_row = 0
 	check_column = 0
 	king_found = False
 	kingFound = checkCheck.find_king()
 	print kingFound
+	check_list = ["w", "b"]
 	# check whose turn it is to look for check on that turn
-	if piece_colour == "w":
-		local_check = white_king_check
-	else:
-		local_check = black_king_check
-
-	check_row, check_column = kingFound
-
-	localCheck = checkCheck.check_h()
-	#print localCheck
-	if localCheck == False:
-		localCheck = checkCheck.check_v()
-		#print localCheck
-	
-	if localCheck == False:
-		localCheck = checkCheck.check_d()
-		#print localCheck
+	for colours in check_list:
+		localCheck = None
+		if colours == "w":
+			localCheck = white_king_check
+			piece_turn = "White's "
+			print "hello"
+		else:
+			localCheck = black_king_check
+			piece_turn = "Black's "
+			print "world"
+		check_row, check_column = kingFound
 		
-	if localCheck == False:
-		localCheck = checkCheck.check_k()
-	print localCheck
-#	print "Made it this far...", localCheck
+		print colours, piece_turn
+	
+		localCheck = checkCheck.check_h()
+		
+		if localCheck == False:
+			localCheck = checkCheck.check_v()
+	
+		if localCheck == False:
+			localCheck = checkCheck.check_d()
+		
+		if localCheck == False:
+			localCheck = checkCheck.check_k()
+
+		print localCheck
+
+		if localCheck == True:
+			print piece_turn + "is in Check"
 
 drawBoard = DrawBoard(valid_move)
 turn_spec = GameMechanics(turn_counter)
