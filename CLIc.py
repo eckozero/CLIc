@@ -138,9 +138,10 @@ class Check(object):
 		self.piece_colour = piece_colour
 	
 	def find_king(self, piece_colour):
+		#kingFound = False
+		#while kingFound == False:
 		for pieces in range(9):
 			for columns in range(9):
-#				for colours in ["w", "b"]:
 				if chess_board[pieces][columns][2] == "K":
 					if chess_board[pieces][columns][1] == piece_colour:
 						# successfully found King. Assign location to
@@ -148,8 +149,11 @@ class Check(object):
 #						print "Test hit"
 						check_row = pieces
 						check_column = columns
-						break
-		return check_row, check_column
+		#				kingFound = True
+						print chess_board[check_row][check_column]
+						return check_row, check_column
+							
+#	check_row, check_column = find_king(self, piece_colour)
 
 	def check_h(self, piece_colour):
 		"""Checks horizontal moves + and - from King pos"""
@@ -178,16 +182,19 @@ class Check(object):
 						if check_space[2] == "Q" or check_space[2] == "R":
 						# Yes to above. King is in check
 							local_check = True
-							break
+							return local_check
+						else:
+							# non attacking piece in the way
+							local_check = False
+							return local_check
 					else:
 						# Your piece is blocking
 						local_check = False
-						break
+						return local_check
 						
-		return local_check
 		
 	def check_v(self, piece_colour):
-		"""Checks horizontal moves + and - from King pos"""
+		"""Checks vertical moves + and - from King pos"""
 		local_check = False
 		check_row, check_column = self.find_king(piece_colour)
 		row_range1 = range(1, check_row+1)
@@ -198,7 +205,7 @@ class Check(object):
 		for each in super_list:
 			for every in range(0, len(each)):
 				check_space = chess_board[check_row - (each[every])][check_column]
-#				print check_space
+#				print check_space, piece_colour, check_space[1]
 				if check_space in empty_space:
 				# space is empty - move on
 					pass
@@ -213,11 +220,15 @@ class Check(object):
 						if check_space[2] == "Q" or check_space[2] == "R":
 						# Yes to above. King is in check
 							local_check = True
-							break
+							return local_check
+						else:
+							# non attacking piece is in the way
+							local_check = False
+							return local_check
 					else:
 						# Your piece is blocking
 						local_check = False
-						break
+						return local_check
 						
 		return local_check
 	
@@ -268,7 +279,11 @@ class Check(object):
 							if check_space[2] == "Q" or check_space[2] == "B":
 							# Yes to above. King is in check
 								local_check = True
-								break
+								return local_check
+							else:
+								# non attacking piece is in the way
+								local_check = False
+								return local_check
 						else:
 							# your piece - no threat
 							break
@@ -320,9 +335,9 @@ class Check(object):
 					# Yes to above. King is in check
 									local_check = True
 #									print "big brain am winning again"
-									break
+									return local_check
 							else:
-						# your piece in the way
+						# your piece occupying Knight space
 								break
 				counter += 1	
 		return local_check
@@ -915,7 +930,7 @@ def collision_detection(row, column, new_row, new_column):
 
 
 
-def check_for_check():
+def check_for_check(piece_colour):
 	"""Woo. Code here"""
 	global white_king_check, black_king_check
 #	localCheck = None
@@ -944,7 +959,7 @@ def check_for_check():
 		
 		if localCheck == False:
 			localCheck = checkCheck.check_v(colours)
-	
+
 		if localCheck == False:
 			localCheck = checkCheck.check_d(colours)
 		
@@ -952,16 +967,20 @@ def check_for_check():
 			localCheck = checkCheck.check_k(colours)
 
 #		print localCheck
-
+		if colours == piece_colour:
 			if localCheck == True:
-				print piece_turn + "King is in Check"
+				print "That would put you in check"
+				return None
+		if localCheck == True:
+			print piece_turn + "King is in Check"
 
 		if colours == "w":
 			white_king_check = localCheck
-			return white_king_check
+#			return white_king_check
 		else:
 			black_king_check = localCheck
-			return black_king_check
+#			return black_king_check
+	return localCheck
 		
 drawBoard = DrawBoard(valid_move)
 turn_spec = GameMechanics(turn_counter)
@@ -981,7 +1000,7 @@ while quit_game == False:
 	turn = turn_spec.turn_picker(turn_counter)
 	# apparently this is causing problems so...
 	valid_move = True
-
+	piece_colour = turn[0].lower()
 	if white_king_check == True or black_king_check == True:
 		check_counter += 1
 	else:
@@ -1049,7 +1068,7 @@ while quit_game == False:
 			print "There seems to be a piece in the way..."
 			turn_counter -= 1
 			valid_move = False
-		piece_colour = turn[0].lower()
+#		piece_colour = turn[0].lower()
 	# check that player has picked their own piece
 		if valid_move != False:
 			if chess_board[row][column][1] != (turn[0]).lower():
@@ -1101,20 +1120,27 @@ while quit_game == False:
 					else:
 						turn_counter -=1
 				elif chess_board[row][column][2] == "K":
+#					if check_for_check(piece_colour) is not None:
 					if king_move(piece_colour) == 1:
 						chess_board[new_row][new_column] = king
 #					drawBoard.redraw_valid(valid_move)
 					else:
 						turn_counter -=1
-			if check_for_check() == False:
-				drawBoard.redraw_valid(valid_move)
-			else:
-				if check_counter > 0:
-					print "Your king is still in check..."
-					turn_counter -= 1
-				else:
+			if check_for_check(piece_colour) is not None:
+				if check_for_check(piece_colour) == False:
 					drawBoard.redraw_valid(valid_move)
-		onwards = False
+				else:
+					if check_counter > 0:
+						print "Your king is still in check..."
+						turn_counter -= 1
+					else:
+						drawBoard.redraw_valid(valid_move)
+			else:
+				turn_counter -= 1
+				if chess_board[new_row][new_column][0] == "{":
+					chess_board[new_row][new_column] = "{___}"
+				else:
+					chess_board[new_row][new_column] = "(   )"
+			onwards = False
 	# change player
 	turn_counter += 1
-
