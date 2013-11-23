@@ -200,6 +200,16 @@ whether a position is check, but can't stop play until the issue is resolved
 and will let you move into check. Still, knight check is mighty fine step in 
 the right direction.
 
+__23/11/13:__
+
+Check now (sort of) works. It determines whether or not the kings are in check 
+and then doesn't let you make a move unless it's to get out of check. Also now 
+you can't move *into* check, which is good.
+
+Castling will need some work to make sure you don't castle out of, through or
+into check but it's coming along nicely.
+
+
 
 Known bugs/issues as at 16/11/13:
 
@@ -248,6 +258,7 @@ forgotten how to use them.
 The Check class is almost done, it has a function for horizontal, vertical and diagonal 
 check validation. As per the update on 14/11/13 I have yet to make this work according to 
 the rules of the game.
+
 
 In other news, I found a simpler wording for the __en passant__ rule so I 
 *may* look to add this in at some (much) later point.
