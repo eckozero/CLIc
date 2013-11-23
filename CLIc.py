@@ -60,6 +60,7 @@ quit_game = False
 turn_counter = 10
 valid_move = True
 turn = "White's"
+piece_colour = "w"
 
 # Magic variables. A.K.A. lazy code to facilitate complex rules
 empty_space = ("(   )" ,"{___}")
@@ -131,13 +132,15 @@ class GameMechanics(object):
 
 
 class Check(object):
-	def __init__(self, white_king_check, black_king_check):
+	def __init__(self, white_king_check, black_king_check, piece_colour):
 		self.white_king_check = white_king_check
 		self.black_king_check = black_king_check
+		self.piece_colour = piece_colour
 	
-	def find_king(self):
+	def find_king(self, piece_colour):
 		for pieces in range(9):
 			for columns in range(9):
+#				for colours in ["w", "b"]:
 				if chess_board[pieces][columns][2] == "K":
 					if chess_board[pieces][columns][1] == piece_colour:
 						# successfully found King. Assign location to
@@ -148,10 +151,10 @@ class Check(object):
 						break
 		return check_row, check_column
 
-	def check_h(self):
+	def check_h(self, piece_colour):
 		"""Checks horizontal moves + and - from King pos"""
 		local_check = False
-		check_row, check_column = self.find_king()
+		check_row, check_column = self.find_king(piece_colour)
 		col_range1 = range(1, check_column+1)
 		col_range2 = range(((8 - check_column)*-1), 0)
 		col_range2.reverse()
@@ -183,10 +186,10 @@ class Check(object):
 						
 		return local_check
 		
-	def check_v(self):
+	def check_v(self, piece_colour):
 		"""Checks horizontal moves + and - from King pos"""
 		local_check = False
-		check_row, check_column = self.find_king()
+		check_row, check_column = self.find_king(piece_colour)
 		row_range1 = range(1, check_row+1)
 		row_range2 = range(((8 - check_row) * -1), 0)
 		row_range2.reverse()
@@ -218,10 +221,10 @@ class Check(object):
 						
 		return local_check
 	
-	def check_d(self):
+	def check_d(self, piece_colour):
 		"""Checks horizontal moves + and - from King pos"""
 		local_check = False
-		check_row, check_column = self.find_king()
+		check_row, check_column = self.find_king(piece_colour)
 		row_range1 = range(1, check_row+1)
 		row_range2 = range(((8 - check_row) * -1), 0)
 		row_range2.reverse()
@@ -275,10 +278,10 @@ class Check(object):
 			counter += 1	
 		return local_check
 		
-	def check_k(self):
+	def check_k(self, piece_colour):
 		"""Checks if King is in check from Knight"""
 		local_check = False
-		check_row, check_column = self.find_king()
+		check_row, check_column = self.find_king(piece_colour)
 		# knight check positions are:
 		# row+2 column+1, row+2 column-1, row-2 column+1, row-2 column-1
 		# row+1 column+2, row+1 column-2, row-1 column+2, row-1 column-2
@@ -324,8 +327,6 @@ class Check(object):
 				counter += 1	
 		return local_check
 
-
-checkCheck = Check(white_king_check, black_king_check)
 
 
 def pawn_promotion(piece_colour):
@@ -920,7 +921,7 @@ def check_for_check():
 	check_row = 0
 	check_column = 0
 	king_found = False
-	kingFound = checkCheck.find_king()
+	kingFound = checkCheck.find_king(piece_colour)
 	print kingFound
 	check_list = ["w", "b"]
 	# check whose turn it is to look for check on that turn
@@ -929,34 +930,34 @@ def check_for_check():
 		if colours == "w":
 			localCheck = white_king_check
 			piece_turn = "White's "
-			print "hello"
+
 		else:
 			localCheck = black_king_check
 			piece_turn = "Black's "
-			print "world"
+
 		check_row, check_column = kingFound
 		
-		print colours, piece_turn
+#		print colours, piece_turn
 	
-		localCheck = checkCheck.check_h()
+		localCheck = checkCheck.check_h(colours)
 		
 		if localCheck == False:
-			localCheck = checkCheck.check_v()
+			localCheck = checkCheck.check_v(colours)
 	
 		if localCheck == False:
-			localCheck = checkCheck.check_d()
+			localCheck = checkCheck.check_d(colours)
 		
 		if localCheck == False:
-			localCheck = checkCheck.check_k()
+			localCheck = checkCheck.check_k(colours)
 
-		print localCheck
+#		print localCheck
 
 		if localCheck == True:
-			print piece_turn + "is in Check"
+			print piece_turn + "King is in Check"
 
 drawBoard = DrawBoard(valid_move)
 turn_spec = GameMechanics(turn_counter)
-
+checkCheck = Check(white_king_check, black_king_check, piece_colour)
 
 while quit_game == False:
 	# print board for the first time
