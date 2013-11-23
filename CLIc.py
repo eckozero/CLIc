@@ -953,8 +953,8 @@ def check_for_check():
 
 #		print localCheck
 
-		if localCheck == True:
-			print piece_turn + "King is in Check"
+			if localCheck == True:
+				print piece_turn + "King is in Check"
 
 		if colours == "w":
 			white_king_check = localCheck
