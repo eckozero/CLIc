@@ -917,7 +917,8 @@ def collision_detection(row, column, new_row, new_column):
 
 def check_for_check():
 	"""Woo. Code here"""
-	localCheck = None
+	global white_king_check, black_king_check
+#	localCheck = None
 	check_row = 0
 	check_column = 0
 	king_found = False
@@ -955,9 +956,19 @@ def check_for_check():
 		if localCheck == True:
 			print piece_turn + "King is in Check"
 
+		if colours == "w":
+			white_king_check = localCheck
+			return white_king_check
+		else:
+			black_king_check = localCheck
+			return black_king_check
+		
 drawBoard = DrawBoard(valid_move)
 turn_spec = GameMechanics(turn_counter)
 checkCheck = Check(white_king_check, black_king_check, piece_colour)
+
+# poor placement, for now
+check_counter = 0
 
 while quit_game == False:
 	# print board for the first time
@@ -970,6 +981,11 @@ while quit_game == False:
 	turn = turn_spec.turn_picker(turn_counter)
 	# apparently this is causing problems so...
 	valid_move = True
+
+	if white_king_check == True or black_king_check == True:
+		check_counter += 1
+	else:
+		check_counter = 0
 	# take a starting piece and where to move it to
 	# also checks that player does not wish to quit
 	move1 = raw_input(turn + " turn. Pick which piece to move: ")
@@ -1042,7 +1058,7 @@ while quit_game == False:
 	# check that piece can move in that manner, piece by piece
 	# if so, redraw board with piece at its new location
 #			pawn_move_checking = PawnMovement(piece_colour)
-			else:
+			else:			
 				if chess_board[row][column][2] == "P" and (new_row == 0 or new_row == 8):
 #				if pawn_promotion(piece_colour) == 1:
 						if pawn_move_valid() == 1:
@@ -1090,8 +1106,15 @@ while quit_game == False:
 #					drawBoard.redraw_valid(valid_move)
 					else:
 						turn_counter -=1
-			drawBoard.redraw_valid(valid_move)
+			if check_for_check() == False:
+				drawBoard.redraw_valid(valid_move)
+			else:
+				if check_counter > 0:
+					print "Your king is still in check..."
+					turn_counter -= 1
+				else:
+					drawBoard.redraw_valid(valid_move)
 		onwards = False
 	# change player
 	turn_counter += 1
-	check_for_check()
+
