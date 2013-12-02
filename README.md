@@ -210,6 +210,17 @@ Castling will need some work to make sure you don't castle out of, through or
 into check but it's coming along nicely.
 
 
+__02/12/13:__
+
+Well, there's a minor bug fix gone in. It's unimportant but it was a bug.
+
+If you typed in, for example, a23-a4 it would evaluate as a2-a4. As the length 
+of the string wasn't spitting up an error in the try/except clause it never 
+failed. I have added in a second evaluation for the moves that specifically 
+checks the length and fails the evalutation if the length is not 2.
+
+Like I said, not important but a bug, either way.
+
 
 Known bugs/issues as at 16/11/13:
 
@@ -224,7 +235,7 @@ Known bugs/issues as at 16/11/13:
 >~~No legal move rules for kings~~
 
 >~~No collision detection _(e.g. not running through your own pieces)_~~ 
-~~Collision detection ~~but no~~ with _some_ capture rules~~
+~~Collision detection ~~but no~~ with _some_ capture rules
 
 >~~No capture rules _(e.g. continuing past an opposing piece)_~~ Partially 
 fixed, see updates 27/10/13 for details
@@ -248,6 +259,9 @@ fixed, see updates 27/10/13 for details
 it to and if you move other people's pieces, it redraws. _Reinstated bug_
 
 > ~~Pawn capture OR collision detection, not both~~
+
+> ~~Evalutates moves that have character 0 as a letter and character 1 as a 
+number incorrectly~~
 
 
 All in, things are shaping up nicely. I mean, seriously. I can almost _taste_ 
