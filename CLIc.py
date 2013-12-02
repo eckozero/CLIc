@@ -150,7 +150,7 @@ class Check(object):
 						check_row = pieces
 						check_column = columns
 		#				kingFound = True
-						print chess_board[check_row][check_column]
+#						print chess_board[check_row][check_column]
 						return check_row, check_column
 							
 #	check_row, check_column = find_king(self, piece_colour)
@@ -1028,8 +1028,6 @@ while quit_game == False:
 		try:
 			chess_moves_col[move1[0]] != ""
 			chess_moves_row[move1[1]] != ""
-			len(move1) == 2
-			len(move2) == 2
 			move1[0] in chess_moves_col
 			move2[0] in chess_moves_col
 			move1[1] in range(9)
@@ -1040,7 +1038,14 @@ while quit_game == False:
 			turn_counter -= 1
 			break
 		else:
-			onwards = True
+			# allowed through on exceptions, does not raise Index or Key error
+			if len(move1) == 2 and len(move2) == 2:
+				onwards = True
+			else:
+				# person has probably mis-keyed their move
+				turn_counter -= 1
+				print "Sorry, I didn't quite catch that move (maybe it had too many numbers?)"
+				print move1 + "-" + move2
 		break
 
 
