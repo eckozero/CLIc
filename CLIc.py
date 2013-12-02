@@ -721,6 +721,12 @@ def castling(move):
 			elif white_king_moved == False and wR2_moved == False:
 				white_king_moved = True
 				wR2_moved = True
+				for each in range(8, 5, -1):
+					if chess_board[7][each] not in empty_space:
+						print "There are pieces in the way"
+						return 0
+
+
 				chess_board[7][8] = "(   )" 
 				king =  "{wK }"
 				chess_board[7][7] = king 
@@ -732,6 +738,11 @@ def castling(move):
 				print "Your king and/or rook has moved!"
 				return 0
 			else:
+				for each in range(8, 5, -1):
+					if chess_board[0][each] not in empty_space:
+						print "There are pieces in the way"
+						return 0				
+
 				black_king_moved = True
 				bR2_moved = True
 				chess_board[0][8] = "{___}"
@@ -749,6 +760,11 @@ def castling(move):
 			elif white_king_moved == False and wR1_moved == False:
 				white_king_moved = True
 				wR1_moved = True
+				for each in range(4, 1, -1):
+					if chess_board[7][each] not in empty_space:
+						print "There are pieces in the way"
+						return 0
+						
 				chess_board[7][1] = "{___}"
 				king = "{wK }"
 				chess_board[7][3] = king
@@ -760,6 +776,11 @@ def castling(move):
 				print "Your king and/or rook has moved!"
 				return 0
 			else:
+				for each in range(4, 0, -1):
+					if chess_board[0][each] not in empty_space:
+						print "There are pieces in the way"
+						return 0
+						
 				black_king_moved = True
 				bR1_moved = True
 				chess_board[0][1] = "(   )"
@@ -769,6 +790,7 @@ def castling(move):
 				chess_board[0][4] = rook
 				chess_board[0][5] = "(   )"
 	drawBoard.print_board()
+	return 1
 #	pass
 	
 
@@ -1019,10 +1041,10 @@ while quit_game == False:
 
 	# Below prompt for castling
 	if move1 == "o-o" or move1 == "o-o-o":
-		castling(move1)
-		castling_attempt = True
-		real_move = False
+		if castling(move1) != 1:
+			turn_counter -=1
 		onwards = False
+		real_move = False
 	# Exception handler for non-valid moves
 	while real_move == True:
 		try:
