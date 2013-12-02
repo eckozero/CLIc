@@ -221,6 +221,10 @@ checks the length and fails the evalutation if the length is not 2.
 
 Like I said, not important but a bug, either way.
 
+Additional: I did a little fix for castling. Now you can't castle if there 
+are pieces in the way. The code is still ugly as sin, and you can castle into 
+through or out of check, but this can all be fixed.
+
 
 Known bugs/issues as at 16/11/13:
 
