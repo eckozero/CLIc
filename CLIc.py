@@ -729,12 +729,14 @@ def castling(move):
 					if chess_board[7][each] not in empty_space:
 						print "There are pieces in the way"
 						return 0
-					chess_board[0][each].replace("   ", "wK ")
-					chess_board[0][each].replace("___", "wK ")
-					if check_for_check(turn) == True:
+					castling_through_check = check_for_check(turn)
+					if chess_board[7][each][0] == "(":
+						chess_board[7][each] = "(   )"
+					else:
+						chess_board[7][each] = "{___}"
+					if castling_through_check == True:
 						print "You can't castle through check"
 						return 0
-
 				chess_board[7][8] = "(   )" 
 				king =  "{wK }"
 				chess_board[7][7] = king 
@@ -756,7 +758,12 @@ def castling(move):
 						return 0				
 					chess_board[0][each].replace("   ", "wK ")
 					chess_board[0][each].replace("___", "wK ")
-					if check_for_check(turn) == True:
+					castling_through_check = check_for_check(turn)
+					if chess_board[0][each][0] == "(":
+						chess_board[0][each] = "(   )"
+					else:
+						chess_board[0][each] = "{___}"
+					if castling_through_check == True:
 						print "You can't castle through check"
 						return 0
 
@@ -785,12 +792,14 @@ def castling(move):
 					if chess_board[7][each] not in empty_space:
 						print "There are pieces in the way"
 						return 0
-					chess_board[0][each].replace("   ", "wK ")
-					chess_board[0][each].replace("___", "wK ")
-					if check_for_check(turn) == True:
+					castling_through_check = check_for_check(turn)
+					if chess_board[7][each][0] == "(":
+						chess_board[7][each] = "(   )"
+					else:
+						chess_board[7][each] = "{___}"
+					if castling_through_check == True:
 						print "You can't castle through check"
-						return 0
-						
+						return 0						
 				chess_board[7][1] = "{___}"
 				king = "{wK }"
 				chess_board[7][3] = king
@@ -810,12 +819,14 @@ def castling(move):
 					if chess_board[0][each] not in empty_space:
 						print "There are pieces in the way"
 						return 0
-					chess_board[0][each].replace("   ", "bK ")
-					chess_board[0][each].replace("___", "bK ")
-					if check_for_check(turn) == True:
+					castling_through_check = check_for_check(turn)
+					if chess_board[0][each][0] == "(":
+						chess_board[0][each] = "(   )"
+					else:
+						chess_board[0][each] = "{___}"
+					if castling_through_check == True:
 						print "You can't castle through check"
-						return 0
-					 
+						return 0					 
 						
 				black_king_moved = True
 				bR1_moved = True
