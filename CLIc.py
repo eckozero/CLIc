@@ -712,7 +712,11 @@ def redraw_valid_for_pawns(valid_move):
 def castling(move):
 	"""Very sloppily completes all aspects of castling"""
 	global king, turn, white_king_moved, black_king_moved
-	global wR1_moved, wR2_moved, bR1_moved, bR2_moved
+	global wR1_moved, wR2_moved, bR1_moved, bR2_moved, turn
+	if (turn == "w" and white_king_check == True) or (turn == "b" and black_king_check == True):
+		print "You can't castle out of check"
+		return 0
+
 	if move == "o-o":
 		if (turn[0]).lower() == "w":
 			if white_king_moved == True or wR2_moved == True:
@@ -725,7 +729,11 @@ def castling(move):
 					if chess_board[7][each] not in empty_space:
 						print "There are pieces in the way"
 						return 0
-
+					chess_board[0][each].replace("   ", "wK ")
+					chess_board[0][each].replace("___", "wK ")
+					if check_for_check(turn) == True:
+						print "You can't castle through check"
+						return 0
 
 				chess_board[7][8] = "(   )" 
 				king =  "{wK }"
@@ -733,6 +741,10 @@ def castling(move):
 				rook = "(wR2)"
 				chess_board[7][6] = rook
 				chess_board[7][5] = "{___}"
+				if check_for_check(turn) == True:
+					print "You can't castle into check"
+					return 0
+		
 		else:
 			if black_king_moved == True or bR2_moved == True:
 				print "Your king and/or rook has moved!"
@@ -742,6 +754,12 @@ def castling(move):
 					if chess_board[0][each] not in empty_space:
 						print "There are pieces in the way"
 						return 0				
+					chess_board[0][each].replace("   ", "wK ")
+					chess_board[0][each].replace("___", "wK ")
+					if check_for_check(turn) == True:
+						print "You can't castle through check"
+						return 0
+
 
 				black_king_moved = True
 				bR2_moved = True
@@ -751,6 +769,9 @@ def castling(move):
 				rook = "{bR2}"
 				chess_board[0][6] = rook
 				chess_board[0][5] = "(   )"
+				if check_for_check(turn) == True:
+					print "You can't castle into check"
+					return 0
 
 	elif move == "o-o-o":
 		if (turn[0]).lower() == "w":
@@ -764,6 +785,11 @@ def castling(move):
 					if chess_board[7][each] not in empty_space:
 						print "There are pieces in the way"
 						return 0
+					chess_board[0][each].replace("   ", "wK ")
+					chess_board[0][each].replace("___", "wK ")
+					if check_for_check(turn) == True:
+						print "You can't castle through check"
+						return 0
 						
 				chess_board[7][1] = "{___}"
 				king = "{wK }"
@@ -771,6 +797,10 @@ def castling(move):
 				rook = "(wR1)"
 				chess_board[7][4] = rook
 				chess_board[7][5] = "{___}"
+				if check_for_check(turn) == True:
+					print "You can't castle into check"
+					return 0
+		
 		else:
 			if black_king_moved == True or bR1_moved == True:
 				print "Your king and/or rook has moved!"
@@ -780,6 +810,12 @@ def castling(move):
 					if chess_board[0][each] not in empty_space:
 						print "There are pieces in the way"
 						return 0
+					chess_board[0][each].replace("   ", "bK ")
+					chess_board[0][each].replace("___", "bK ")
+					if check_for_check(turn) == True:
+						print "You can't castle through check"
+						return 0
+					 
 						
 				black_king_moved = True
 				bR1_moved = True
@@ -789,6 +825,9 @@ def castling(move):
 				rook = "{bR1}"
 				chess_board[0][4] = rook
 				chess_board[0][5] = "(   )"
+				if check_for_check(turn) == True:
+					print "You can't castle into check"
+					return 0
 	drawBoard.print_board()
 	return 1
 #	pass
