@@ -225,8 +225,18 @@ Additional: I did a little fix for castling. Now you can't castle if there
 are pieces in the way. The code is still ugly as sin, and you can castle into 
 through or out of check, but this can all be fixed.
 
+__03/12/13:__
 
-Known bugs/issues as at 16/11/13:
+Right, you can't castle out of or into check, which is nice.
+There's also some code in there that suggests you might not be able to castle 
+*through* check either, but I haven't tested it properly yet because setting 
+the board up for a castling-through-check scenario is a pain in the arse.
+
+The code does however use functions that are known to work, so I don't really 
+foresee any issues.
+
+
+Known bugs/issues as at 03/12/13:
 
 >~~If you try and move black pawn a7 to anywhere legal, the program crashes~~
 
@@ -276,6 +286,8 @@ forgotten how to use them.
 The Check class is almost done, it has a function for horizontal, vertical and diagonal 
 check validation. As per the update on 14/11/13 I have yet to make this work according to 
 the rules of the game.
+
+The Check class actually works, which is good.
 
 
 In other news, I found a simpler wording for the __en passant__ rule so I 
