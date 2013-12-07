@@ -1,5 +1,5 @@
 CLIc A command line chess game, written in Python
-==== --------------------------------------------
+====
 
 A command line chess game, written in Python
 
