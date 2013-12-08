@@ -5,7 +5,7 @@ A command line chess game, written in Python.
 
 ![alt text](http://img.photobucket.com/albums/v235/glamtwatwhore/clic-1.png "CLIc splash")
 
-CLIc is still under development and has not yet been tested fully. As each new 
+CLIc is still under development and has not yet been fully tested. As each new 
 function is built (or existing functions are amended) a brief test has been 
 carried out to ensure that the function works. It has not, however, been 
 sanity tested so the game in its current form is buggy at best.
@@ -17,8 +17,8 @@ carried out prior to a release candidate push/commit to GitHub.
 Setting Up
 ----------
 
-Download the git repo to your computer. Navigate to the directory containing 
-the "install.sh" file and run
+Download the git repo to your computer. Navigate to the src directory that 
+contains the "install.sh" file and run
 
 ```bash
 chmod +x install.sh
