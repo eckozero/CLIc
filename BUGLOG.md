@@ -229,8 +229,12 @@ Beware the feature creep.
 I should be adding in a checkmate module, but I'm not. Instead I have sorted 
 out an install script for *nix systems, and now I've added a splash screen.
 
+On actually fixing the program however, I have added in a line that means that 
+a pawn can (correctly, as per the rules) put a King in check. Not a completely 
+wasted day of coding then...
 
-Known bugs/issues as at 03/12/13:
+
+Known bugs/issues as at 08/12/13:
 
 >~~If you try and move black pawn a7 to anywhere legal, the program crashes~~
 
@@ -271,6 +275,7 @@ it to and if you move other people's pieces, it redraws. _Reinstated bug_
 > ~~Evalutates moves that have character 0 as a letter and character 1 as a 
 number incorrectly~~
 
+> No checkmate rules (see feature creep, 08/12/13)
 
 All in, things are shaping up nicely. I mean, seriously. I can almost _taste_ 
 completion. ~~Check is going to be a bugger though.~~ Check is coming along 
