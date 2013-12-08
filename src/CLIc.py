@@ -293,6 +293,13 @@ class Check(object):
 								local_check = True
 								return local_check
 							else:
+								new_list = [[1,1],[-1,1],[-1,-1],[1,-1]]
+								for each in new_list:
+									pawn_check = chess_board[check_column + each[0]][check_row + each[1]]
+									if pawn_check[2] == "P":
+										local_check = True
+										return local_check
+								
 								# non attacking piece is in the way
 								local_check = False
 								return local_check
@@ -588,7 +595,6 @@ def king_move(piece_colour):
 			white_king_moved = True
 		else:
 			black_king_moved = True
-#		print king
 		return 1
 	else:
 		print "Kings can't move like that =( "
@@ -603,18 +609,14 @@ def king_move(piece_colour):
 def pawn_capture(row, column, new_row, new_column):
 	x = row - new_row
 	y = column - new_column
-#	print "pawn capture", chess_board[new_row][new_column] in empty_space
 	if chess_board[new_row][new_column] not in empty_space:
+
+#TODO: Add validation so pawn can't take King
+
 		if (x**2 == 1) and (y**2 == 1):
 			return 1
 		else:
-#			print "nailed it"
 			return 0
-#		if chess_board[row][column][1] == "b":
-#			if (x == 1) and (y == 1 or y == -1):
-#				return 1
-#			else:
-#				return 0
 	else:
 		return 0
 
