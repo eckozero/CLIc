@@ -38,7 +38,7 @@ in the terminal.
 How To Play
 -----------
 
-These reules explain how to play CLIc, not how to play chess. If you don't 
+These rules explain how to play CLIc, not how to play chess. If you don't 
 know how to play chess, why did you download this?
 
 > Moves are controlled using non-algebraic notation, with one move per prompt
