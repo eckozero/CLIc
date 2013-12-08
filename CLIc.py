@@ -27,9 +27,9 @@
 # can play with your friends who are likewise procrastinating
 
 # Splash screen below. Pointless feature creep.
-
+"""
 import Tkinter as tk
-
+import drawboard
 root = tk.Tk()
 
 root.overrideredirect(True)
@@ -37,7 +37,7 @@ width = root.winfo_screenwidth()
 height = root.winfo_screenheight()
 root.geometry('%dx%d+%d+%d' % (width*0.55, height*0.45, width*0.1, height*0.1))
 
-image_file = "CLIc2.gif"
+image_file = "src/CLIc2.gif"
 image = tk.PhotoImage(file=image_file)
 canvas = tk.Canvas(root, height=height, width=width, bg="brown")
 canvas.create_image(width*0.26, height*0.2, image=image)
@@ -45,7 +45,7 @@ canvas.pack()
 
 root.after(5000, root.destroy)
 root.mainloop()
-
+"""
 
 
 				#rows down the side (1-8)
