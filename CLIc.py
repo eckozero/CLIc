@@ -26,8 +26,8 @@
 # Eventually there be will the option to play this over a network so you
 # can play with your friends who are likewise procrastinating
 
-# Splash screen below. Pointless
-"""
+# Splash screen below. Pointless feature creep.
+
 import Tkinter as tk
 
 root = tk.Tk()
@@ -45,7 +45,7 @@ canvas.pack()
 
 root.after(5000, root.destroy)
 root.mainloop()
-"""
+
 
 
 				#rows down the side (1-8)
