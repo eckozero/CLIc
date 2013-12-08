@@ -26,6 +26,27 @@
 # Eventually there be will the option to play this over a network so you
 # can play with your friends who are likewise procrastinating
 
+# Splash screen below. Pointless
+"""
+import Tkinter as tk
+
+root = tk.Tk()
+
+root.overrideredirect(True)
+width = root.winfo_screenwidth()
+height = root.winfo_screenheight()
+root.geometry('%dx%d+%d+%d' % (width*0.55, height*0.45, width*0.1, height*0.1))
+
+image_file = "CLIc2.gif"
+image = tk.PhotoImage(file=image_file)
+canvas = tk.Canvas(root, height=height, width=width, bg="brown")
+canvas.create_image(width*0.26, height*0.2, image=image)
+canvas.pack()
+
+root.after(5000, root.destroy)
+root.mainloop()
+"""
+
 
 				#rows down the side (1-8)
 chess_board = [["  8  ","(bR1)", "{bN1}", "(bB1)", "{bQ }", "(bK )", "{bB2}", "(bN2)", "{bR2}"],
@@ -1053,6 +1074,7 @@ def check_for_check(piece_colour):
 			black_king_check = localCheck
 #			return black_king_check
 	return localCheck
+
 		
 drawBoard = DrawBoard(valid_move)
 turn_spec = GameMechanics(turn_counter)
