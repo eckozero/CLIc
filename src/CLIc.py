@@ -118,20 +118,20 @@ class DrawBoard(object):
 	# FIXED: 20/10/13 - ^^ yes it does
 	def redraw_valid(self, valid_move):
 		"""Checks that move is valid, then redraws piece on board"""
+		# Check that the piece you are moving is one of your own
 		if piece_colour != chess_board[row][column][1]:
 			return 0
 		else:
+			# Check move is valid
 			if valid_move is True:
 				if chess_board[row][column][2] == "P":
-#				if pawn_capture(row, column, new_row, new_column) == 0:
 					redraw_valid_for_pawns(valid_move)
 				else:
 					old_piece = chess_board[row][column][0] 
 					new_piece = chess_board[row][column][1:4] 
-					redraw_piece = chess_board[new_row][new_column][0] #curly brace
+					redraw_piece = chess_board[new_row][new_column][0]
 					if redraw_piece == "{": 
 						chess_board[new_row][new_column] = "{" + new_piece + "}"
-					
 					else:
 						chess_board[new_row][new_column] = "(" + new_piece + ")"
 					if old_piece == "{": 
@@ -159,36 +159,32 @@ class Check(object):
 		self.piece_colour = piece_colour
 	
 	def find_king(self, piece_colour):
-		#kingFound = False
-		#while kingFound == False:
+		# Iterate through whole board looking for King
 		for pieces in range(9):
 			for columns in range(9):
 				if chess_board[pieces][columns][2] == "K":
+					# King found - check it's the right colour
 					if chess_board[pieces][columns][1] == piece_colour:
 						# successfully found King. Assign location to
-						# a variable
-#						print "Test hit"
+						# a variable and return correct row and column
 						check_row = pieces
 						check_column = columns
-		#				kingFound = True
-#						print chess_board[check_row][check_column]
 						return check_row, check_column
-							
-#	check_row, check_column = find_king(self, piece_colour)
 
 	def check_h(self, piece_colour):
 		"""Checks horizontal moves + and - from King pos"""
 		local_check = False
+		# Obtain king location values
 		check_row, check_column = self.find_king(piece_colour)
+		# Create ranges to each end of the board from King's pos
 		col_range1 = range(1, check_column+1)
 		col_range2 = range(((8 - check_column)*-1), 0)
 		col_range2.reverse()
 		super_list = [col_range1, col_range2]
-#		print col_range1, col_range2
 		for each in super_list:
 			for every in range(0, len(each)):
+				# Iterate through each piece using ranges above to track
 				check_space = chess_board[check_row][check_column - (each[every])]
-#				print check_space
 				if check_space in empty_space:
 				# space is empty - move on
 					pass
@@ -222,11 +218,9 @@ class Check(object):
 		row_range2 = range(((8 - check_row) * -1), 0)
 		row_range2.reverse()
 		super_list = [row_range1, row_range2]
-#		print row_range1, row_range2
 		for each in super_list:
 			for every in range(0, len(each)):
 				check_space = chess_board[check_row - (each[every])][check_column]
-#				print check_space, piece_colour, check_space[1]
 				if check_space in empty_space:
 				# space is empty - move on
 					pass
@@ -243,7 +237,7 @@ class Check(object):
 							local_check = True
 							return local_check
 						else:
-							# non attacking piece is in the way
+							# non attacking piece is in the way - not check
 							local_check = False
 							return local_check
 					else:
@@ -264,14 +258,14 @@ class Check(object):
 		col_range2 = range(((8 - check_column)*-1), 0)
 		col_range2.reverse()
 		super_list = [row_range1, row_range2, col_range1, col_range2]
-#		print super_list
+
 #		"""Issue below is that there is no difference in the row/col ranges
 #		it is running the same validation as it moves through the 4 iterable
 #		items in the list. Need to make it run each of 4 possible validations
 #		separately (+/+, +/-, -/+, -/- for row/column)"""
+
 		counter = 0
 		for each in super_list:
-#			print local_check
 			if local_check == True:
 				break
 			for every in range(0, len(each)):
@@ -283,9 +277,6 @@ class Check(object):
 					check_space = chess_board[check_row - (each[every])][check_column + (each[every])]
 				elif counter == 3:
 					check_space = chess_board[check_row - (each[every])][check_column + (each[every])]
-
-
-#				print check_space
 
 				if check_space in empty_space:
 				# space is empty - move on
@@ -318,14 +309,15 @@ class Check(object):
 		"""Checks if King is in check from Knight"""
 		local_check = False
 		check_row, check_column = self.find_king(piece_colour)
+
 		# knight check positions are:
 		# row+2 column+1, row+2 column-1, row-2 column+1, row-2 column-1
 		# row+1 column+2, row+1 column-2, row-1 column+2, row-1 column-2
+
 		super_list = [[2,1],[-2,1],[-2,1],[2,1],[1,2],[-1,2],[1,-2],[1,2]]
 		counter = 0
 		for each in super_list:
 			check_space = ""
-#			print each, check_row, check_column, (check_row + each[0])
 			if local_check == True:
 				break
 			for every in range(0,len(super_list)):
@@ -338,10 +330,8 @@ class Check(object):
 						if (check_column - each[1]) <= 8 and (check_column - each[1]) >= 0:
 							check_space = chess_board[check_row-(each[0])][check_column-(each[1])]
 
-#				print check_space
-				
 				if check_space != "":
-				
+					# find out why above condition is there?
 					if check_space in empty_space:
 				# space is empty - move on
 						pass
@@ -355,7 +345,8 @@ class Check(object):
 								if check_space[2] == "N":
 					# Yes to above. King is in check
 									local_check = True
-#									print "big brain am winning again"
+									# Futurama joke ahead
+									#print "big brain am winning again"
 									return local_check
 							else:
 						# your piece occupying Knight space
@@ -395,10 +386,7 @@ def pawn_promotion(piece_colour):
 			else:
 				pawn_moves[each2][0] = "(" + piece_colour + new_piece.upper() + " )"
 			pawn = str(pawn_moves[each2][0])
-#	if chess_board[row][column][0] == "{":
-#		chess_board[row][column] = "{   }"
-#	else:
-#		chess_board[row][column] = "(   )" 
+			
 	return pawn
 
 
@@ -408,14 +396,17 @@ def pawn_promotion(piece_colour):
 # FIXME: Cannot move knight from g to h as this overspills last
 # column in list
 # FIXED: 20/07/13 @ 21:29
-# FIXME: Knight moves are acceptabl at (column+1 & row+1)
+# FIXME: Knight moves are acceptable at (column+1 & row+1)
+# FIXED: Not anymore
 
 def knight_move_valid():
 	"""Determine whether Knight can move in that manner"""
 	row_valid = False
 	column_valid = False
+	
 	# Knight moves are (column+2 & row+1) or (column+1 & row+1)
 	# Run validation on each move individually, and combine
+	
 	if chess_board[new_column-2] == chess_board[column] or chess_board[new_column] == chess_board[column-2]:
 		if chess_board[new_row-1] == chess_board[row] or chess_board[new_row+1] == chess_board[row]:
 			column_valid = True
@@ -425,6 +416,9 @@ def knight_move_valid():
 	else:
 		column_valid = False
 	
+	
+	# Column valid only returned True if Knight column has been accepted
+	# and Knight row accepted
 	if column_valid is True:
 		return 1
 	else:
@@ -476,8 +470,6 @@ def bishop_move_valid():
 	move_valid = False
 	if (chess_board[new_row][new_column][0] == chess_board[row][column][0]) is False:
 		move_valid = False
-#		print "debug in bishop"
-#		print (chess_board[new_row][new_column][0] == chess_board[row][column][0])
 	else:
 		# n - n for x and y movement must be equal if move is valid
 		x = new_row - row
@@ -522,7 +514,6 @@ def rook_move_valid():
 	y = new_row - row
 	if (x == 0 or y == 0) and (x != 0 or y != 0):
 		move_valid = True
-#		print "rook debug"
 	if move_valid is True:
 			return 1
 	else:
