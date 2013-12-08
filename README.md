@@ -3,7 +3,7 @@ CLIc
 
 A command line chess game, written in Python.
 
-![alt text](http://img.photobucket.com/albums/v235/glamtwatwhore/clic.png "CLIc splash")
+![alt text](http://img.photobucket.com/albums/v235/glamtwatwhore/clic-1.png "CLIc splash")
 
 CLIc is still under development and has not yet been tested fully. As each new 
 function is built (or existing functions are amended) a brief test has been 
