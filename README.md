@@ -17,8 +17,8 @@ carried out prior to a release candidate push/commit to GitHub.
 Setting Up
 ----------
 
-Download CLIc.py and install.sh to your computer. Navigate to the directory 
-containing the "install.sh" file and run
+Download the git repo to your computer. Navigate to the directory containing 
+the "install.sh" file and run
 
 ```bash
 chmod +x install.sh
