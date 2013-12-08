@@ -7,6 +7,7 @@ if [ -d '/home/`whoami`/.CLIc' ]; then
 fi
 cp CLIc.py /home/`whoami`/.CLIc/CLIc.py && cp README.md /home/`whoami`/.CLIc/README.md
 cp LICENSE /home/`whoami`/.CLIc/LICENSE
+cp CLIc2.gif /home/`whoami`/.CLIc/CLIc2.gif
 touch /home/`whoami`/.bash_aliases
 if [ 'grep -Fq "alias CLIc" /home/`whoami`/.bash_aliases' ]; then
     true
