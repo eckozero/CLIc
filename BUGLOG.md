@@ -1,19 +1,5 @@
-CLIc
-====
-
-A command line chess game, written in Python
-
-CLIc is still under development and has not yet been tested fully.
-As each new function is built (or existing functions amended) a
-brief test has been carried out to ensure that the function works;
-it has not been sanity tested so the game in its current form is buggy
-
-As this receives alpha version updates, more extensive testing will be
-carried out prior to a release candidate push/commit to GitHub
-
-
 Version Update
---------------
+==============
 
 I have finally fixed some bugs. The biggest bug was that pawn movement didn't _actually_ 
 work before. I have now fixed the redraw issue where any +1 movement for pawns was 
@@ -234,6 +220,14 @@ the board up for a castling-through-check scenario is a pain in the arse.
 
 The code does however use functions that are known to work, so I don't really 
 foresee any issues.
+
+
+__08/12/13:__
+
+Beware the feature creep.
+
+I should be adding in a checkmate module, but I'm not. Instead I have sorted 
+out an install script for *nix systems, and now I've added a splash screen.
 
 
 Known bugs/issues as at 03/12/13:
