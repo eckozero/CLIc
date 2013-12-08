@@ -29,7 +29,7 @@
 # Splash screen below. Pointless feature creep.
 """
 import Tkinter as tk
-import drawboard
+import DrawBoard, GameMechanics, Check
 root = tk.Tk()
 
 root.overrideredirect(True)
