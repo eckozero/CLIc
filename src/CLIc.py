@@ -28,8 +28,12 @@
 
 # Splash screen below. Pointless feature creep.
 """
+from DrawBoard import DrawBoard
+from GameMechanics import GameMechanics
+from Check import Check
+"""
+"""
 import Tkinter as tk
-import DrawBoard, GameMechanics, Check
 root = tk.Tk()
 
 root.overrideredirect(True)
@@ -46,6 +50,13 @@ canvas.pack()
 root.after(5000, root.destroy)
 root.mainloop()
 """
+
+
+# literally so I don't have to search for "print" every time
+# i want to find my fucking debugging lines
+def debug(string):
+	print string
+
 
 
 				#rows down the side (1-8)
@@ -259,7 +270,7 @@ class Check(object):
 		col_range2.reverse()
 		super_list = [row_range1, row_range2, col_range1, col_range2]
 
-#		"""Issue below is that there is no difference in the row/col ranges
+		"""Issue below is that there is no difference in the row/col ranges
 #		it is running the same validation as it moves through the 4 iterable
 #		items in the list. Need to make it run each of 4 possible validations
 #		separately (+/+, +/-, -/+, -/- for row/column)"""
@@ -353,14 +364,13 @@ class Check(object):
 					# Yes to above. King is in check
 									local_check = True
 									# Futurama joke ahead
-									#print "big brain am winning again"
+									#debug("big brain am winning again")
 									return local_check
 							else:
 						# your piece occupying Knight space
 								break
 				counter += 1	
 		return local_check
-
 
 
 def pawn_promotion(piece_colour):
@@ -569,7 +579,7 @@ def king_move_valid():
 	x = new_column - column
 	y = new_row - row
 #	Debugging line
-#	print x**2, y**2, x, y
+#	debug([x**2, y**2, x, y])
 	if (x == 0 or y == 0) and (x == 1 or y == 1):
 		move_valid = True
 		return 1
@@ -643,7 +653,7 @@ def pawn_move_valid():
 					x = int(move1[1]) - int(move2[1])
 				break
 		break
-#	print other_y
+#	debug(other_y)
 	if other_y == 0:
 	
 		if ((x == 1 or x == 2) and pawn_moves[each][2] == 0):
@@ -656,7 +666,7 @@ def pawn_move_valid():
 			pawn = "invalid"
 	else:
 		pawn = "invalid"
-#	print other_y, pawn_capture(row, column, new_row, new_column)
+#	debug([other_y, pawn_capture(row, column, new_row, new_column)])
 #	
 	if other_y != 0:
 		if pawn_capture(row, column, new_row, new_column) == 1:
@@ -863,7 +873,7 @@ def collision_detection(row, column, new_row, new_column):
 	if chess_board[row][column][2] != "N":
 		x = row - new_row
 		y = column - new_column
-#		print x, y
+#		debug([x, y])
 		if x < 0:
 			range1 = range(x, 0)
 			range1.reverse()
@@ -876,25 +886,25 @@ def collision_detection(row, column, new_row, new_column):
 		else:
 			range2 = range(1,y+1)
 		counter2 = 0
-#		print range1, range2
+#		debug([range1, range2])
 		
 		if x == 0:
 			"""Deals with straightforward left and right movements"""
 			while counter2 != len(range2):
 				list_index = (int((range2[counter2]**2)**0.5) - 1)
-#				print list_index, range2, column, range2[list_index]
+#				debug([list_index, range2, column, range2[list_index]])
 				# returns a value of one on a single (0) length list;
 				# outside of list range. Corrects for this
 				if y < 0:
 					list_index -= 1
 				empty_check = chess_board[row][column-(range2[list_index])]
 				if list_index > 0:
-#					print empty_check
+#					debug(empty_check)
 					if empty_check in empty_space:
 						pass
 					else:
-#						print empty_check
-#						print "hit it"
+#						debug(empty_check)
+#						debug("hit it")
 						return 0
 				# not very pretty: corrects for disparity in list lengths
 				# by forcing first evaluation to read position 0 in the
@@ -903,8 +913,8 @@ def collision_detection(row, column, new_row, new_column):
 					if chess_board[row][column-(range1[0])][1] == " " or chess_board[row][column-(range1[0])][1] == "_":
 						pass
 					else:
-#						print empty_check
-#						print "hit it hack x"
+#						debug(empty_check)
+#						debug("hit it hack x")
 						return 0
 				if counter2+1 == len(range1):
 					if chess_board[new_row][new_column][1] == chess_board[row][column][1]:
@@ -923,7 +933,7 @@ def collision_detection(row, column, new_row, new_column):
 			"""Deals with straightforward up and down moves"""
 			while counter2 != len(range1):
 				list_index = (int((range1[counter2]**2)**0.5)-1)
-#				print list_index, range1
+#				debug([list_index, range1])
 				# returns a value of one on a single (0) length list;
 				# outside of list range. Corrects for this
 				if x < 0:
@@ -931,11 +941,11 @@ def collision_detection(row, column, new_row, new_column):
 
 				empty_check = chess_board[row-(range1[list_index])][column]
 				if list_index > 0:
-#					print empty_check
+#					debug(empty_check)
 					if empty_check in empty_space:
 						pass
 					else:
-#						print "hit it 2"
+#						debug("hit it 2")
 						return 0
 
 				# not very pretty: corrects for disparity in list lengths
@@ -945,7 +955,7 @@ def collision_detection(row, column, new_row, new_column):
 					if chess_board[row-(range1[0])][column][1] == " " or chess_board[row-(range1[0])][column][1] == "_":
 						pass
 					else:
-#						print "hit it hack"
+#						debug("hit it hack")
 						return 0 
 
 				if counter2+1 == len(range1):
@@ -966,18 +976,18 @@ def collision_detection(row, column, new_row, new_column):
 				list_index2 = int(((range2[counter2])**2)**0.5)
 
 						
-#				print list_index1, list_index2
+#				debug([list_index1, list_index2])
 				if counter2 == 0:
 					list_index1 = 0
 					list_index2 = 0
 				empty_check = chess_board[row-(range1[list_index1])][column-(range2[list_index2])]
-#				print empty_check
+#				debug(empty_check)
 #				if list_index1 > 0 and list_index2 > 0:
 				if empty_check in empty_space:
 					pass
 				else:
-#					print empty_check
-#					print "hit it"
+#					debug(empty_check)
+#					debug("hit it")
 					return 0
 				
 				if counter2+1 == len(range1) or counter2+1 == len(range2):
@@ -994,7 +1004,7 @@ def collision_detection(row, column, new_row, new_column):
 		"""Checks that last position is of different colour and allows capture"""	
 		if counter2+1 == len(range1) or counter2+1 == len(range2):
 			if chess_board[new_row][new_column][1] == chess_board[row][column][1]:
-#				print "hit it 4"
+#				debug("hit it 4")
 				print "You can't take your own pieces"
 				return 0
 			else:
@@ -1024,7 +1034,7 @@ def check_for_check(piece_colour):
 	check_column = 0
 	king_found = False
 	kingFound = checkCheck.find_king(piece_colour)
-	print kingFound
+	debug(kingFound)
 	check_list = ["w", "b"]
 	# check whose turn it is to look for check on that turn
 	for colours in check_list:
@@ -1039,7 +1049,7 @@ def check_for_check(piece_colour):
 
 		check_row, check_column = kingFound
 		
-#		print colours, piece_turn
+#		debug([colours, piece_turn])
 	
 		localCheck = checkCheck.check_h(colours)
 		
@@ -1052,7 +1062,7 @@ def check_for_check(piece_colour):
 		if localCheck == False:
 			localCheck = checkCheck.check_k(colours)
 
-#		print localCheck
+#		debug(localCheck)
 		if colours == piece_colour:
 			if localCheck == True:
 				print "That would put you in check"
