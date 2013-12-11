@@ -3,11 +3,18 @@
 class DrawBoard(object):
         def __init__(self, valid_move):
                 self.valid_move = valid_move
-                
+        
+        def printy(self):
+			print "This works"
+#			print self.chess_board
+        
+        
         def print_board(self):
                 """Prints chess board"""
+                chess_board = self.chess_board
                 counter1 = 0
-                for i in chess_dim:
+                for i in range(len(chess_board)):
+				#for i in chess_dim:
                         print "".join(chess_board[counter1])
                         counter1 +=1
         
@@ -25,7 +32,7 @@ class DrawBoard(object):
                                 else:
                                         old_piece = chess_board[row][column][0] 
                                         new_piece = chess_board[row][column][1:4] 
-                                        redraw_piece = chess_board[new_row][new_column][0] #curly brace
+                                        redraw_piece = chess_board[new_row][new_column][0]
                                         if redraw_piece == "{": 
                                                 chess_board[new_row][new_column] = "{" + new_piece + "}"
                                         

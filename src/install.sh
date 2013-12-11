@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 ### Sets up CLIc for use on the command line with the command "CLIc"
 
 if [ -d '/home/`whoami`/.CLIc/src' ]; then

@@ -147,6 +147,13 @@ class Check(object):
 								local_check = True
 								return local_check
 							else:
+								new_list = [[1,1],[-1,1],[-1,-1],[1,-1]]
+								for each in new_list:
+									pawn_check = chess_board[check_column + each[0]][check_row + each[1]]
+									if pawn_check[2] == "P":
+										local_check = True
+										return local_check
+							
 								# non attacking piece is in the way
 								local_check = False
 								return local_check
