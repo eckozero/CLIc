@@ -28,7 +28,6 @@
 
 # Splash screen below. Pointless feature creep.
 
-from DrawBoard import DrawBoard
 """
 from GameMechanics import GameMechanics
 from Check import Check
@@ -52,12 +51,13 @@ root.after(5000, root.destroy)
 root.mainloop()
 """
 
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# literally so I don't have to search for "print" every time    #
+# i want to find my fucking debugging lines                     #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-# literally so I don't have to search for "print" every time
-# i want to find my fucking debugging lines
 def debug(*args):
 	print args
-
 
 
 				#rows down the side (1-8)
