@@ -59,3 +59,15 @@ do not allow your move to be completed
 other prompt empty
 
 > Do not try to do an *en-passant* move because it wont work
+
+
+Notes
+-----
+
+There is a reimplementation in progress, looking to release version 2.0 at 
+some point. Whilst there has never been a proper release of version 1.x, it
+has been at alpha stage for some time.
+
+I'm now a bit better of a programmer than when I started this, so v2 will be
+tidier code-wise and much easier to maintain. In the meantime, ignore the 
+folder called "NewCLIc"
