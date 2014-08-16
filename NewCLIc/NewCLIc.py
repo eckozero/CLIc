@@ -84,25 +84,6 @@ rules = Mechanics.Gameplay()
 
 drawBoardFunc.print_board()
 
-"""
-def move_selection(turn):
-    move1 = raw_input(turn + " turn. Pick which piece to move: ")
-    if len(move1) == 0:
-        move1 = "zz"
-    if move1[0].lower() == "q":
-        rules.end_game()
-    else:
-        move2 = raw_input("Where would you like to move to: ")
-        if len(move2) == 0:
-            move2 = "zz"
-        if move2[0].lower() == "q":
-            rules.end_game()
-    
-    if move1 == "o-o" or move1 == "o-o-o":
-        pass
-
-    return move1, move2
-"""
 
 
 #def play_game():
