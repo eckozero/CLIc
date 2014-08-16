@@ -30,14 +30,16 @@ class CheckForCheck(object):
     def check_diagonal(self):
 #        print "D"
         pass
-    def checkmate(self):
-#        print "checkmate"
-        pass
-    def check_for_check(self):
+    def checkmate(self, turn):
+        print turn + " wins!"
+        quitting = raw_input("Press any key to quit")
+        exit()
+
+    def check_for_check(self, turn):
         self.check_horizontal()
         self.check_vertical()
         self.check_diagonal()
-        self.checkmate()
+        self.checkmate(turn)
 
 
 class PawnMovement(object):
@@ -81,16 +83,41 @@ class Gameplay(object):
     def __init__(self):
         pass
 
+    def move_selection(self, turn):
+        move1 = raw_input(turn + " turn. Pick which piece to move: ")
+        if len(move1) == 0:
+            move1 = "zz"
+        if move1[0].lower() == "q":
+            rules.end_game()
+        else:
+            move2 = raw_input("Where would you like to move to: ")
+            if len(move2) == 0:
+                move2 = "zz"
+                if move2[0].lower() == "q":
+                    rules.end_game()
+    
+        if move1 == "o-o" or move1 == "o-o-o":
+            pass
+
+        return move1, move2
+
+
     def collision_detection(self):
         return 0
 
     def do_not_proceed(self,turn_counter, valid_move):
         """You shall not pass!"""
+
         turn_counter -=1
         valid_move = False
+
         return turn_counter, valid_move
 
+
+
     def move_valid(self, chess_board, row, column, move2, valid_move):
+        """Check that the proposed move is a valid chess move"""
+
         if (column in range(1,9)) and (row in range(0,8)):
             new_column = chess_moves_col[move2[0]]
             new_row = chess_moves_row[move2[1]]
@@ -111,6 +138,8 @@ class Gameplay(object):
             self.do_not_proceed()
 
         valid_move = True
+
+        return new_column, new_row, vaid_move
 
         
     def end_game(self):

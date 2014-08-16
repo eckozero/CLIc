@@ -84,6 +84,7 @@ rules = Mechanics.Gameplay()
 
 drawBoardFunc.print_board()
 
+"""
 def move_selection(turn):
     move1 = raw_input(turn + " turn. Pick which piece to move: ")
     if len(move1) == 0:
@@ -101,12 +102,12 @@ def move_selection(turn):
         pass
 
     return move1, move2
-
+"""
 
 
 #def play_game():
 while playing == True:
-    move1, move2 = move_selection(turn)
+    move1, move2 = rules.move_selection(turn)
 
     try:
         chess_moves_col[move1[0]] != ""
