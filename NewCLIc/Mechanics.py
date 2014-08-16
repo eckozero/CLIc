@@ -13,8 +13,13 @@ class DrawBoard(object):
 
 
 class CheckForCheck(object):
-    def __init__(self):
-	pass
+    def __init__(self, white_king_check, black_king_check, piece_colour):
+        self.white_king_check = white_king_check
+        self.black_king_check = black_king_check
+        self.piece_colour = piece_colour
+
+    def find_king():
+        pass
 
     def check_horizontal(self):
 #        print "H"
@@ -70,3 +75,44 @@ class PieceMovement(object):
 class Castling(object):
     def __init__(self):
         pass
+
+
+class Gameplay(object):
+    def __init__(self):
+        pass
+
+    def collision_detection(self):
+        return 0
+
+    def do_not_proceed(self,turn_counter, valid_move):
+        """You shall not pass!"""
+        turn_counter -=1
+        valid_move = False
+        return turn_counter, valid_move
+
+    def move_valid(self, chess_board, row, column, move2, valid_move):
+        if (column in range(1,9)) and (row in range(0,8)):
+            new_column = chess_moves_col[move2[0]]
+            new_row = chess_moves_row[move2[1]]
+        else:
+            print "\nThat's not a valid move. Try again\n"
+            self.do_not_proceed()
+        
+        if chess_board[row][column][1] == " ":
+            print "\nThat's not a valid move. Try again\n"
+            self.do_not_proceed()
+
+        if self.collision_detection() == 1:
+            print "There seems to be a piece in the way"
+            self.do_not_proceed()
+
+        if chess_board[row][column][1] != turn[0].lower():
+            print "That's not your piece. Try again"
+            self.do_not_proceed()
+
+        valid_move = True
+
+        
+    def end_game(self):
+        print "Quitting"
+        exit()

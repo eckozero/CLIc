@@ -54,6 +54,12 @@ EMPTY_SPACE = ("(   )","{___}")
 valid_move = True
 turn_counter = 10
 turn = "White's"
+# Agreed that this is needed (currently) but why? Can this be removed
+# and replaced with, for example, turn[0].lower()?
+piece_colour = "w"
+
+# Again, this may not be needed with some better coding
+playing = True
 
 
 # Castling variables
@@ -70,11 +76,11 @@ black_king_check = False
 
 
 drawBoardFunc = Mechanics.DrawBoard(chess_board, valid_move)
-checkCheck = Mechanics.CheckForCheck()
+checkCheck = Mechanics.CheckForCheck(white_king_check, black_king_check, piece_colour)
 pawnMoves = Mechanics.PawnMovement()
 pieceMoves = Mechanics.PieceMovement()
 castling = Mechanics.Castling()
-
+rules = Mechanics.Gameplay()
 
 drawBoardFunc.print_board()
 
@@ -83,27 +89,23 @@ def move_selection(turn):
     if len(move1) == 0:
         move1 = "zz"
     if move1[0].lower() == "q":
-        end_game()
+        rules.end_game()
     else:
         move2 = raw_input("Where would you like to move to: ")
         if len(move2) == 0:
             move2 = "zz"
         if move2[0].lower() == "q":
-            end_game()
+            rules.end_game()
     
     if move1 == "o-o" or move1 == "o-o-o":
         pass
 
     return move1, move2
 
-def end_game():
-    print "Quitting."
-    exit()
 
 
-
-
-def play_game():
+#def play_game():
+while playing == True:
     move1, move2 = move_selection(turn)
 
     try:
@@ -121,12 +123,9 @@ def play_game():
             print "Sorry, I didn't quite catch that move (maybe it had too many numbers?)"
             print move1 + "-" + move2
 
-
-#    checkCheck.check_for_check()
     drawBoardFunc.print_board()
+    turn_counter, valid_move = rules.do_not_proceed(turn_counter, valid_move)
 
 
 
-
-
-play_game()
+#play_game()
