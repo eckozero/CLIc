@@ -34,6 +34,21 @@ chess_moves_col = {"a" or "A": 1, "b" or "B": 2, "c" or "C": 3, "d" or "D": 4,
 # Dictionary to equate input to actual location on chessboard
 chess_moves_row = {"1": 7, "2": 6, "3": 5, "4": 4, "5": 3, "6": 2, "7": 1, "8": 0}
 
+# List for pawn moves as they are different to other pieces (need to take
+# into consideration if first move, or if piece has reached furthest rank
+# and must be promoted)
+
+# TODO: Find out why pawn_moves[x][1] is a 2 and comment accordingly
+pawn_moves = [["bP1",2,0], ["bP2",2,0], ["bP3",2,0], ["bP4",2,0], 
+              ["bP5",2,0], ["bP6",2,0], ["bP7",2,0], ["bP8",2,0],
+       	      ["wP1",2,0], ["wP2",2,0], ["wP3",2,0], ["wP4",2,0], 
+	      ["wP5",2,0], ["wP6",2,0], ["wP7",2,0], ["wP8",2,0]]
+
+
+# Constants
+EMPTY_SPACE = ("(   )","{___}")
+
+
 # Variables that need instantiating before the program runs
 
 valid_move = True
@@ -41,7 +56,25 @@ turn_counter = 10
 turn = "White's"
 
 
+# Castling variables
+white_king_moved = False
+black_king_moved = False
+wR1_moved = False
+wR2_moved = False
+bR1_moved = False
+bR2_moved = False
+
+# Variables for check
+white_king_check = False
+black_king_check = False
+
+
 drawBoardFunc = Mechanics.DrawBoard(chess_board, valid_move)
+checkCheck = Mechanics.CheckForCheck()
+pawnMoves = Mechanics.PawnMovement()
+pieceMoves = Mechanics.PieceMovement()
+castling = Mechanics.Castling()
+
 
 drawBoardFunc.print_board()
 
@@ -89,7 +122,7 @@ def play_game():
             print move1 + "-" + move2
 
 
-
+#    checkCheck.check_for_check()
     drawBoardFunc.print_board()
 
 

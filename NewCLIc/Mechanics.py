@@ -17,13 +17,22 @@ class CheckForCheck(object):
 	pass
 
     def check_horizontal(self):
+#        print "H"
         pass
-
     def check_vertical(self):
+#        print "V"
         pass
-
     def check_diagonal(self):
+#        print "D"
         pass
+    def checkmate(self):
+#        print "checkmate"
+        pass
+    def check_for_check(self):
+        self.check_horizontal()
+        self.check_vertical()
+        self.check_diagonal()
+        self.checkmate()
 
 
 class PawnMovement(object):
