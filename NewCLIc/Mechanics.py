@@ -164,11 +164,8 @@ class Gameplay(object):
         # Method for piece moves are in another class so I  can call
         # the methods from PieceMovement like ClassName().methodName()
 
-        # Let's try my theory:
-        #CheckForCheck().check_for_check(turn)
-        # Sucess! This is the correct way to do it.
-
-        # This data wont be here for too much longer
+        # This data wont be here for too much longer as it gets 
+        # replaced by method calls for piece movement
         valid_move = True
         return self.change_turn(valid_move, turn_counter, turn)
 
