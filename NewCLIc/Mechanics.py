@@ -91,12 +91,12 @@ class Gameplay(object):
     def __init__(self):
         pass
 
-    def turn_picker(self, turn_counter):
+    def turn_picker(self, turn_counter, valid_move):
         if turn_counter % 2 == 0:
             turn = "White's"
         else:
             turn = "Black's"
-        return turn
+        return turn, valid_move
 
 
     def move_selection(self, turn):
@@ -131,9 +131,8 @@ class Gameplay(object):
         print "Not a valid move"
 
         turn_counter -=1
-        valid_move = False
 
-        return turn_counter, valid_move
+        self.turn_picker(turn_counter)
 
 
 
@@ -166,6 +165,15 @@ class Gameplay(object):
         return valid_move
 
         
+    def change_turn(self, valid_move, turn_counter):
+        if valid_move == True:
+            turn_counter +=1
+            self.turn_picker(turn_counter, valid_move)
+        else:
+            self.do_not_proceed(turn_counter, valid_move)
+
+
+
     def end_game(self):
         print "Quitting"
         exit()

@@ -120,17 +120,13 @@ while playing == True:
             onwards = False
 
     new_column = chess_moves_col[move2[0]]
-    new_row = chess_moves_row[move2[1]]
+    new_row = chess_moves_row[move2[1]]    
 
-    # Do stuff to change move and the like, then reset to bing an invalid
-    # move to prompt to pick pieces again
-    
-    turn_counter +=1
-    turn = rules.turn_picker(turn_counter)
+    # Rather than having bits in here to manually increment turn_counter if
+    # valid move, and then to change the turn, could make a method for this
+    # in Gameplay class, perhaps?
+    turn, valid_move = rules.change_turn(valid_move, turn_counter)
 
     drawBoardFunc.print_board(chess_board)
 
     onwards = False
-
-
-#play_game()
