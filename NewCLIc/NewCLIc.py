@@ -106,7 +106,6 @@ while playing == True:
             (move1[0].lower() and move2[0].lower()) in chess_moves_col
             (move1[1] and move2[1]) in range(9)
         except (IndexError, KeyError):
-            #move1, move2 = "zz"
             print "Not a valid move"
             drawBoardFunc.print_board(chess_board)
     
@@ -131,11 +130,9 @@ while playing == True:
     new_column = chess_moves_col[move2[0]]
     new_row = chess_moves_row[move2[1]]
 
-    # Rather than having bits in here to manually increment turn_counter if
-    # valid move, and then to change the turn, could make a method for this
-    # in Gameplay class, perhaps?
-    #print rules.move_valid(chess_board, row, column, valid_move, turn, turn_counter)
+
     turn, valid_move, turn_counter = rules.move_valid(chess_board, row, column, valid_move, turn, turn_counter)
+
     # Redraw the board - this might want to go at the top of the loop, to be
     # picked up before a new move is requested
     #
