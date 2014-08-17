@@ -8,8 +8,17 @@ class DrawBoard(object):
         """Prints the chess board as it is"""
         for i in range(len(chess_board)):
             print "".join(chess_board[i])
+        # Can't escape the feeling that I need
+        # to return chess_board here
+        #return chess_board
 
-
+    def redraw_board(self, chess_board, row, column, new_row, new_column):
+        """All other methods should do the validation of
+        whether or not the move is valid. This method should
+        just redraw the new board"""
+        # Not even sure this method will be needed as there
+        # is already a method to draw the board
+        pass
 
 
 
@@ -36,7 +45,7 @@ class CheckForCheck(object):
 #        print "D"
         pass
     def checkmate(self, turn):
-        print turn + " wins!"
+        print turn[0:5] + " wins!"
         quitting = raw_input("Press any key to quit")
         exit()
 
@@ -91,12 +100,14 @@ class Gameplay(object):
     def __init__(self):
         pass
 
+    EMPTY_SPACE = ("(   )","{___}")
+
     def turn_picker(self, turn_counter, valid_move):
         if turn_counter % 2 == 0:
             turn = "White's"
         else:
             turn = "Black's"
-        return turn, valid_move
+        return turn, valid_move, turn_counter
 
 
     def move_selection(self, turn):
@@ -104,19 +115,23 @@ class Gameplay(object):
         if len(move1) == 0:
             move1 = "zz"
         if move1[0].lower() == "q":
-            rules.end_game()
+            self.end_game()
         else:
             move2 = raw_input("Where would you like to move to: ")
             if len(move2) == 0:
                 move2 = "zz"
                 if move2[0].lower() == "q":
-                    rules.end_game()
+                    self.end_game()
     
         if move1 == "o-o" or move1 == "o-o-o":
+            # Castling shiznit goes here
             pass
 
 
         if move1 == "zz" or move2 == "zz":
+            # Pointless "if" is pointless.
+            # Seriously, why is this here? I think this has now been
+            # put into the main file as part of the main game loop
             pass
 
         return move1, move2
@@ -125,52 +140,47 @@ class Gameplay(object):
     def collision_detection(self):
         return 0
 
+
     def do_not_proceed(self,turn_counter, valid_move):
         """You shall not pass!"""
 
-        print "Not a valid move"
+        print "That's not a valid move\n"
 
         turn_counter -=1
+        
+        return self.turn_picker(turn_counter, valid_move)
 
-        self.turn_picker(turn_counter)
 
 
-
-    def move_valid(self, chess_board, row, column, valid_move, turn):
+    def move_valid(self, chess_board, row, column, valid_move, turn, turn_counter):
         """Check that the proposed move is a valid chess move"""
-
-        # If I make most of these functions evaluate for false,
-        # rather than true, I should be able to streamline
-
-        if (column in range(1,9)) and (row in range(0,8)):
-            pass
-        else:
-            print "\nThat's not a valid move. Try again\n"
-            self.do_not_proceed()
-        
-        if chess_board[row][column][1] == " ":
-            print "\nThat's not a valid move. Try again\n"
-            self.do_not_proceed()
-
-        if self.collision_detection() == 1:
-            print "There seems to be a piece in the way"
-            self.do_not_proceed()
-
         if chess_board[row][column][1] != turn[0].lower():
-            print "That's not your piece. Try again"
-            self.do_not_proceed()
+            return self.change_turn(valid_move, turn_counter, turn)
+	elif self.collision_detection() == 0:
+            pass
+	else:
+            return self.change_turn(valid_move, turn_counter, turn)
 
+        # Method for piece moves are in another class so I  can call
+        # the methods from PieceMovement like ClassName().methodName()
+
+        # Let's try my theory:
+        #CheckForCheck().check_for_check(turn)
+        # Sucess! This is the correct way to do it.
+
+        # This data wont be here for too much longer
         valid_move = True
-
-        return valid_move
+        return self.change_turn(valid_move, turn_counter, turn)
 
         
-    def change_turn(self, valid_move, turn_counter):
+    def change_turn(self, valid_move, turn_counter, turn):
+        # Always add 1, do_not_proceed() will remove if
+        # required
+        turn_counter +=1
         if valid_move == True:
-            turn_counter +=1
-            self.turn_picker(turn_counter, valid_move)
+            return self.turn_picker(turn_counter, valid_move)
         else:
-            self.do_not_proceed(turn_counter, valid_move)
+            return self.do_not_proceed(turn_counter, valid_move)
 
 
 

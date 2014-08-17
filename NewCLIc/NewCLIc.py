@@ -44,13 +44,13 @@ pawn_moves = [["bP1",2,0], ["bP2",2,0], ["bP3",2,0], ["bP4",2,0],
 	      ["wP5",2,0], ["wP6",2,0], ["wP7",2,0], ["wP8",2,0]]
 
 
-# Constants
+# Constant(s)
 EMPTY_SPACE = ("(   )","{___}")
 
 
 # Variables that need instantiating before the program runs
 
-valid_move = True
+valid_move = False
 turn_counter = 10
 turn = "White's"
 # Agreed that this is needed (currently) but why? Can this be removed
@@ -92,15 +92,23 @@ drawBoardFunc.print_board(chess_board)
 #def play_game():
 while playing == True:
     while onwards == False:
+        valid_move = False
         move1, move2 = rules.move_selection(turn)
-
+        
+        # There are lots of ways that input for move1 and move2 can
+        # break things. User could try to use blank input, or a letter
+        # that's further than the 8 columns, or a number that isn't
+        # 1-8. Try/except below attempts to catch any errors that
+        # would otherwise cause CLIc to fail
         try:
             chess_moves_col[move1[0]] != ""
             chess_moves_row[move1[1]] != ""
             (move1[0].lower() and move2[0].lower()) in chess_moves_col
             (move1[1] and move2[1]) in range(9)
         except (IndexError, KeyError):
+            #move1, move2 = "zz"
             print "Not a valid move"
+            drawBoardFunc.print_board(chess_board)
     
         finally:
             # Measuring length returns true or false, not any errors
@@ -108,7 +116,7 @@ while playing == True:
             # and changes move1 + move2 to "zz" so that the loop fails
             # and input is requested again
             if len(move1) != 2 or len(move2) !=2:
-                print "Sorry, I didn't quite catch that move (maybe it had too many numbers?)"
+                print "Sorry, I didn't quite catch that move (did it have the right number of characters?)"
                 print move1 + "-" + move2
                 move1 = move2 = "zz"
 
@@ -118,15 +126,23 @@ while playing == True:
             onwards = True
         else:
             onwards = False
-
+    
+    # Map on the chess board where the end destination is (piece moving TO)
     new_column = chess_moves_col[move2[0]]
-    new_row = chess_moves_row[move2[1]]    
+    new_row = chess_moves_row[move2[1]]
 
     # Rather than having bits in here to manually increment turn_counter if
     # valid move, and then to change the turn, could make a method for this
     # in Gameplay class, perhaps?
-    turn, valid_move = rules.change_turn(valid_move, turn_counter)
+    #print rules.move_valid(chess_board, row, column, valid_move, turn, turn_counter)
+    turn, valid_move, turn_counter = rules.move_valid(chess_board, row, column, valid_move, turn, turn_counter)
+    # Redraw the board - this might want to go at the top of the loop, to be
+    # picked up before a new move is requested
+    #
+    # I'm sure it will become apparent where it needs to go as I proceed
+    #turn, valid_move, turn_counter = rules.change_turn(valid_move, turn_counter)
 
     drawBoardFunc.print_board(chess_board)
+
 
     onwards = False
