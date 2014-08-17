@@ -28,8 +28,7 @@ chess_board = [["  8  ","(bR1)", "{bN1}", "(bB1)", "{bQ }", "(bK )", "{bB2}", "(
 
 # Dictionary to equate column to a numerical value, as integers are 
 # easier to manipulate than strings
-chess_moves_col = {"a" or "A": 1, "b" or "B": 2, "c" or "C": 3, "d" or "D": 4,
-		   "e" or "E": 5, "f" or "F": 6, "g" or "G": 7, "h" or "H": 8}
+chess_moves_col = {"a": 1, "b": 2, "c": 3, "d": 4, "e": 5, "f": 6, "g": 7, "h": 8}
 
 # Dictionary to equate input to actual location on chessboard
 chess_moves_row = {"1": 7, "2": 6, "3": 5, "4": 4, "5": 3, "6": 2, "7": 1, "8": 0}
@@ -60,7 +59,7 @@ piece_colour = "w"
 
 # Again, this may not be needed with some better coding
 playing = True
-
+onwards = False
 
 # Castling variables
 white_king_moved = False
@@ -75,39 +74,63 @@ white_king_check = False
 black_king_check = False
 
 
-drawBoardFunc = Mechanics.DrawBoard(chess_board, valid_move)
-checkCheck = Mechanics.CheckForCheck(white_king_check, black_king_check, piece_colour)
+# Instantiate classes - all blank instances as each
+# variable needs to be passed every time a method is
+# called
+
+drawBoardFunc = Mechanics.DrawBoard()
+checkCheck = Mechanics.CheckForCheck()
 pawnMoves = Mechanics.PawnMovement()
 pieceMoves = Mechanics.PieceMovement()
 castling = Mechanics.Castling()
 rules = Mechanics.Gameplay()
 
-drawBoardFunc.print_board()
 
+drawBoardFunc.print_board(chess_board)
 
 
 #def play_game():
 while playing == True:
-    move1, move2 = rules.move_selection(turn)
+    while onwards == False:
+        move1, move2 = rules.move_selection(turn)
 
-    try:
-        chess_moves_col[move1[0]] != ""
-        chess_moves_row[move1[1]] != ""
-        (move1[0] and move2[0]) in chess_moves_col
-        (move1[1] and move2[1]) in range(9)
-        len(move1) >=2 and len(move2) >=2
-    except (IndexError, KeyError):
-        print "Not a valid move"
-        pass
+        try:
+            chess_moves_col[move1[0]] != ""
+            chess_moves_row[move1[1]] != ""
+            (move1[0].lower() and move2[0].lower()) in chess_moves_col
+            (move1[1] and move2[1]) in range(9)
+        except (IndexError, KeyError):
+            print "Not a valid move"
     
-    else:
-        if len(move1) != 2 or len(move2) !=2:
-            print "Sorry, I didn't quite catch that move (maybe it had too many numbers?)"
-            print move1 + "-" + move2
+        finally:
+            # Measuring length returns true or false, not any errors
+            # Below code checks that move is exactly 2 characters long
+            # and changes move1 + move2 to "zz" so that the loop fails
+            # and input is requested again
+            if len(move1) != 2 or len(move2) !=2:
+                print "Sorry, I didn't quite catch that move (maybe it had too many numbers?)"
+                print move1 + "-" + move2
+                move1 = move2 = "zz"
 
-    drawBoardFunc.print_board()
-    turn_counter, valid_move = rules.do_not_proceed(turn_counter, valid_move)
+        if move1 != "zz" and move2 != "zz":
+            column = chess_moves_col[move1[0]]
+            row = chess_moves_row[move1[1]]
+            onwards = True
+        else:
+            onwards = False
 
+    new_column = chess_moves_col[move2[0]]
+    new_row = chess_moves_row[move2[1]]
+
+    # Do stuff to change move and the like, then reset to bing an invalid
+    # move to prompt to pick pieces again
+    
+    turn_counter +=1
+    turn = rules.turn_picker(turn_counter)
+
+    drawBoardFunc.print_board(chess_board)
+
+    onwards = False
 
 
 #play_game()

@@ -1,22 +1,27 @@
 class DrawBoard(object):
-    def __init__(self, chess_board, valid_move):
-        self.chess_board = chess_board
-	self.valid_move = valid_move
+    def __init__(self):
+        #self.chess_board = chess_board
+	#self.valid_move = valid_move
+        pass
 
-    def print_board(self):
+    def print_board(self, chess_board):
         """Prints the chess board as it is"""
-        for i in range(len(self.chess_board)):
-            print "".join(self.chess_board[i])
+        for i in range(len(chess_board)):
+            print "".join(chess_board[i])
 
 
 
 
 
 class CheckForCheck(object):
-    def __init__(self, white_king_check, black_king_check, piece_colour):
-        self.white_king_check = white_king_check
-        self.black_king_check = black_king_check
-        self.piece_colour = piece_colour
+    """Currently requires the following arguments:
+    white_king_check, black_king_check, piece_colour
+    In order to keep all classes blank in main file,
+    have removed from __init__ and will be added as
+    args to functions"""
+
+    def __init__(self):
+        pass
 
     def find_king():
         pass
@@ -47,6 +52,9 @@ class PawnMovement(object):
         pass
 
     def pawn_move(self):
+        pass
+
+    def pawn_capture(self):
         pass
 
     def pawn_promotion(self):
@@ -83,6 +91,14 @@ class Gameplay(object):
     def __init__(self):
         pass
 
+    def turn_picker(self, turn_counter):
+        if turn_counter % 2 == 0:
+            turn = "White's"
+        else:
+            turn = "Black's"
+        return turn
+
+
     def move_selection(self, turn):
         move1 = raw_input(turn + " turn. Pick which piece to move: ")
         if len(move1) == 0:
@@ -99,6 +115,10 @@ class Gameplay(object):
         if move1 == "o-o" or move1 == "o-o-o":
             pass
 
+
+        if move1 == "zz" or move2 == "zz":
+            pass
+
         return move1, move2
 
 
@@ -108,6 +128,8 @@ class Gameplay(object):
     def do_not_proceed(self,turn_counter, valid_move):
         """You shall not pass!"""
 
+        print "Not a valid move"
+
         turn_counter -=1
         valid_move = False
 
@@ -115,12 +137,14 @@ class Gameplay(object):
 
 
 
-    def move_valid(self, chess_board, row, column, move2, valid_move):
+    def move_valid(self, chess_board, row, column, valid_move, turn):
         """Check that the proposed move is a valid chess move"""
 
+        # If I make most of these functions evaluate for false,
+        # rather than true, I should be able to streamline
+
         if (column in range(1,9)) and (row in range(0,8)):
-            new_column = chess_moves_col[move2[0]]
-            new_row = chess_moves_row[move2[1]]
+            pass
         else:
             print "\nThat's not a valid move. Try again\n"
             self.do_not_proceed()
@@ -139,7 +163,7 @@ class Gameplay(object):
 
         valid_move = True
 
-        return new_column, new_row, vaid_move
+        return valid_move
 
         
     def end_game(self):
