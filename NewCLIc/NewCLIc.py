@@ -102,7 +102,10 @@ drawBoardFunc.print_board(chess_board)
 while playing == True:
     while onwards == False:
         valid_move = False
-        move1, move2 = rules.move_selection(turn)
+
+        var_list = [turn, white_king_moved, black_king_moved, wR1_moved, wR2_moved, bR1_moved, bR2_moved]
+
+        move1, move2 = rules.move_selection(turn, var_list)
         
         # There are lots of ways that input for move1 and move2 can
         # break things. User could try to use blank input, or a letter
@@ -117,6 +120,7 @@ while playing == True:
         except (IndexError, KeyError):
             print "Not a valid move"
             drawBoardFunc.print_board(chess_board)
+            move1 = move2 = "zz"
     
         finally:
             # Measuring length returns true or false, not any errors
@@ -150,6 +154,7 @@ while playing == True:
 
     #drawBoardFunc.print_board(chess_board)
     # Test
+
     drawBoardFunc.redraw_board(chess_board, row, column, new_row, new_column)
 
     onwards = False
