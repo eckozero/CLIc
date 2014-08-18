@@ -1,25 +1,46 @@
 class DrawBoard(object):
-    def __init__(self):
-        #self.chess_board = chess_board
-	#self.valid_move = valid_move
-        pass
-
-    def print_board(self, chess_board):
+     def print_board(self, chess_board):
         """Prints the chess board as it is"""
         for i in range(len(chess_board)):
             print "".join(chess_board[i])
-        # Can't escape the feeling that I need
-        # to return chess_board here
-        #return chess_board
 
-    def redraw_board(self, chess_board, row, column, new_row, new_column):
-        """All other methods should do the validation of
-        whether or not the move is valid. This method should
+
+     def redraw_board(self, chess_board, row, column, new_row, new_column):
+		"""All other methods should do the validation of
+		whether or not the move is valid. This method should
         just redraw the new board"""
-        # Not even sure this method will be needed as there
-        # is already a method to draw the board
-        pass
+        # Stuff goes here to change the chess_board variable
 
+        # Has the piece come from a white or black square?
+		old_square_bw = chess_board[row][column][0]
+        # Create variable as just the piece
+		new_square_piece = chess_board[row][column][1:4]
+
+
+		if chess_board[new_row][new_column][0] == "(":
+			# Piece is going to white square
+			redraw_square = "(" + new_square_piece + ")"
+		else:
+			# Piece is going to black square
+			redraw_square = "{" + new_square_piece + "}"
+        
+        # Populate new_row/new_column with the piece that
+        # was originally selected
+		chess_board[new_row][new_column] = redraw_square
+        
+		if old_square_bw == "(":
+            # Do you see what I did there? By assigning whether
+            # old piece was black or white square, I created a
+            # comparison to decide what the (now empty) space
+            # should look like on the board
+			redraw_old_piece = "(   )"
+		else:
+			redraw_old_piece = "{___}"
+
+        # Make the space that the piece came from blank again
+		chess_board[row][column] = redraw_old_piece
+        # Redraw the board now it has been amended
+		self.print_board(chess_board)
 
 
 class CheckForCheck(object):
@@ -29,22 +50,21 @@ class CheckForCheck(object):
     have removed from __init__ and will be added as
     args to functions"""
 
-    def __init__(self):
-        pass
-
     def find_king():
         pass
 
     def check_horizontal(self):
-#        print "H"
         pass
+
     def check_vertical(self):
-#        print "V"
         pass
+
     def check_diagonal(self):
-#        print "D"
         pass
+
     def checkmate(self, turn):
+        # Checkmate stuff here
+        # If checkmate = True: etc
         print turn[0:5] + " wins!"
         quitting = raw_input("Press any key to quit")
         exit()
@@ -57,9 +77,6 @@ class CheckForCheck(object):
 
 
 class PawnMovement(object):
-    def __init__(self):
-        pass
-
     def pawn_move(self):
         pass
 
@@ -72,8 +89,6 @@ class PawnMovement(object):
 
 
 class PieceMovement(object):
-    def __init__(self):
-        pass
 
     def king_move(self):
         pass
@@ -92,15 +107,13 @@ class PieceMovement(object):
 
 
 class Castling(object):
-    def __init__(self):
+
+    def castling():
         pass
+
 
 
 class Gameplay(object):
-    def __init__(self):
-        pass
-
-    EMPTY_SPACE = ("(   )","{___}")
 
     def turn_picker(self, turn_counter, valid_move):
         if turn_counter % 2 == 0:
@@ -124,15 +137,8 @@ class Gameplay(object):
                     self.end_game()
     
         if move1 == "o-o" or move1 == "o-o-o":
-            # Castling shiznit goes here
-            pass
+            Castling().castling()
 
-
-        if move1 == "zz" or move2 == "zz":
-            # Pointless "if" is pointless.
-            # Seriously, why is this here? I think this has now been
-            # put into the main file as part of the main game loop
-            pass
 
         return move1, move2
 

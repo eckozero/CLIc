@@ -28,9 +28,11 @@ chess_board = [["  8  ","(bR1)", "{bN1}", "(bB1)", "{bQ }", "(bK )", "{bB2}", "(
 
 # Dictionary to equate column to a numerical value, as integers are 
 # easier to manipulate than strings
+# File (as in rank and file)
 chess_moves_col = {"a": 1, "b": 2, "c": 3, "d": 4, "e": 5, "f": 6, "g": 7, "h": 8}
 
 # Dictionary to equate input to actual location on chessboard
+# Rank (as in rank and file)
 chess_moves_row = {"1": 7, "2": 6, "3": 5, "4": 4, "5": 3, "6": 2, "7": 1, "8": 0}
 
 # List for pawn moves as they are different to other pieces (need to take
@@ -38,6 +40,13 @@ chess_moves_row = {"1": 7, "2": 6, "3": 5, "4": 4, "5": 3, "6": 2, "7": 1, "8": 
 # and must be promoted)
 
 # TODO: Find out why pawn_moves[x][1] is a 2 and comment accordingly
+# DONE: pawn_moves[x][1] refers to current position of pawn on the
+# board. As originally written to work the same going up (white pawns)
+# and going down (black pawns), the 2 denotes that the piece is on the
+# second column
+# 
+# whilst this made perfect sense at the time, I'm not sure this is still
+# the best way to process pawn movement?
 pawn_moves = [["bP1",2,0], ["bP2",2,0], ["bP3",2,0], ["bP4",2,0], 
               ["bP5",2,0], ["bP6",2,0], ["bP7",2,0], ["bP8",2,0],
        	      ["wP1",2,0], ["wP2",2,0], ["wP3",2,0], ["wP4",2,0], 
@@ -139,7 +148,8 @@ while playing == True:
     # I'm sure it will become apparent where it needs to go as I proceed
     #turn, valid_move, turn_counter = rules.change_turn(valid_move, turn_counter)
 
-    drawBoardFunc.print_board(chess_board)
-
+    #drawBoardFunc.print_board(chess_board)
+    # Test
+    drawBoardFunc.redraw_board(chess_board, row, column, new_row, new_column)
 
     onwards = False
