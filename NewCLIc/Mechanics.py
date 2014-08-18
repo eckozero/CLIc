@@ -107,10 +107,12 @@ class PieceMovement(object):
 
 
 class Castling(object):
-
-    def castling():
-        pass
-
+     def castling(self, *args):
+          args_list = args[0]
+          
+          # Needs castling code here
+          if args_list[0][0] == "W":
+               print args_list
 
 
 class Gameplay(object):
@@ -123,7 +125,7 @@ class Gameplay(object):
         return turn, valid_move, turn_counter
 
 
-    def move_selection(self, turn):
+    def move_selection(self, turn, args):
         move1 = raw_input(turn + " turn. Pick which piece to move: ")
         if len(move1) == 0:
             move1 = "zz"
@@ -137,8 +139,10 @@ class Gameplay(object):
                     self.end_game()
     
         if move1 == "o-o" or move1 == "o-o-o":
-            Castling().castling()
-
+            Castling().castling(args)
+            # Needs real code below here
+            move1 = "aa"
+            move2 = "aa"
 
         return move1, move2
 
