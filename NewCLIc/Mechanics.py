@@ -1,50 +1,55 @@
 class DrawBoard(object):
-     def print_board(self, chess_board):
-        """Prints the chess board as it is"""
+    def print_board(self, chess_board):
+        """Prints the chess board as it is."""
         for i in range(len(chess_board)):
             print "".join(chess_board[i])
 
 
-     def redraw_board(self, chess_board, row, column, new_row, new_column):
-		"""All other methods should do the validation of
-		whether or not the move is valid. This method should
-        just redraw the new board"""
-        # Stuff goes here to change the chess_board variable
-
-        # Has the piece come from a white or black square?
-		old_square_bw = chess_board[row][column][0]
-        # Create variable as just the piece
-		new_square_piece = chess_board[row][column][1:4]
-
-
-		if chess_board[new_row][new_column][0] == "(":
-			# Piece is going to white square
-			redraw_square = "(" + new_square_piece + ")"
-		else:
-			# Piece is going to black square
-			redraw_square = "{" + new_square_piece + "}"
+    def redraw_board(self, chess_board, row, column,
+                     new_row, new_column):
+        """Redraws the board once moves updated.
         
+        All other methods should do the validation of
+        whether or not the move is valid. This method should
+        just redraw the new board."""
+        # Stuff goes here to change the chess_board variable
+        
+        # Has the piece come from a white or black square?
+        old_square_bw = chess_board[row][column][0]
+        # Create variable as just the piece
+        new_square_piece = chess_board[row][column][1:4]
+
+
+        if chess_board[new_row][new_column][0] == "(":
+            # Piece is going to white square
+            redraw_square = "(" + new_square_piece + ")"
+        else:
+            # Piece is going to black square
+            redraw_square = "{" + new_square_piece + "}"
+            
         # Populate new_row/new_column with the piece that
         # was originally selected
-		chess_board[new_row][new_column] = redraw_square
+        chess_board[new_row][new_column] = redraw_square
         
-		if old_square_bw == "(":
+        if old_square_bw == "(":
             # Do you see what I did there? By assigning whether
             # old piece was black or white square, I created a
             # comparison to decide what the (now empty) space
             # should look like on the board
-			redraw_old_piece = "(   )"
-		else:
-			redraw_old_piece = "{___}"
+            redraw_old_piece = "(   )"
+        else:
+            redraw_old_piece = "{___}"
 
         # Make the space that the piece came from blank again
-		chess_board[row][column] = redraw_old_piece
+        chess_board[row][column] = redraw_old_piece
         # Redraw the board now it has been amended
-		self.print_board(chess_board)
+        self.print_board(chess_board)
 
 
 class CheckForCheck(object):
-    """Currently requires the following arguments:
+    """Runs checks for check in all directions.
+    
+    Currently requires the following arguments:
     white_king_check, black_king_check, piece_colour
     In order to keep all classes blank in main file,
     have removed from __init__ and will be added as
@@ -107,12 +112,12 @@ class PieceMovement(object):
 
 
 class Castling(object):
-     def castling(self, *args):
-          args_list = args[0]
+    def castling(self, *args):
+        args_list = args[0]
           
-          # Needs castling code here
-          if args_list[0][0] == "W":
-               print args_list
+        # Needs castling code here
+        if args_list[0][0] == "W":
+            print args_list
 
 
 class Gameplay(object):
@@ -137,7 +142,7 @@ class Gameplay(object):
                 move2 = "zz"
                 if move2[0].lower() == "q":
                     self.end_game()
-    
+
         if move1 == "o-o" or move1 == "o-o-o":
             Castling().castling(args)
             # Needs real code below here
@@ -163,12 +168,12 @@ class Gameplay(object):
 
 
     def move_valid(self, chess_board, row, column, valid_move, turn, turn_counter):
-        """Check that the proposed move is a valid chess move"""
+        """Check that the proposed move is a valid chess move."""
         if chess_board[row][column][1] != turn[0].lower():
             return self.change_turn(valid_move, turn_counter, turn)
-	elif self.collision_detection() == 0:
+        elif self.collision_detection() == 0:
             pass
-	else:
+        else:
             return self.change_turn(valid_move, turn_counter, turn)
 
         # Method for piece moves are in another class so I  can call

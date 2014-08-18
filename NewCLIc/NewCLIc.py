@@ -17,23 +17,29 @@ def debug(*args):
 # Columns are along the bottom (a-h)
 
 chess_board = [["  8  ","(bR1)", "{bN1}", "(bB1)", "{bQ }", "(bK )", "{bB2}", "(bN2)", "{bR2}"],
-	       ["  7  ","{bP1}", "(bP2)", "{bP3}", "(bP4)", "{bP5}", "(bP6)", "{bP7}", "(bP8)"],
-	       ["  6  ","(   )", "{___}", "(   )", "{___}", "(   )", "{___}", "(   )", "{___}"],
-	       ["  5  ","{___}", "(   )", "{___}", "(   )", "{___}", "(   )", "{___}", "(   )"],
-	       ["  4  ","(   )", "{___}", "(   )", "{___}", "(   )", "{___}", "(   )", "{___}"],
+	           ["  7  ","{bP1}", "(bP2)", "{bP3}", "(bP4)", "{bP5}", "(bP6)", "{bP7}", "(bP8)"],
+	           ["  6  ","(   )", "{___}", "(   )", "{___}", "(   )", "{___}", "(   )", "{___}"],
+	           ["  5  ","{___}", "(   )", "{___}", "(   )", "{___}", "(   )", "{___}", "(   )"],
+	           ["  4  ","(   )", "{___}", "(   )", "{___}", "(   )", "{___}", "(   )", "{___}"],
                ["  3  ","{___}", "(   )", "{___}", "(   )", "{___}", "(   )", "{___}", "(   )"],
-	       ["  2  ","(wP1)", "{wP2}", "(wP3)", "{wP4}", "(wP5)", "{wP6}", "(wP7)", "{wP8}"],
-	       ["  1  ","{wR1}", "(wN1)", "{wB1}", "(wQ )", "{wK }", "(wB2)", "{wN2}", "(wR2)"],
-	       ["     ","  A  ", "  B  ", "  C  ", "  D  ", "  E  ", "  F  ", "  G  ", "  H  "]]
+	           ["  2  ","(wP1)", "{wP2}", "(wP3)", "{wP4}", "(wP5)", "{wP6}", "(wP7)", "{wP8}"],
+	           ["  1  ","{wR1}", "(wN1)", "{wB1}", "(wQ )", "{wK }", "(wB2)", "{wN2}", "(wR2)"],
+	           ["     ","  A  ", "  B  ", "  C  ", "  D  ", "  E  ", "  F  ", "  G  ", "  H  "]]
 
 # Dictionary to equate column to a numerical value, as integers are 
 # easier to manipulate than strings
 # File (as in rank and file)
-chess_moves_col = {"a": 1, "b": 2, "c": 3, "d": 4, "e": 5, "f": 6, "g": 7, "h": 8}
+chess_moves_col = {
+                    "a": 1, "b": 2, "c": 3, "d": 4, "e": 5, 
+                    "f": 6, "g": 7, "h": 8
+                    }
 
 # Dictionary to equate input to actual location on chessboard
 # Rank (as in rank and file)
-chess_moves_row = {"1": 7, "2": 6, "3": 5, "4": 4, "5": 3, "6": 2, "7": 1, "8": 0}
+chess_moves_row = {
+                    "1": 7, "2": 6, "3": 5, "4": 4, "5": 3, 
+                    "6": 2, "7": 1, "8": 0
+                    }
 
 # List for pawn moves as they are different to other pieces (need to take
 # into consideration if first move, or if piece has reached furthest rank
@@ -49,8 +55,8 @@ chess_moves_row = {"1": 7, "2": 6, "3": 5, "4": 4, "5": 3, "6": 2, "7": 1, "8": 
 # the best way to process pawn movement?
 pawn_moves = [["bP1",2,0], ["bP2",2,0], ["bP3",2,0], ["bP4",2,0], 
               ["bP5",2,0], ["bP6",2,0], ["bP7",2,0], ["bP8",2,0],
-       	      ["wP1",2,0], ["wP2",2,0], ["wP3",2,0], ["wP4",2,0], 
-	      ["wP5",2,0], ["wP6",2,0], ["wP7",2,0], ["wP8",2,0]]
+              ["wP1",2,0], ["wP2",2,0], ["wP3",2,0], ["wP4",2,0], 
+              ["wP5",2,0], ["wP6",2,0], ["wP7",2,0], ["wP8",2,0]]
 
 
 # Constant(s)
@@ -121,7 +127,7 @@ while playing == True:
             print "Not a valid move"
             drawBoardFunc.print_board(chess_board)
             move1 = move2 = "zz"
-    
+
         finally:
             # Measuring length returns true or false, not any errors
             # Below code checks that move is exactly 2 characters long
@@ -144,7 +150,8 @@ while playing == True:
     new_row = chess_moves_row[move2[1]]
 
 
-    turn, valid_move, turn_counter = rules.move_valid(chess_board, row, column, valid_move, turn, turn_counter)
+    turn, valid_move, turn_counter = rules.move_valid(chess_board, \
+                        row, column, valid_move, turn, turn_counter)
 
     # Redraw the board - this might want to go at the top of the loop, to be
     # picked up before a new move is requested
@@ -155,6 +162,7 @@ while playing == True:
     #drawBoardFunc.print_board(chess_board)
     # Test
 
-    drawBoardFunc.redraw_board(chess_board, row, column, new_row, new_column)
+    drawBoardFunc.redraw_board(chess_board, row, column, \
+                               new_row, new_column)
 
     onwards = False
