@@ -136,24 +136,27 @@ class Castling(object):
         if turn == "W":
             in_check = in_check_list[0]
             king_moved = args_list[1]
-            rooks_moved = [args_list[2:4]]
+            rooks_moved = args_list[2:4]
         else:
             in_check = in_check_list[1]
             king_moved = args_list[2]
-            rooks_moved = [args_list[4:6]]
+            rooks_moved = args_list[4:6]
         # Needs castling code here
 
-        if in_check == True:
-            print "You can't castle out of check"
-            valid_move = False
-            Gameplay().do_not_proceed(valid_move, turn_counter)
+        for each in (in_check, rooks_moved[0], rooks_moved[1]):
+            if each == True:
+                print ("Not a legal castling move, " +
+                       "you can't castle into, out of or through " + 
+                       "check or if your king or castle has moved")
+                valid_move = False
+                Gameplay().do_not_proceed(valid_move, turn_counter)
+                break
+
 
         if move == "o-o":
             pass
         if move == "o-o-o":
             pass
-
-        print king_moved, rooks_moved
 
 
 class Gameplay(object):
