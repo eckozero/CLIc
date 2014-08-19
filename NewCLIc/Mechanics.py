@@ -1,4 +1,14 @@
 class DrawBoard(object):
+    """This deals with actually displaying the chess board.
+
+    I can't shake the feeling that I need to return the
+    chess board variable from this class. If I do, then
+    the chess_board variable is changed, and the new
+    variable can be amended moving forward. But it seems to
+    be working fine at the moment so I'm loathed to change
+    it. If it ain't broke and all that... """
+
+
     def print_board(self, chess_board):
         """Prints the chess board as it is."""
         for i in range(len(chess_board)):
@@ -112,12 +122,38 @@ class PieceMovement(object):
 
 
 class Castling(object):
-    def castling(self, *args):
+    def castling(self, move, *args):
+        """Deals with castling (obviously).
+
+        I hate castling right now. """
+
         args_list = args[0]
-          
+        turn = args_list[0]
+        turn_counter = args_list[9]
+
+        in_check_list = args_list[7:9]
+
+        if turn == "W":
+            in_check = in_check_list[0]
+            king_moved = args_list[1]
+            rooks_moved = [args_list[2:4]]
+        else:
+            in_check = in_check_list[1]
+            king_moved = args_list[2]
+            rooks_moved = [args_list[4:6]]
         # Needs castling code here
-        if args_list[0][0] == "W":
-            print args_list
+
+        if in_check == True:
+            print "You can't castle out of check"
+            valid_move = False
+            Gameplay().do_not_proceed(valid_move, turn_counter)
+
+        if move == "o-o":
+            pass
+        if move == "o-o-o":
+            pass
+
+        print king_moved, rooks_moved
 
 
 class Gameplay(object):
@@ -131,6 +167,7 @@ class Gameplay(object):
 
 
     def move_selection(self, turn, args):
+        castling_moves = ["o-o", "o-o-o"]
         move1 = raw_input(turn + " turn. Pick which piece to move: ")
         if len(move1) == 0:
             move1 = "zz"
@@ -138,16 +175,15 @@ class Gameplay(object):
             self.end_game()
         else:
             move2 = raw_input("Where would you like to move to: ")
-            if len(move2) == 0:
+            if len(move2) == 0 and move1 not in castling_moves:
                 move2 = "zz"
                 if move2[0].lower() == "q":
                     self.end_game()
 
         if move1 == "o-o" or move1 == "o-o-o":
-            Castling().castling(args)
+            Castling().castling(move1, args)
             # Needs real code below here
-            move1 = "aa"
-            move2 = "aa"
+            pass
 
         return move1, move2
 
