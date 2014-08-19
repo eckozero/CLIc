@@ -109,8 +109,6 @@ while playing == True:
     while onwards == False:
         valid_move = False
 
-        wR2_moved = True
-
         var_list = [turn, white_king_moved, black_king_moved, wR1_moved, 
                     wR2_moved, bR1_moved, bR2_moved, white_king_check, 
                     black_king_moved, turn_counter]
