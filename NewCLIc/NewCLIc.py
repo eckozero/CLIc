@@ -109,10 +109,11 @@ while playing == True:
     while onwards == False:
         valid_move = False
 
-        var_list = [turn, white_king_moved, black_king_moved, wR1_moved, wR2_moved, bR1_moved, bR2_moved]
+        var_list = [turn, white_king_moved, black_king_moved, wR1_moved, 
+                    wR2_moved, bR1_moved, bR2_moved, white_king_check, 
+                    black_king_moved, turn_counter]
 
         move1, move2 = rules.move_selection(turn, var_list)
-        
         # There are lots of ways that input for move1 and move2 can
         # break things. User could try to use blank input, or a letter
         # that's further than the 8 columns, or a number that isn't
@@ -134,9 +135,13 @@ while playing == True:
             # and changes move1 + move2 to "zz" so that the loop fails
             # and input is requested again
             if len(move1) != 2 or len(move2) !=2:
-                print "Sorry, I didn't quite catch that move (did it have the right number of characters?)"
+                print ("Sorry, I didn't quite catch that move" +  
+                " (did it have the right number of characters?)")
                 print move1 + "-" + move2
                 move1 = move2 = "zz"
+                drawBoardFunc.print_board(chess_board)
+
+
 
         if move1 != "zz" and move2 != "zz":
             column = chess_moves_col[move1[0]]
@@ -150,7 +155,7 @@ while playing == True:
     new_row = chess_moves_row[move2[1]]
 
 
-    turn, valid_move, turn_counter = rules.move_valid(chess_board, \
+    turn, valid_move, turn_counter = rules.move_valid(chess_board,
                         row, column, valid_move, turn, turn_counter)
 
     # Redraw the board - this might want to go at the top of the loop, to be
@@ -162,7 +167,7 @@ while playing == True:
     #drawBoardFunc.print_board(chess_board)
     # Test
 
-    drawBoardFunc.redraw_board(chess_board, row, column, \
+    drawBoardFunc.redraw_board(chess_board, row, column,
                                new_row, new_column)
 
     onwards = False
