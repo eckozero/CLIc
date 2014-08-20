@@ -88,7 +88,8 @@ class CheckForCheck(object):
         self.check_horizontal()
         self.check_vertical()
         self.check_diagonal()
-        self.checkmate(turn)
+        print "It ran correctly"
+        #self.checkmate(turn)
 
 
 class PawnMovement(object):
