@@ -97,7 +97,7 @@ drawBoardFunc = Mechanics.DrawBoard()
 checkCheck = Mechanics.CheckForCheck()
 pawnMoves = Mechanics.PawnMovement()
 pieceMoves = Mechanics.PieceMovement()
-castling = Mechanics.Castling()
+castling = Mechanics.Castling(chess_board)
 rules = Mechanics.Gameplay()
 
 
@@ -113,7 +113,7 @@ while playing == True:
                     wR2_moved, bR1_moved, bR2_moved, white_king_check, 
                     black_king_moved, turn_counter]
 
-        move1, move2 = rules.move_selection(turn, var_list)
+        move1, move2 = rules.move_selection(chess_board, turn, var_list)
         # There are lots of ways that input for move1 and move2 can
         # break things. User could try to use blank input, or a letter
         # that's further than the 8 columns, or a number that isn't
