@@ -101,12 +101,18 @@ castling = Mechanics.Castling(chess_board)
 rules = Mechanics.Gameplay()
 
 
-drawBoardFunc.print_board(chess_board)
+#drawBoardFunc.print_board(chess_board)
 
+drawBoardFunc.print_board(chess_board)
 
 #def play_game():
 while playing == True:
     while onwards == False:
+
+        #drawBoardFunc.redraw_board(chess_board, row, column,
+        #                            new_row, new_column)
+
+        
         valid_move = False
 
         var_list = [turn, white_king_moved, black_king_moved, wR1_moved, 
@@ -114,48 +120,51 @@ while playing == True:
                     black_king_moved, turn_counter]
 
         move1, move2 = rules.move_selection(chess_board, turn, var_list)
+
+        if move1 != True and move2 != True:
         # There are lots of ways that input for move1 and move2 can
         # break things. User could try to use blank input, or a letter
         # that's further than the 8 columns, or a number that isn't
         # 1-8. Try/except below attempts to catch any errors that
         # would otherwise cause CLIc to fail
-        try:
-            chess_moves_col[move1[0]] != ""
-            chess_moves_row[move1[1]] != ""
-            (move1[0].lower() and move2[0].lower()) in chess_moves_col
-            (move1[1] and move2[1]) in range(9)
-        except (IndexError, KeyError):
-            print "Not a valid move"
-            drawBoardFunc.print_board(chess_board)
-            move1 = move2 = "zz"
+            try:
+                chess_moves_col[move1[0]] != ""
+                chess_moves_row[move1[1]] != ""
+                (move1[0].lower() and move2[0].lower()) in chess_moves_col
+                (move1[1] and move2[1]) in range(9)
+            except (IndexError, KeyError):
+                print "Not a valid move"
+                drawBoardFunc.print_board(chess_board)
+                move1 = move2 = "zz"
 
-        finally:
+            finally:
             # Measuring length returns true or false, not any errors
             # Below code checks that move is exactly 2 characters long
             # and changes move1 + move2 to "zz" so that the loop fails
             # and input is requested again
-            if len(move1) != 2 or len(move2) !=2:
-                print ("Sorry, I didn't quite catch that move" +  
-                " (did it have the right number of characters?)")
-                print move1 + "-" + move2
-                move1 = move2 = "zz"
-                drawBoardFunc.print_board(chess_board)
+                if len(move1) != 2 or len(move2) !=2:
+                    print ("Sorry, I didn't quite catch that move" +  
+                    " (did it have the right number of characters?)")
+                    print move1 + "-" + move2
+                    move1 = move2 = "zz"
+                    drawBoardFunc.print_board(chess_board)
 
 
 
-        if move1 != "zz" and move2 != "zz":
-            column = chess_moves_col[move1[0]]
-            row = chess_moves_row[move1[1]]
-            onwards = True
-        else:
-            onwards = False
+            if move1 != "zz" and move2 != "zz":
+                column = chess_moves_col[move1[0]]
+                row = chess_moves_row[move1[1]]
+                onwards = True
+            else:
+                onwards = False
     
+
     # Map on the chess board where the end destination is (piece moving TO)
-    new_column = chess_moves_col[move2[0]]
-    new_row = chess_moves_row[move2[1]]
+            new_column = chess_moves_col[move2[0]]
+            new_row = chess_moves_row[move2[1]]
 
 
-    turn, valid_move, turn_counter = rules.move_valid(chess_board,
+            turn, valid_move, turn_counter = rules.move_valid(chess_board,
                         row, column, valid_move, turn, turn_counter)
 
     # Redraw the board - this might want to go at the top of the loop, to be
@@ -166,8 +175,11 @@ while playing == True:
 
     #drawBoardFunc.print_board(chess_board)
     # Test
+            if valid_move == True:
+                drawBoardFunc.redraw_board(chess_board, row, column,
+                                       new_row, new_column)
 
-    drawBoardFunc.redraw_board(chess_board, row, column,
-                               new_row, new_column)
+            else:
+                drawBoardFunc.print_board(chess_board)
 
-    onwards = False
+            onwards = False
