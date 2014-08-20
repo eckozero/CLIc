@@ -122,28 +122,43 @@ class PieceMovement(object):
 
 
 class Castling(object):
+    def __init__(self, chess_board):
+        self.chess_board = chess_board
+
     def castling(self, move, *args):
         """Deals with castling (obviously).
 
         I hate castling right now. """
 
         args_list = args[0]
-        turn = args_list[0]
+        turn = args_list[0][0]
         turn_counter = args_list[9]
 
         in_check_list = args_list[7:9]
+
+        chess_board = self.chess_board
+
 
         if turn == "W":
             in_check = in_check_list[0]
             king_moved = args_list[1]
             rooks_moved = args_list[2:4]
+            king_row = 7
         else:
             in_check = in_check_list[1]
             king_moved = args_list[2]
             rooks_moved = args_list[4:6]
+            king_row = 0
         # Needs castling code here
 
-        for each in (in_check, rooks_moved[0], rooks_moved[1]):
+        if move == "o-o":
+            # Kingside rook (R2)
+            rook_moved = rooks_moved[1]
+        else:
+            # Queenside rook (R1)
+            rook_moved = rooks_moved[0]
+
+        for each in (in_check, rook_moved):
             if each == True:
                 print ("Not a legal castling move, " +
                        "you can't castle into, out of or through " + 
@@ -152,11 +167,84 @@ class Castling(object):
                 Gameplay().do_not_proceed(valid_move, turn_counter)
                 break
 
+        # King not in check and relevant rook not moved
+        # Are there pieces between King and Rook?
+
+        self.castling_collision(chess_board, turn, move, king_row)
 
         if move == "o-o":
-            pass
+            # Kingside
+            if chess_board[king_row][8][1:4] != (turn.lower() + "R2"):
+                return 0
+            else:
+                # TODO: Castling logic
+                pass
         if move == "o-o-o":
-            pass
+            # Queenside
+            if chess_board[king_row][1][1:4] != (turn.lower() + "R1"):
+                # TODO: Castling logic
+                pass
+
+
+    def castling_collision(self, chess_board, turn, move, king_row):
+        """Determines if pieces between King and Rook."""
+
+        EMPTY_SPACE = ("(   )", "{___}")
+
+        if move == "o-o":
+            collision_range = range(6,8)
+            rook_space = 8
+            dest_space_k = 7
+            dest_space_r = 6
+
+        else:
+            collision_range = range(2,5)
+            rook_space = 1
+            dest_space_k = 3
+            dest_space_r = 4
+
+        # Store whether King/Rook squares are Black or White
+        # Left and right side of square
+        b_w_square_k_l = chess_board[king_row][5][0]
+        b_w_square_k_r = chess_board[king_row][5][4]
+
+        b_w_square_r = chess_board[king_row][rook_space][0]
+        b_w_square_l = chess_board[king_row][rook_space][4]
+
+        king = chess_board[king_row][5]
+        rook = chess_board[king_row][rook_space]
+
+        for each in range(6, 8):
+            if chess_board[king_row][each] not in EMPTY_SPACE:
+                # Can't castle though check
+                # Should be a method for checking this
+                if CheckForCheck().check_for_check(turn) == 1:
+                    print ("Not a legal castling move, " +
+                       "you can't castle into, out of or through " + 
+                       "check or if your king or castle has moved")
+                    return 0
+                # Pieces in the way
+                print "There are pieces in the way"
+                pass
+                #return 0
+
+        if chess_board[king_row][rook_space][0] == "(":
+            chess_board[king_row][rook_space] = "(   )"
+            chess_board[king_row][5] = "{___}"
+        else:
+            chess_board[king_row][rook_space] = "{___}"
+            chess_board[king_row][5] = "(   )"
+
+        chess_board[king_row][dest_space_k] = king        
+        chess_board[king_row][dest_space_r] = rook
+
+        DrawBoard().print_board(chess_board)        
+
+
+    def through_check(self):
+        """Checks that king is not moving through check."""
+        pass
+
 
 
 class Gameplay(object):
@@ -169,7 +257,7 @@ class Gameplay(object):
         return turn, valid_move, turn_counter
 
 
-    def move_selection(self, turn, args):
+    def move_selection(self, chess_board, turn, args):
         castling_moves = ["o-o", "o-o-o"]
         move1 = raw_input(turn + " turn. Pick which piece to move: ")
         if len(move1) == 0:
@@ -184,7 +272,7 @@ class Gameplay(object):
                     self.end_game()
 
         if move1 == "o-o" or move1 == "o-o-o":
-            Castling().castling(move1, args)
+            Castling(chess_board).castling(move1, args)
             # Needs real code below here
             pass
 
