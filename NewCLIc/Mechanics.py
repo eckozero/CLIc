@@ -171,23 +171,60 @@ class Castling(object):
         # King not in check and relevant rook not moved
         # Are there pieces between King and Rook?
 
-        self.castling_collision(chess_board, turn, move, king_row)
+        EMPTY_SPACE = ("(   )", "{___}")
 
         if move == "o-o":
-            # Kingside
-            if chess_board[king_row][8][1:4] != (turn.lower() + "R2"):
-                return 0
-            else:
-                # TODO: Castling logic
+            collision_range = range(6,8)
+            rook_space = 8
+            dest_space_k = 7
+            dest_space_r = 6
+
+        else:
+            collision_range = range(2,5)
+            rook_space = 1
+            dest_space_k = 3
+            dest_space_r = 4
+
+        # Store whether King/Rook squares are Black or White
+        # Left and right side of square
+        b_w_square_k_l = chess_board[king_row][5][0]
+        b_w_square_k_r = chess_board[king_row][5][4]
+
+        b_w_square_r = chess_board[king_row][rook_space][0]
+        b_w_square_l = chess_board[king_row][rook_space][4]
+
+        king = chess_board[king_row][5]
+        rook = chess_board[king_row][rook_space]
+
+        for each in range(6, 8):
+            if chess_board[king_row][each] not in EMPTY_SPACE:
+                # Can't castle though check
+                # Should be a method for checking this
+                if CheckForCheck().check_for_check(turn) == 1:
+                    print ("Not a legal castling move, " +
+                       "you can't castle into, out of or through " + 
+                       "check or if your king or castle has moved")
+                    return 0
+                # Pieces in the way
+                print "There are pieces in the way"
                 pass
-        if move == "o-o-o":
-            # Queenside
-            if chess_board[king_row][1][1:4] != (turn.lower() + "R1"):
-                # TODO: Castling logic
-                pass
+                #return 0
+
+        if chess_board[king_row][rook_space][0] == "(":
+            chess_board[king_row][rook_space] = "(   )"
+            chess_board[king_row][5] = "{___}"
+        else:
+            chess_board[king_row][rook_space] = "{___}"
+            chess_board[king_row][5] = "(   )"
+
+        chess_board[king_row][dest_space_k] = king        
+        chess_board[king_row][dest_space_r] = rook
+
+        return 1 
 
 
-    def castling_collision(self, chess_board, turn, move, king_row):
+
+    def castling_conf(self, chess_board, turn, move, king_row):
         """Determines if pieces between King and Rook."""
 
         EMPTY_SPACE = ("(   )", "{___}")
@@ -239,13 +276,8 @@ class Castling(object):
         chess_board[king_row][dest_space_k] = king        
         chess_board[king_row][dest_space_r] = rook
 
-        DrawBoard().print_board(chess_board)        
-
-
-    def through_check(self):
-        """Checks that king is not moving through check."""
-        pass
-
+        print "It does get here"
+        return 1
 
 
 class Gameplay(object):
@@ -273,9 +305,11 @@ class Gameplay(object):
                     self.end_game()
 
         if move1 == "o-o" or move1 == "o-o-o":
-            Castling(chess_board).castling(move1, args)
+            if Castling(chess_board).castling(move1, args) == 1:
             # Needs real code below here
-            pass
+                move1 = move2 = True
+                
+
 
         return move1, move2
 
@@ -284,25 +318,26 @@ class Gameplay(object):
         return 0
 
 
-    def do_not_proceed(self,turn_counter, valid_move):
+    def do_not_proceed(self, valid_move, turn_counter, turn):
         """You shall not pass!"""
 
         print "That's not a valid move\n"
 
         turn_counter -=1
         
-        return self.turn_picker(turn_counter, valid_move)
+        return self.change_turn(valid_move, turn_counter, turn)
 
 
 
     def move_valid(self, chess_board, row, column, valid_move, turn, turn_counter):
         """Check that the proposed move is a valid chess move."""
         if chess_board[row][column][1] != turn[0].lower():
-            return self.change_turn(valid_move, turn_counter, turn)
+            return self.do_not_proceed(valid_move, turn_counter, turn)
         elif self.collision_detection() == 0:
             pass
         else:
-            return self.change_turn(valid_move, turn_counter, turn)
+            if valid_move == True:
+                return self.change_turn(valid_move, turn_counter, turn)
 
         # Method for piece moves are in another class so I  can call
         # the methods from PieceMovement like ClassName().methodName()
@@ -316,12 +351,13 @@ class Gameplay(object):
     def change_turn(self, valid_move, turn_counter, turn):
         # Always add 1, do_not_proceed() will remove if
         # required
+        print turn_counter
         turn_counter +=1
-        if valid_move == True:
-            return self.turn_picker(turn_counter, valid_move)
-        else:
-            return self.do_not_proceed(turn_counter, valid_move)
-
+        #if valid_move == True:
+        #    return self.turn_picker(turn_counter, valid_move)
+        #else:
+        #    return self.do_not_proceed(turn_counter, valid_move)
+        return self.turn_picker(turn_counter, valid_move)
 
 
     def end_game(self):
