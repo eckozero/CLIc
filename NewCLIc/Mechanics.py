@@ -105,17 +105,28 @@ class PawnMovement(object):
 
 
 class PieceMovement(object):
+    def __init__(self, chess_board, row, column, new_row, new_column):
+        self.chess_board = chess_board
+        self.row = row
+        self.column = column
+        self.new_row = new_row
+        self.new_column = new_column
+
 
     EMPTY_SPACE = ("(   )", "{___}")
 
-    def king_move(self,chess_board, row, column, new_row, new_column):
-        """Checks King move is valid."""
-        
+    def king_move(self, white_king_moved, black_king_moved, turn):
+        """Checks King move is valid.
+
+        I'm pretty sure that I can get away with only passing
+        one king_moved variable, or none and return it at the
+        end. Will come back to that"""
+
         # Can square neg numbers to get same pos number to keep list
         # length down
         king_moves_list = [[1,0],[0,1],[1,1]]
 
-        king_attempt = [(new_row - row), (new_column - column)]
+        king_attempt = [(new_row - row)**2, (new_column - column)**2]
 
         if chess_board[row][column][0] == "(":
             old_space = "(   )"
@@ -152,7 +163,15 @@ class PieceMovement(object):
         # Make sure this returned only for relevant King
         valid_move = True
         king_moved = True
-        return king_moved, valid_move
+
+        if turn == "W":
+            white_king_moved = True
+        else:
+            black_king_moved = True
+
+
+
+        return white_king_moved, black_king_moved, valid_move
 
     def queen_move(self):
         pass
