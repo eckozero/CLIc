@@ -106,8 +106,53 @@ class PawnMovement(object):
 
 class PieceMovement(object):
 
-    def king_move(self):
-        pass
+    EMPTY_SPACE = ("(   )", "{___}")
+
+    def king_move(self,chess_board, row, column, new_row, new_column):
+        """Checks King move is valid."""
+        
+        # Can square neg numbers to get same pos number to keep list
+        # length down
+        king_moves_list = [[1,0],[0,1],[1,1]]
+
+        king_attempt = [(new_row - row), (new_column - column)]
+
+        if chess_board[row][column][0] == "(":
+            old_space = "(   )"
+        else:
+            old_space = "{___}"
+
+        # Pseudocode:
+        # Make list of all valid move combos, compare to new_row - row
+        # and new_col - col. If not in list then move not valid
+        # Fail, return valid move False
+        if king_attempt in king_moves_list:
+            # TODO: Draw new king square and fill old square as blank
+            pass
+        else:
+            return valid_move = False
+
+        if chess_board[new_row][new_column] not in self.EMPTY_SPACE:
+            return valid_move = False
+        
+        if chess_board[new_row][new_column][0] == "(":
+            king ="(" + chess_board[row][column][1:4] + ")"
+        else:
+            king = "{" + chess_board[row][column][1:4] + "}"
+
+        if CheckForCheck().check_for_check() == 0:
+            # King not in check in new position - redraw board
+            chess_board[row][column] = old_space
+            chess_board[new_row][new_column] = king
+            pass
+        else:
+            # Move would put king into check
+            valid_move = False
+        
+        # Make sure this returned only for relevant King
+        valid_move = True
+        king_moved = True
+        return king_moved, valid_move
 
     def queen_move(self):
         pass
@@ -174,12 +219,14 @@ class Castling(object):
         EMPTY_SPACE = ("(   )", "{___}")
 
         if move == "o-o":
+
             collision_range = range(6,8)
             rook_space = 8
             dest_space_k = 7
             dest_space_r = 6
 
         else:
+
             collision_range = range(2,5)
             rook_space = 1
             dest_space_k = 3
