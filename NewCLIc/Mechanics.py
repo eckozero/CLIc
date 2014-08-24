@@ -65,8 +65,19 @@ class CheckForCheck(object):
     have removed from __init__ and will be added as
     args to functions"""
 
-    def find_king():
-        pass
+    def find_king(self, chess_board, turn):
+        """Finds the King to pass into check functions."""
+        king_colour = turn[0].lower()
+        for pieces in range(9):
+        # iterate through each row
+            for columns in range(9):
+            # For each row, iterate through every column
+                if chess_board[pieces][columns][1:3] == king_colour + "K":
+                    # Correct colour king found
+                    king_row = pieces
+                    king_column = columns
+                    return king_row, king_column
+
 
     def check_horizontal(self):
         pass
@@ -141,10 +152,12 @@ class PieceMovement(object):
             # TODO: Draw new king square and fill old square as blank
             pass
         else:
-            return valid_move = False
+            valid_move = False
+            return valid_move
 
         if chess_board[new_row][new_column] not in self.EMPTY_SPACE:
-            return valid_move = False
+            valid_move = False
+            return valid_move
         
         if chess_board[new_row][new_column][0] == "(":
             king ="(" + chess_board[row][column][1:4] + ")"
