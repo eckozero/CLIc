@@ -286,7 +286,8 @@ class Castling(object):
                     return 0
                 # Pieces in the way
                 print "There are pieces in the way"
-                pass
+                DrawBoard().print_board(chess_board)
+                break
                 #return 0
 
         if chess_board[king_row][rook_space][0] == "(":
