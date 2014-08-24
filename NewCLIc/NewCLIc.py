@@ -21,7 +21,7 @@ chess_board = [["  8  ","(bR1)", "{bN1}", "(bB1)", "{bQ }", "(bK )", "{bB2}", "(
 	           ["  6  ","(   )", "{___}", "(   )", "{___}", "(   )", "{___}", "(   )", "{___}"],
 	           ["  5  ","{___}", "(   )", "{___}", "(   )", "{___}", "(   )", "{___}", "(   )"],
 	           ["  4  ","(   )", "{___}", "(   )", "{___}", "(   )", "{___}", "(   )", "{___}"],
-               ["  3  ","{___}", "(   )", "{___}", "(   )", "{___}", "(   )", "{___}", "(   )"],
+                   ["  3  ","{___}", "(   )", "{___}", "(   )", "{___}", "(   )", "{___}", "(   )"],
 	           ["  2  ","(wP1)", "{wP2}", "(wP3)", "{wP4}", "(wP5)", "{wP6}", "(wP7)", "{wP8}"],
 	           ["  1  ","{wR1}", "(wN1)", "{wB1}", "(wQ )", "{wK }", "(wB2)", "{wN2}", "(wR2)"],
 	           ["     ","  A  ", "  B  ", "  C  ", "  D  ", "  E  ", "  F  ", "  G  ", "  H  "]]
@@ -96,9 +96,13 @@ black_king_check = False
 drawBoardFunc = Mechanics.DrawBoard()
 checkCheck = Mechanics.CheckForCheck()
 pawnMoves = Mechanics.PawnMovement()
-pieceMoves = Mechanics.PieceMovement()
 castling = Mechanics.Castling(chess_board)
 rules = Mechanics.Gameplay()
+
+# Unless I can solve the issue of repeatedly passing args to this method
+# I might need to move it into the main loop so it's refreshed each turn
+#pieceMoves = Mechanics.PieceMovement(chess_board, row, column, 
+#             new_row, new_column)
 
 
 #drawBoardFunc.print_board(chess_board)
@@ -175,11 +179,18 @@ while playing == True:
 
     #drawBoardFunc.print_board(chess_board)
     # Test
+
+            pieceMoves = Mechanics.PieceMovement(chess_board, row, column, 
+             new_row, new_column)
+
+
+
             if valid_move == True:
                 drawBoardFunc.redraw_board(chess_board, row, column,
                                        new_row, new_column)
 
             else:
                 drawBoardFunc.print_board(chess_board)
+            
 
             onwards = False
