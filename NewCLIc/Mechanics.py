@@ -67,12 +67,12 @@ class CheckForCheck(object):
 
     def find_king(self, chess_board, turn):
         """Finds the King to pass into check functions."""
-        king_colour = turn[0].lower()
+        colour = turn[0].lower()
         for pieces in range(9):
         # iterate through each row
             for columns in range(9):
             # For each row, iterate through every column
-                if chess_board[pieces][columns][1:3] == king_colour + "K":
+                if chess_board[pieces][columns][1:3] == colour + "K":
                     # Correct colour king found
                     king_row = pieces
                     king_column = columns
