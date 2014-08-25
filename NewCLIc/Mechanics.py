@@ -126,12 +126,22 @@ class PieceMovement(object):
 
     EMPTY_SPACE = ("(   )", "{___}")
 
+    def piece_to_move(self, turn):
+        """Decides which piece to move, and then calls method."""
+
+
     def king_move(self, white_king_moved, black_king_moved, turn):
         """Checks King move is valid.
 
         I'm pretty sure that I can get away with only passing
         one king_moved variable, or none and return it at the
         end. Will come back to that"""
+
+        chess_board = self.chess_board
+        row = self.row
+        column = self.column
+        new_row = self.new_row
+        new_column = self.new_column
 
         # Can square neg numbers to get same pos number to keep list
         # length down
@@ -188,7 +198,14 @@ class PieceMovement(object):
     def queen_move(self):
         pass
 
-    def bishop_move(self):
+    def bishop_move(self,chess_board, row, column, new_row, new_column):
+        chess_board = self.chess_board
+        row = self.row
+        column = self.column
+        new_row = self.new_row
+        new_column = self.new_column
+
+
         x = new_row - row
         y = new_column - column
         bishop = chess_board[row][column]
@@ -201,12 +218,14 @@ class PieceMovement(object):
             # > 9, < 1 etc
             if (x > 1 and x <= 9) and (y >= 0 and y <= 8):
                 # Move is in board. Proceed
-                chess_board[row][column] = chess_board[new_row][new_column]
-                chess_board[new_row][new_column] = bishop
+                
+                #chess_board[row][column] = chess_board[new_row][new_column]
+                #chess_board[new_row][new_column] = bishop
                 # Code to redraw board
+                
                 Gameplay().change_turn()
-                DrawBoard().print_board(chess_board)
-            pass
+                DrawBoard().redraw_board(chess_board, row, column,
+                            new_row, new_column)
         else:
             valid_move = False
 
