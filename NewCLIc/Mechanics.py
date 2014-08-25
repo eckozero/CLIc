@@ -159,10 +159,12 @@ class PieceMovement(object):
             valid_move = False
             return valid_move
         
+        """
         if chess_board[new_row][new_column][0] == "(":
             king ="(" + chess_board[row][column][1:4] + ")"
         else:
             king = "{" + chess_board[row][column][1:4] + "}"
+        """
 
         if CheckForCheck().check_for_check() == 0:
             # King not in check in new position - redraw board
@@ -175,14 +177,11 @@ class PieceMovement(object):
         
         # Make sure this returned only for relevant King
         valid_move = True
-        king_moved = True
 
         if turn == "W":
             white_king_moved = True
         else:
             black_king_moved = True
-
-
 
         return white_king_moved, black_king_moved, valid_move
 
@@ -190,6 +189,27 @@ class PieceMovement(object):
         pass
 
     def bishop_move(self):
+        x = new_row - row
+        y = new_column - column
+        bishop = chess_board[row][column]
+        # When a bishop moves it moves(+-) x along and (+-)y up although
+        # x == y. As x or y could be positive or negative, square the
+        # numbers and check that they are equal. If not, move is not a
+        # valid bishop move
+        if ((new_row - row)**2) == ((new_column - column)**2):
+            # Check proposed move doesn't leave board boundaries (e.g.
+            # > 9, < 1 etc
+            if (x > 1 and x <= 9) and (y >= 0 and y <= 8):
+                # Move is in board. Proceed
+                chess_board[row][column] = chess_board[new_row][new_column]
+                chess_board[new_row][new_column] = bishop
+                # Code to redraw board
+                Gameplay().change_turn()
+                DrawBoard().print_board(chess_board)
+            pass
+        else:
+            valid_move = False
+
         pass
 
     def knight_move(self):
