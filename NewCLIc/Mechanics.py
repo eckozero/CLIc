@@ -92,7 +92,7 @@ class CheckForCheck(object):
         # Checkmate stuff here
         # If checkmate = True: etc
         print turn[0:5] + " wins!"
-        quitting = raw_input("Press any key to quit")
+        quitting = raw_input("Press Enter to quit")
         exit()
 
     def check_for_check(self, turn):
@@ -128,7 +128,28 @@ class PieceMovement(object):
 
     def piece_to_move(self, turn):
         """Decides which piece to move, and then calls method."""
+        chess_board = self.chess_board
+        row = self.row
+        column = self.column
 
+        if chess_board[row][column][2] == "P":
+            pass
+        elif chess_board[row][column][2] == "R":
+            pass
+        elif chess_board[row][column][2] == "N":
+            pass
+        elif chess_board[row][column][2] == "B":
+            pass
+        elif chess_board[row][column][2] == "Q":
+            pass
+        elif chess_board[row][column][2] == "K":
+            pass
+        else:
+            # Not sure what has happened, but maybe this is
+            # a blank square?
+            pass
+
+        pass
 
     def king_move(self, white_king_moved, black_king_moved, turn):
         """Checks King move is valid.
