@@ -133,16 +133,22 @@ class PieceMovement(object):
         column = self.column
 
         if chess_board[row][column][2] == "P":
+            PawnMovement().pawn_move()
             pass
         elif chess_board[row][column][2] == "R":
+            self.rook_move()
             pass
         elif chess_board[row][column][2] == "N":
+            self.knight_move()
             pass
         elif chess_board[row][column][2] == "B":
+            self.bishop_move()
             pass
         elif chess_board[row][column][2] == "Q":
+            self.queen_move()
             pass
         elif chess_board[row][column][2] == "K":
+            self.king_move(white_king_moved, black_king_moved, turn)
             pass
         else:
             # Not sure what has happened, but maybe this is
