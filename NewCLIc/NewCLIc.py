@@ -15,6 +15,8 @@ def debug(*args):
 
 # Set up the chess board. Rows go down the side (1-8)
 # Columns are along the bottom (a-h)
+# There's no way to make this fit on the screen horizontally and for it to
+# still be readable so... I'm really sorry PEP8
 
 chess_board = [["  8  ","(bR1)", "{bN1}", "(bB1)", "{bQ }", "(bK )", "{bB2}", "(bN2)", "{bR2}"],
 	           ["  7  ","{bP1}", "(bP2)", "{bP3}", "(bP4)", "{bP5}", "(bP6)", "{bP7}", "(bP8)"],
@@ -60,6 +62,8 @@ pawn_moves = [["bP1",2,0], ["bP2",2,0], ["bP3",2,0], ["bP4",2,0],
 
 
 # Constant(s)
+
+# Any empty space must be either a white space (   ) or black space {___}
 EMPTY_SPACE = ("(   )","{___}")
 
 
@@ -70,7 +74,9 @@ turn_counter = 10
 turn = "White's"
 # Agreed that this is needed (currently) but why? Can this be removed
 # and replaced with, for example, turn[0].lower()?
-piece_colour = "w"
+#
+# 26/01/15 - I'm going to go ahead and guess yes
+#piece_colour = "w"
 
 # Again, this may not be needed with some better coding
 playing = True
@@ -164,33 +170,45 @@ while playing == True:
     
 
     # Map on the chess board where the end destination is (piece moving TO)
-            new_column = chess_moves_col[move2[0]]
-            new_row = chess_moves_row[move2[1]]
+        
+
+    new_column = chess_moves_col[move2[0]]
+    new_row = chess_moves_row[move2[1]]
+
+    if checkCheck.check_for_check(chess_board, turn) == True:
+        print "Busted. Check, man."
 
 
-            turn, valid_move, turn_counter = rules.move_valid(chess_board,
-                        row, column, valid_move, turn, turn_counter)
+    turn, valid_move, turn_counter = rules.move_valid(chess_board, row, 
+                                        column, valid_move, turn, turn_counter)
+
+
 
     # Redraw the board - this might want to go at the top of the loop, to be
     # picked up before a new move is requested
     #
     # I'm sure it will become apparent where it needs to go as I proceed
-    #turn, valid_move, turn_counter = rules.change_turn(valid_move, turn_counter)
+    #turn, valid_move, turn_counter = rules.change_turn(valid_move, 
+    #turn_counter)
 
     #drawBoardFunc.print_board(chess_board)
     # Test
 
-            pieceMoves = Mechanics.PieceMovement(chess_board, row, column, 
-             new_row, new_column)
+    pieceMoves = Mechanics.PieceMovement(chess_board, row, column, new_row, 
+                                         new_column)
 
 
-
-            if valid_move == True:
-                drawBoardFunc.redraw_board(chess_board, row, column,
+    if valid_move == True:
+        drawBoardFunc.redraw_board(chess_board, row, column,
                                        new_row, new_column)
 
-            else:
-                drawBoardFunc.print_board(chess_board)
+    else:
+        drawBoardFunc.print_board(chess_board)
             
 
-            onwards = False
+    # Why have I never been able to figure out where check should go?
+    if checkCheck.check_for_check(chess_board, turn) == True:
+        print "Busted. Check, man."
+
+
+    onwards = False

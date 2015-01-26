@@ -1,3 +1,7 @@
+# God damn rubbish-ass lack of passing through
+EMPTY_SPACE = ("(   )", "{___}")
+
+
 class DrawBoard(object):
     """This deals with actually displaying the chess board.
 
@@ -79,11 +83,101 @@ class CheckForCheck(object):
                     return king_row, king_column
 
 
-    def check_horizontal(self):
-        pass
+    def check_prevalidation(self, turn, chess_board, row, column):
+        # Space is an empty space - not in check
+        if chess_board[row][column] in EMPTY_SPACE:
+            return False
+        # Piece is your own (same colour as yours) - not check
+        #print chess_board[row][column][1], turn[0].lower()
+        #print chess_board[row][column][1] == turn[0].lower()
+        if chess_board[row][column][1] == turn[0].lower():
+            return False
+        # Might be in check
+        
+        return True
+            
 
-    def check_vertical(self):
-        pass
+
+
+    def check_vertical(self, chess_board, turn):
+        """Checks if the king is in check from a horizontal attack."""
+        colour = turn[0].lower()
+        
+        # Obviously not in check... yet
+        check = False
+        # King's location found from previous method find_king()
+        king_found = self.find_king(chess_board, turn)
+        king_row = king_found[0]
+        column = king_found[1]
+
+        # Using King's current location as a starting point, check each
+        # square to the left and right of the king.
+        for each in range(1, king_row+1):
+        # Is the space empty or occupied by one of your own pieces?
+            if self.check_prevalidation(turn, chess_board, each, column) == False:
+                check = False
+                break
+            else: # check prevalidation is true
+                if chess_board[king_row][each][2] in ("R", "Q"):
+                    check = True
+            
+
+        # There's no point checking after the king's position if check has
+        # already been established
+        if check != True:
+            for each in range(king_row,9):
+            # Is the space empty or occupied by one of your own pieces?
+                if self.check_prevalidation(turn, chess_board, each, column) == False:
+                    check = False
+                    break
+                else:
+                # check against this
+                    if chess_board[king_row][each][2] in ("R", "Q"):
+                        check = True
+
+        return check
+
+    def check_horizontal(self, chess_board, turn):
+        """Checks if the king is in check from a horizontal attack."""
+        colour = turn[0].lower()
+ 
+        # Not in check yet, otherwise it should have returned
+        check = False
+
+        # King's location found from previous method find_king()
+        king_found = self.find_king(chess_board, turn)
+        king_col = king_found[1]
+        row = king_found[0]
+
+        # Using King's current location as a starting point, check each
+        # square to the left and right of the king.
+        for each in range(king_col, 9):
+            #print chess_board[row][each], colour
+        # Is the space empty or occupied by one of your own pieces?
+            if self.check_prevalidation(turn, chess_board, row, each) == False:
+                check = False
+                
+            else:
+                #if check_defined(chess_board, row, each) == True:
+                if chess_board[row][each][2] in ("R", "Q"):
+                    check = True
+                    break
+
+        # There's no point checking after the king's position if check has
+        # already been established
+        if check != True:
+            for each in range(0, king_col+1):
+                print chess_board[row][each]
+            # Is the space empty or occupied by one of your own pieces?
+                if self.check_prevalidation(turn, chess_board, row, each) == False:
+                    check = False
+
+                else:
+                    if chess_board[row][each][2] in ("R", "Q"):
+                        check = True
+                        break
+
+        return check
 
     def check_diagonal(self):
         pass
@@ -95,12 +189,18 @@ class CheckForCheck(object):
         quitting = raw_input("Press Enter to quit")
         exit()
 
-    def check_for_check(self, turn):
-        self.check_horizontal()
-        self.check_vertical()
-        self.check_diagonal()
+    def check_for_check(self, chess_board, turn):
+
+        if self.check_horizontal(chess_board, turn) == True:
+            return True
+        elif self.check_vertical(chess_board, turn) == True:
+            return True
+        elif self.check_diagonal() == True:
+            return True
+        # TODO: Not actually a todo flag, but good to be able to find easily
         print "It ran correctly"
         #self.checkmate(turn)
+        return False
 
 
 class PawnMovement(object):
@@ -274,10 +374,12 @@ class Castling(object):
 
         I hate castling right now. """
 
+        # When is this called? What is this list?
         args_list = args[0]
         turn = args_list[0][0]
         turn_counter = args_list[9]
 
+        # What the hell is this??
         in_check_list = args_list[7:9]
 
         chess_board = self.chess_board
@@ -402,6 +504,11 @@ class Castling(object):
             if chess_board[king_row][each] not in EMPTY_SPACE:
                 # Can't castle though check
                 # Should be a method for checking this
+
+                # The code below wont work. The check_for_check function
+                # doesn't know where the king will be during each iteration
+                #
+                # TODO: Make this work!
                 if CheckForCheck().check_for_check(turn) == 1:
                     print ("Not a legal castling move, " +
                        "you can't castle into, out of or through " + 
