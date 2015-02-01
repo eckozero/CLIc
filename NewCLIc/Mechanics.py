@@ -179,8 +179,97 @@ class CheckForCheck(object):
 
         return check
 
-    def check_diagonal(self):
-        pass
+    def check_diagonal(self, chess_board, turn):
+        """Checks if the king is in check from a diagonal attack."""
+        colour = turn[0].lower()
+ 
+        # Not in check yet, otherwise it should have returned
+        check = False
+
+        # King's location found from previous method find_king()
+        king_found = self.find_king(chess_board, turn)
+        king_col = king_found[1]
+        king_row = king_found[0]
+
+        # Now run a check against the following:
+        # king_row+1, king_col+1 (until end of range)
+        # king_row-1, king_col+1 (until end of range)
+        # king_row+1, king_col-1
+        # king_row-1, king_col-1
+
+        # I don't like this solution. If you're reading this and can think of
+        # an easier/quicker/generally better way of doing this, please let me
+        # know
+        diag_checks = [[1,1],[-1,1],[1,-1],[-1,-1]]
+
+
+        # Generate ranges of 0-king_pos and king_pos-9
+        col_ranges = [range(0, king_col), range(king_col,9)]
+        #col_range2 = range(king_col, 9)
+        row_ranges = [range(0, king_row), range(king_row,9)]
+        #row_range2 = range(king_row, 9)
+
+        # Now that all position ranges are stored, drop them all into one
+        # nice big list for easy access
+        #position_checks = [col_range1, col_range2, row_range1, row_range2]
+
+        #check_space = chess_board[king_row+][king_col]
+
+
+        # This can be incremented to work through list stacks
+        counter = 0
+
+        # Take the list of +/- -/- etc and iterate through
+        for diag_check in diag_checks:
+            
+             for each in range(1,9):
+                 #print king_row, king_col
+                 # This will almost definitely bug out at some point because
+                 # numbers out of range and shit. I'll leave it for now but 
+                 # this comment will help to find it later
+                 if king_row + each == 9 or king_row - each == 0:
+                     break
+                 if king_col + each == 9 or king_row - each == 0:
+                     break
+
+
+                 if counter == 0:
+                     check_space = chess_board[king_row+each][king_col+each]
+                 elif counter == 1:
+                     check_space = chess_board[king_row+each][king_col-each]
+                 elif counter == 2:
+                     check_space = chess_board[king_row-each][king_col+each]
+                 elif counter == 3:
+                     check_space = chess_board[king_row-each][king_col-each]
+
+
+                 if check_space in EMPTY_SPACE:
+                     # Nothing there. No worries (huru!)
+                     pass
+                 else:
+                     if check_space[1] == colour:
+                         # Own piece. No worries
+                         break
+                     else:
+                         if check_space[2] == "Q" or check_space[2] == "B":
+                             # Pawns can go fuck themselves in this method.
+                             # They can work it out themselves when they move
+                             check = True
+                         # I got lazy
+                         elif check_space[2] == "P":
+                             check = True
+                         else:
+                             break
+
+             #print check_space
+             counter +=1
+
+        return check
+
+
+
+
+
 
     def checkmate(self, turn):
         # Checkmate stuff here
@@ -195,7 +284,7 @@ class CheckForCheck(object):
             return True
         elif self.check_vertical(chess_board, turn) == True:
             return True
-        elif self.check_diagonal() == True:
+        elif self.check_diagonal(chess_board, turn) == True:
             return True
         # TODO: Not actually a todo flag, but good to be able to find easily
         print "It ran correctly"
