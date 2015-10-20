@@ -55,6 +55,11 @@ chess_moves_row = {
 # 
 # whilst this made perfect sense at the time, I'm not sure this is still
 # the best way to process pawn movement?
+#
+# Two space move for pawns is only valid if the pawn_moves[n][1] == 2
+# If it has any other value then the two space move is invalid. I think I
+# did some magic involving transposing numbers for White pawns against Black?
+
 pawn_moves = [["bP1",2,0], ["bP2",2,0], ["bP3",2,0], ["bP4",2,0], 
               ["bP5",2,0], ["bP6",2,0], ["bP7",2,0], ["bP8",2,0],
               ["wP1",2,0], ["wP2",2,0], ["wP3",2,0], ["wP4",2,0], 
@@ -83,6 +88,9 @@ playing = True
 onwards = False
 
 # Castling variables
+# TODO: Reimplement as dictionary of values?
+#
+# Counter - is there any benefit?
 white_king_moved = False
 black_king_moved = False
 wR1_moved = False
@@ -91,6 +99,9 @@ bR1_moved = False
 bR2_moved = False
 
 # Variables for check
+# TODO: Reimplement as dictionary of values?
+#
+# Counterpoint - is there any benefit to a dictionary?
 white_king_check = False
 black_king_check = False
 

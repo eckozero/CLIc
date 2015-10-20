@@ -82,7 +82,7 @@ class CheckForCheck(object):
                     king_column = columns
                     return king_row, king_column
 
-
+    # What the unholy hell does this function do??
     def check_prevalidation(self, turn, chess_board, row, column):
         # Space is an empty space - not in check
         if chess_board[row][column] in EMPTY_SPACE:
@@ -251,13 +251,16 @@ class CheckForCheck(object):
                          # Own piece. No worries
                          break
                      else:
-                         if check_space[2] == "Q" or check_space[2] == "B":
+                         # Damnit why did I not think of this earlier??
+                         if check_space[2] in ("Q", "B", "P"):
+                             check = True
+                         #if check_space[2] == "Q" or check_space[2] == "B":
                              # Pawns can go fuck themselves in this method.
                              # They can work it out themselves when they move
-                             check = True
+                         #    check = True
                          # I got lazy
-                         elif check_space[2] == "P":
-                             check = True
+                         #elif check_space[2] == "P":
+                         #    check = True
                          else:
                              break
 
@@ -411,8 +414,32 @@ class PieceMovement(object):
 
         return white_king_moved, black_king_moved, valid_move
 
-    def queen_move(self):
-        pass
+    def queen_move(self, chess_board, row, column, new_row, new_column):
+        chess_board = self.chess_board
+        row = self.row
+        column = self.column
+        new_row = self.new_row
+        new_column = self.new_column
+
+        x = new_row - row
+        y = new_column - column
+
+        queen = chess_board[row][column]
+
+        # When a queen moves it either goes diagonally (+/-)x along and (+/-)
+        # y up if x == y. Otherwise it moves horizontally (+/-) x where y == 0
+        # or (+/-) y vertically if x == 0
+
+        if (x**2 == y**2) or ((x == 0) and (y**2) > 0)
+            or ((y == 0) and (x**2) >0):
+            # Move is either diagonal, horizontal, or vertical ONLY
+            if (x > 1 and x <= 9) and (y > 1 and y <= 9):
+                # Move is in board range - check for collision
+                if Gameplay().collision_detection() == 1:
+                    Gameplay().change_turn()
+                    DrawBoard().redraw_board(chess_board, row, column,
+                                             new_row, new_column)
+                    
 
     def bishop_move(self,chess_board, row, column, new_row, new_column):
         chess_board = self.chess_board
@@ -429,7 +456,8 @@ class PieceMovement(object):
         # x == y. As x or y could be positive or negative, square the
         # numbers and check that they are equal. If not, move is not a
         # valid bishop move
-        if ((new_row - row)**2) == ((new_column - column)**2):
+        if (x**2) == (y**2):
+        #if ((new_row - row)**2) == ((new_column - column)**2):
             # Check proposed move doesn't leave board boundaries (e.g.
             # > 9, < 1 etc
             if (x > 1 and x <= 9) and (y >= 0 and y <= 8):
@@ -443,6 +471,7 @@ class PieceMovement(object):
                 DrawBoard().redraw_board(chess_board, row, column,
                             new_row, new_column)
         else:
+            # Unreferenced variable?
             valid_move = False
 
         pass
