@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # Program written by Paul Lenton (EckoZero) - <"lentonp" at "gmail" dot "com">
 # Copyright 2013
 # This program is free software; you can redistribute it and/or
