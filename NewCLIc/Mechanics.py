@@ -424,8 +424,6 @@ class PieceMovement(object):
         x = new_row - row
         y = new_column - column
 
-        queen = chess_board[row][column]
-
         # When a queen moves it either goes diagonally (+/-)x along and (+/-)
         # y up if x == y. Otherwise it moves horizontally (+/-) x where y == 0
         # or (+/-) y vertically if x == 0
@@ -451,7 +449,9 @@ class PieceMovement(object):
 
         x = new_row - row
         y = new_column - column
-        bishop = chess_board[row][column]
+        # What is this variable here for? More legacy crap?
+        #bishop = chess_board[row][column]
+
         # When a bishop moves it moves(+-) x along and (+-)y up although
         # x == y. As x or y could be positive or negative, square the
         # numbers and check that they are equal. If not, move is not a
@@ -462,22 +462,54 @@ class PieceMovement(object):
             # > 9, < 1 etc
             if (x > 1 and x <= 9) and (y >= 0 and y <= 8):
                 # Move is in board. Proceed
-                
+                if Gameplay().collision_detection() == 1:
                 #chess_board[row][column] = chess_board[new_row][new_column]
                 #chess_board[new_row][new_column] = bishop
                 # Code to redraw board
                 
-                Gameplay().change_turn()
-                DrawBoard().redraw_board(chess_board, row, column,
-                            new_row, new_column)
+                    Gameplay().change_turn()
+                    DrawBoard().redraw_board(chess_board, row, column,
+                                new_row, new_column)
+            else:
+                # Unreferenced variable?
+                #valid_move = False
+                # Not a valid move so whatever is checking this needs to know
+                # that the method returned a fail status
+                return 0
+
+
+    def knight_move(self, chess_board, row, column, new_row, new_column):
+        """In actual chess I love knights. In CLIc, not so much"""
+        chess_board = self.chess_board
+        row = self.row
+        column = self.column
+        new_row = self.new_row
+        new_column = self.new_column
+
+        movement_valid = False
+
+        # Knights move weirdly. Their move is x(+/-)2, y(+/-)1 or
+        # x(+/-)1, y(+/-)2. Annoying.
+        # However, it does mean that validation can be run as 2 bits of
+        # information.
+        if ((new_column - 2) == column) or (new_column == (column - 2)):
+            if ((new_row - 1) == row) or (new_row == (row - 1)):
+                movement_valid = True
+        elif ((new_column - 1) == column) or (new_column == (column - 1)):
+            if ((new_row - 2) == row) or (new_row == (row - 2)):
+                movement_valid = True
         else:
-            # Unreferenced variable?
-            valid_move = False
+            movement_valid = False
 
-        pass
-
-    def knight_move(self):
-        pass
+        if movement_valid == True:
+            if Gameplay().knight_collision() == 1:
+                Gameplay().change_turn()
+                DrawBoard.redraw_board(chess_board, row, column,
+                                new_row, new_column)
+        else:
+            return 0
+                
+                
 
     def rook_move(self):
         pass
