@@ -167,7 +167,7 @@ class CheckForCheck(object):
                 
             else:
                 #if check_defined(chess_board, row, each) == True:
-                if chess_board[row][each][2] in ("R", "Q"):
+                if chess_board[row][each][2] in STRAIGHT_ATTACK:
                     check = True
                     break
 
@@ -181,7 +181,7 @@ class CheckForCheck(object):
                     check = False
 
                 else:
-                    if chess_board[row][each][2] in ("R", "Q"):
+                    if chess_board[row][each][2] in STRAIGHT_ATTACK:
                         check = True
                         break
 
