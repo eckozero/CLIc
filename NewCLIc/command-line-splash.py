@@ -1,7 +1,7 @@
 from Mechanics import Gameplay
 
 # Yeah that's supposed to be a King in the ascii. Shut up.
-clic-splash = [
+clic_splash = [
 ["                                                                          "]
 ["                                                      |__|                "],
 ["                                                   |  _||_  |             "],
@@ -24,6 +24,9 @@ clic-splash = [
 ["4. Quit                                                                   "],
 ]
 
+for i in range(len(clic_splash)):
+  print "".join(clic_splash[1])
+
 # Clearly this isn't going to work, and I'm going to disable it because it will
 # frustrate the hell out of me but whatever
 
@@ -44,4 +47,5 @@ while selection_valid != True:
     selection_valid = True
 
 if game_selection == 4:
+  # Why was it loaded if quit at first screen?
   Gameplay().end_game()
