@@ -85,8 +85,13 @@ class CheckForCheck(object):
                     king_column = columns
                     return king_row, king_column
 
-    # What the unholy hell does this function do??
+
     def check_prevalidation(self, turn, chess_board, row, column):
+        """takes arguments passed by other check functions""" 
+        # Checks to see if the space is empty. If it is then clearly
+        # not in check, and time can be saved by not running check checks
+        # against every position
+        
         # Space is an empty space - not in check
         if chess_board[row][column] in EMPTY_SPACE:
             return False
@@ -297,7 +302,7 @@ class CheckForCheck(object):
 
 class PawnMovement(object):
     def pawn_move(self, chess_board, row, column, new_row, new_column):
-        self.chess_baord = chess_board
+        self.chess_board = chess_board
         self.row = row
         self.column = column
         self.new_row = new_row
@@ -308,8 +313,10 @@ class PawnMovement(object):
         if chess_board[row][column][1] == "w":
             pawn_lookup = 7
         
-        if pawn_moves[int(chess_board[row][column][3]) + pawn_lookup][2] == 0:
-            # Phew. That was a long build for a single number!
+        lookup_pos = int(chess_board[row][column][3]) + pawn_lookup
+        
+        if pawn_moves[lookup_pos][2] == 0:
+            # First move
             self.pawn_first()
         else:
             # Not the first move
@@ -317,8 +324,20 @@ class PawnMovement(object):
             
     
     
-    def pawn_first(self):
-        pass
+    def pawn_first(self, chess_board, row, column, new_row, new_column):
+        # Break it down. A pawn can move either:
+        # 1 space forward, 2 spaces forward, or 1 space diagonally
+        # if there is an opposing piece in the way
+        x = (new_row - row)**2
+        
+        if x != 4:
+            # Anything other than 2 spaces forward can be handled by
+            # the existing pawn method
+            self.pawn_other()
+        else:
+            Gameplay().move_valid(chess_board, row, column, 
+                                   valid_move, turn, turn_counter)
+        
     
     def pawn_other(self):
         pass
@@ -714,10 +733,17 @@ class Gameplay(object):
             turn = "White's"
         else:
             turn = "Black's"
+            
+        # Per the buglog, valid_move is not really returned, just passed
+        # straight through the method. Why is valid move passed here?
+        # TODO: Find out why valid_move is passed and whether it needs to be
         return turn, valid_move, turn_counter
 
 
     def move_selection(self, chess_board, turn, args):
+        # Is there a reason this is a list rather than a tuple?
+        # Is there a reason this works on "o" rather than 0 as
+        # is traditional?
         castling_moves = ["o-o", "o-o-o"]
         move1 = raw_input(turn + " turn. Pick which piece to move: ")
         if len(move1) == 0:
@@ -778,7 +804,9 @@ class Gameplay(object):
     def change_turn(self, valid_move, turn_counter, turn):
         # Always add 1, do_not_proceed() will remove if
         # required
-        print turn_counter
+        
+        # Debug line? Don't think this needs priting normally
+        #print turn_counter
         turn_counter +=1
         #if valid_move == True:
         #    return self.turn_picker(turn_counter, valid_move)
