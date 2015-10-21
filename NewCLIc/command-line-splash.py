@@ -1,3 +1,5 @@
+from Mechanics import Gameplay
+
 # Yeah that's supposed to be a King in the ascii. Shut up.
 clic-splash = [
 ["                                                                          "]
@@ -38,5 +40,8 @@ while selection_valid != True:
     print "2. Start new game (vs CPU)"
     print "3. Load existing game"
     print "4. Quit"
+  else:
+    selection_valid = True
 
-
+if game_selection == 4:
+  Gameplay().end_game()
