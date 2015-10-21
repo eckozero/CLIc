@@ -19,6 +19,7 @@ clic-splash = [
 ["1. Start new game (vs human)                                              "],
 ["2. Start new game (vs CPU)                                                "],
 ["3. Load existing game                                                     "],
+["4. Quit                                                                   "],
 ]
 
 # Clearly this isn't going to work, and I'm going to disable it because it will
@@ -28,13 +29,14 @@ clic-splash = [
 selection_valid = False
 
 while selection_valid != True:
-  game_selection = raw_input("Please make a selection (1, 2, or 3): ")
+  game_selection = raw_input("Please make a selection (1, 2, 3, or 4): ")
 
-  if game_selection not in (1,2,3):
+  if game_selection not in (1,2,3,4):
     print "Not a valid selection.\n"
     print "What would you like to do?\n"
     print "1. Start new game (vs human)"
     print "2. Start new game (vs CPU)"
     print "3. Load existing game"
+    print "4. Quit"
 
 
