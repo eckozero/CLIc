@@ -1,5 +1,8 @@
 # God damn rubbish-ass lack of passing through
+# Constants for call in classes
 EMPTY_SPACE = ("(   )", "{___}")
+DIAG_ATTACK = ("Q", "B", "P")
+STRAIGHT_ATTACK = ("R", "Q")
 
 
 class DrawBoard(object):
@@ -252,15 +255,11 @@ class CheckForCheck(object):
                          break
                      else:
                          # Damnit why did I not think of this earlier??
-                         if check_space[2] in ("Q", "B", "P"):
+                         if check_space[2] in DIAG_ATTACK:
                              check = True
-                         #if check_space[2] == "Q" or check_space[2] == "B":
-                             # Pawns can go fuck themselves in this method.
-                             # They can work it out themselves when they move
-                         #    check = True
-                         # I got lazy
-                         #elif check_space[2] == "P":
-                         #    check = True
+                             # TODO: This will think that a pawn can attack at the 
+                             # same range as a queen or bishop. I should probably 
+                             # change that
                          else:
                              break
 
@@ -276,6 +275,7 @@ class CheckForCheck(object):
 
     def checkmate(self, turn):
         # Checkmate stuff here
+        # TODO: Add checkmate stuff here
         # If checkmate = True: etc
         print turn[0:5] + " wins!"
         quitting = raw_input("Press Enter to quit")
@@ -296,7 +296,31 @@ class CheckForCheck(object):
 
 
 class PawnMovement(object):
-    def pawn_move(self):
+    def pawn_move(self, chess_board, row, column, new_row, new_column):
+        self.chess_baord = chess_board
+        self.row = row
+        self.column = column
+        self.new_row = new_row
+        self.new_column = new_column
+        
+        pawn_lookup = 0
+        # Check if first turn for pawn to decide which method to call
+        if chess_board[row][column][1] == "w":
+            pawn_lookup = 7
+        
+        if pawn_moves[int(chess_board[row][column][3]) + pawn_lookup][2] == 0:
+            # Phew. That was a long build for a single number!
+            self.pawn_first()
+        else:
+            # Not the first move
+            self.pawn_other()
+            
+    
+    
+    def pawn_first(self):
+        pass
+    
+    def pawn_other(self):
         pass
 
     def pawn_capture(self):
