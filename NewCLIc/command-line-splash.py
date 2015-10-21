@@ -2,7 +2,7 @@ from Mechanics import Gameplay
 
 # Yeah that's supposed to be a King in the ascii. Shut up.
 clic_splash = [
-["                                                                          "]
+["                                                                          "],
 ["                                                      |__|                "],
 ["                                                   |  _||_  |             "],
 ["       _______    ____        ____                 |_/    \_|             "],
@@ -25,7 +25,7 @@ clic_splash = [
 ]
 
 for i in range(len(clic_splash)):
-  print "".join(clic_splash[1])
+  print "".join(clic_splash[i])
 
 # Clearly this isn't going to work, and I'm going to disable it because it will
 # frustrate the hell out of me but whatever
@@ -34,18 +34,19 @@ for i in range(len(clic_splash)):
 selection_valid = False
 
 while selection_valid != True:
-  game_selection = raw_input("Please make a selection (1, 2, 3, or 4): ")
+    game_selection = int(raw_input("Please make a selection (1, 2, 3, or 4): "))
 
-  if game_selection not in (1,2,3,4):
-    print "Not a valid selection.\n"
-    print "What would you like to do?\n"
-    print "1. Start new game (vs human)"
-    print "2. Start new game (vs CPU)"
-    print "3. Load existing game"
-    print "4. Quit"
-  else:
-    selection_valid = True
+    if game_selection not in (1,2,3,4):
+        print "Not a valid selection.\n"
+        print "What would you like to do?\n"
+        print "1. Start new game (vs human)"
+        print "2. Start new game (vs CPU)"
+        print "3. Load existing game"
+        print "4. Quit"
+    else:
+        selection_valid = True
 
+    
 if game_selection == 4:
-  # Why was it loaded if quit at first screen?
-  Gameplay().end_game()
+    # Why was it loaded if quit at first screen?
+    Gameplay().end_game()
